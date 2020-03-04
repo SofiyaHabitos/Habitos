@@ -17,7 +17,7 @@ gem "responders"
 gem "active_model_serializers"#, github: "rails-api/active_model_serializers"
 gem 'date_validator'
 gem 'carrierwave', '~> 1.0'
-gem 'bootstrap', '~> 4.2.1'
+gem 'bootstrap', '~> 4.4.1'
 # Use SCSS for stylesheets
 gem 'grim'
 gem 'prawn'
