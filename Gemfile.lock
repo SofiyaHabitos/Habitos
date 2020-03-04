@@ -157,7 +157,8 @@ GEM
       pdf-core (~> 0.7.0)
       ttfunk (~> 1.5)
     prawn-table (0.1.2)
-    puma (3.12.0)
+    puma (4.3.3)
+      nio4r (~> 2.0)
     rack (2.0.6)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -302,7 +303,7 @@ DEPENDENCIES
   pg (~> 0.18)
   prawn
   prawn-table (~> 0.1.0)
-  puma (~> 3.0)
+  puma (~> 4.3)
   rails (~> 5.0.2)
   responders
   rest-client (~> 1.8)
