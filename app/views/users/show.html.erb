@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tenant</th>
+      <th>Name</th>
+      <th>User Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Mobile Number</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+        <td><%=@user.tenant.name%></td>
+        <td><%=@user.name%></td>
+        <td><%=@user.user_name%></td>
+        <td><%=@user.email%></td>
+        <td><%=@user.role.name unless @user.role_id==nil%></td>
+        <td><%=@user.mobile_number%></td>
+        <td><%=@user.address%></td>
+</tr><br>
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

@@ -1,0 +1,62 @@
+<%= form_for(page_configuration) do |f| %>
+  <% if page_configuration.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(page_configuration.errors.count, "error") %> prohibited this page_configuration from being saved:</h2>
+
+      <ul>
+      <% page_configuration.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<article class="content item-editor-page">
+    
+        <div class="title-block">
+        
+            <h3 class="title"> Add new  <span class="sparkline bar" data-type="bar"></span> </h3>
+    
+        </div>
+    
+        <form name="item">
+        
+            <div class="card card-block">
+            
+                <div class="row">
+                
+                    <div class="form-group">
+                
+                        <div class="col-xs-4">
+                
+                          <label class="control-label"><%= f.label :page_id %></label>
+
+                            <div class="form-group"><%= f.collection_select(:page_id, Page.all, :id, :page_name,{:prompt=>true}, {:multiple => true})  %></div>
+
+                        </div>
+  
+                        <div class="col-xs-4">
+                
+                          <label class="control-label"><%= f.label :tenant_id %></label>
+
+                          <div class="form-group"><%= f.collection_select :tenant_id, Tenant.all, :id, :name,{:prompt=>true},{class: "dropdown form-control boxed"} %></div>
+                        
+                    
+                        </div>
+
+                    </div>
+            
+                </div>
+            
+            </div>
+
+        </form>    
+
+        <div class="form-group row mrgn-top">
+            
+            <div class="col-sm-10 col-sm-offset-2"> <%= f.submit :class=>"btn btn-primary"%></div>
+       
+       </div>
+  
+    </article>
+
+<% end %>

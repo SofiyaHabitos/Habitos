@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2019-12-16 15:56:36
+  order_id: MyString
+  meal_time: MyString
+  trip_name: MyString
+  vehicle_type: MyString
+  vehicle_name: MyString
+  vehicle_reg: MyString
+  driver: MyString
+  source: MyString
+  destination: MyString
+  count: 1
+  status: MyString
+  pickup: MyString
+  delivery: MyString
+
+two:
+  date: 2019-12-16 15:56:36
+  order_id: MyString
+  meal_time: MyString
+  trip_name: MyString
+  vehicle_type: MyString
+  vehicle_name: MyString
+  vehicle_reg: MyString
+  driver: MyString
+  source: MyString
+  destination: MyString
+  count: 1
+  status: MyString
+  pickup: MyString
+  delivery: MyString

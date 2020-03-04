@@ -1,0 +1,112 @@
+<% if false %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 dashboard-content">
+     
+      <h1 class="page-title">Dashboard
+        <span class="float-right">
+          <a href="/point_of_sales">Instant Orders</a>|
+          <a href="/menu_masters">All Menu</a>|
+          <a href="/normalmenu_sites/menu_planner"> Menu Planner</a>|
+          <a href="/enrolments/approval_screen">Approval</a>
+        </span>
+      </h1>
+      <div class="row total">
+        <%= render :partial => 'order_list' %>
+      </div>
+  
+      <div class="row today-order">
+        <div class="col-md-12">
+          <h1>Today's Order</h1>
+          <% if @menu_customers.present? %>
+            <%= render :partial => 'today_order' %>
+          <% else %>
+            <div class="card"><p>No Orders Found!!</p></div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row recent">
+        <%= render :partial => 'recent_orders' %>
+        <%= render :partial => 'vessels_uncollected' %>
+      </div>
+    </div>
+
+    <div class="col-md-2 live-notification">
+      <div class="live-bg">
+        <h1>New Order</h1>
+        <div class="new-order" id="refresh">
+          <%= render :partial => 'new_orders' %>
+        </div>
+        <h1>Delivery Status</h1>
+        <div class="delivery-status">
+          <%= render :partial => 'dispatch_delivery_status' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+      
+<section class="page-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 dashboard-content">
+        <h1 class="page-title">Dashboard
+          <span class="float-right">
+            
+            <%#if KitchenUser.find(session[:kitchen_user_id]).role.name != ["procurement","Accounts executive"] %>
+            <%if !["procurement","Accounts executive"].include?KitchenUser.find(session["kitchen_user_id"]).role.name %>
+            <a href="/point_of_sales">Instant Orders</a>|
+            <a href="/normalmenu_sites/menu_cycle"> Menu Cycle</a>|
+            <a href="/normalmenu_sites/new_menu_planner"> Menu Planner</a>|  
+            <a href="/enrolments/approval_screen">Approval</a>|
+            <a href="/menu_customers/cook_sheet_edit">Cook Sheet</a>
+            <%end%>
+          </span>
+        </h1>
+        <div class="row total">
+          <%= render :partial => 'order_list' %>
+        </div>
+        <div class="row today-order">
+          <div class="col-md-12">
+            <h1>Today's Order</h1>
+            <% if @menu_customers.present? %>
+              <%= render :partial => 'today_order' %>
+            <% else %>
+              <div class="card">
+                <p>No Orders Found!!</p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="row recent">
+          <%= render :partial => 'recent_orders' %>
+          <%= render :partial => 'vessels_uncollected' %>
+        </div>
+      </div>
+      <div class="col-md-2 live-notification">
+        <div class="live-bg">
+          <h1>New Order</h1>
+          <div class="new-order" id="refresh">
+            <%= render :partial => 'new_orders' %>
+          </div>
+          <h1>Delivery Status</h1>
+          <div class="delivery-status">
+            <%= render :partial => 'dispatch_delivery_status' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>        
+</section>
+<script>
+  $(document).ready(function() {
+
+      setInterval(function() {
+        //$("#refreshscribbles").html("<%#= j(render(:partial=> 'news/newsfeed', :locals=>{:news=>@news}).html_safe) %>");
+        $("#refresh").html("<%= j(render(:partial=> 'new_orders').html_safe) %>");        
+        console.log("Refreshed");
+      }, 3000);
+    });
+</script>

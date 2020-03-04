@@ -1,0 +1,116 @@
+<%= form_for(parent_order) do |f| %>
+  <!--% if parent_order.errors.any? %>
+    <div id="error_explanation">
+      <h2><!%= pluralize(parent_order.errors.count, "error") %> prohibited this parent_order from being saved:</h2>
+
+      <ul>
+      <!% parent_order.errors.full_messages.each do |message| %>
+        <li><!%= message %></li>
+      <!% end %>
+      </ul>
+    </div>
+  <!% end %-->
+
+<article class="content item-editor-page">
+    <form name="item">
+        <div class="card card-block">
+            <div class="row">
+                <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                 <%= f.label :tenant %></label>
+                 <div class="form-group"> 
+                 <%= f.collection_select :tenant_id, Tenant.order("name").where(active:true).where.not(:name=>"Idlidabba"),:id,:name,{prompt:true},{class: "form-control boxed single ",required: true}  %><br>
+                 </div>
+                 </div>
+                <div class="col-xs-4">
+                <label class="control-label"><%= f.label :meal_time %></label>
+                <div class="form-group">
+                <%= f.select :meal_time, ['Morning_Snacks','Breakfast','Lunch','Evening_Snacks','Dinner','Night_Snacks'],{prompt:true},{:required => true, :class => 'form-control boxed single '}%><br>
+                 </div>
+                 </div>
+                 <div class="col-xs-4">
+                <label class="control-label"><%= f.label :identity_number%></label>
+                <div class="form-group">
+                <%= f.text_field :identity_number,:class=>"form-control boxed", :required=>"true" %>
+                 </div>
+                 </div>
+
+                 </div>
+                 </div>
+                 <div class="row">
+                <div class="form-group">
+                <div class="col-xs-6">
+                <label class="control-label">
+                 <%= f.label :order_date %>                 
+                </label>
+                <%= f.text_field :order_date,id:"txtFrom",:class=>"form-control boxed", :required=>"true",:readonly=> true  %>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                <label class="control-label">
+                  <%= f.label :meal_plan,"Meal Type" %>                
+                </label>
+                <%= f.collection_select :food_category_id, FoodCategory.all, :id, :name,{prompt:true},{class: "form-control boxed single",required: true}  %>
+                <!--%= f.select :meal_plan, ['Veg_Normal','Non-Veg_Normal','Veg_Optional','Non-Veg_Optional'],{prompt:true},{:required => true, :class => 'form-control boxed single '}%-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                <label class="control-label">
+                 <%= f.label :amount %>                
+                </label>
+                <%= f.number_field :amount,:class=>"form-control boxed",min:0 ,:required=>"true" %>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+            <div class="col-xs-12">
+            <label class="control-label"><%= f.label :order_status %></label>
+            <div class="form-group"> 
+            <table>
+
+        <tr>
+
+          <td><%= f.label :order_status, "Confirm Order", :value => "Confirm Order"  %></td>
+    
+          <td><%= f.radio_button :order_status, true , :checked => true %></td>
+    
+          <td><%= f.label :order_status, "Cancel Order", :value => "Cencel Order" %></td>
+    
+          <td><%= f.radio_button :order_status, false%></td>
+
+        </tr>
+      
+      </table> 
+            </div>
+            </div>            
+        </div>
+        </div>
+        
+        
+        
+
+        <div class="form-group row mrgn-top btn_center">
+            <%= f.submit "submit",:class=>"btn btn-primary"%>
+       </div>
+  </form>
+  <script type="text/javascript">
+$(document).ready(function() {
+  $(".single").select2();
+}); 
+</script>
+  </article>
+  <%end%>
+  <script type="text/javascript">
+$(function(){
+$('#txtFrom').datepicker({
+            format: 'dd-mm-yyyy',
+            startDate: '+0d',
+            autoclose: true,
+            todayHighlight: true
+        });
+});
+</script>

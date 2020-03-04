@@ -1,0 +1,5 @@
+<h1>New Menu Master</h1>
+
+<%= render 'form', menu_master: @menu_master %>
+
+<%= link_to 'Back', menu_masters_path %>

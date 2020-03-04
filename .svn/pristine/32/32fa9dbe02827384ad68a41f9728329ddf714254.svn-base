@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Item Meal Courses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Production item</th>
+      <th>Meal course</th>
+      <th>Created by</th>
+      <th>Updated by</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @item_meal_courses.each do |item_meal_course| %>
+      <tr>
+        <td><%= item_meal_course.production_item %></td>
+        <td><%= item_meal_course.meal_course %></td>
+        <td><%= item_meal_course.created_by %></td>
+        <td><%= item_meal_course.updated_by %></td>
+        <td><%= link_to 'Show', item_meal_course %></td>
+        <td><%= link_to 'Edit', edit_item_meal_course_path(item_meal_course) %></td>
+        <td><%= link_to 'Destroy', item_meal_course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Item Meal Course', new_item_meal_course_path %>

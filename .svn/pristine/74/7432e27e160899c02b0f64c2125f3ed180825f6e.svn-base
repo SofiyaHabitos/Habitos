@@ -1,0 +1,262 @@
+<%= form_for(software_setup, validate: true) do |f| %>
+  <article class="content item-editor-page ">  
+    <div class="title-block">
+      <h3 class="title"><span class="sparkline bar" data-type="bar"></span></h3>
+    </div>
+    <form name="item">
+      <div class="row">
+        <%= f.fields_for @user, validate: true do |a| %>
+
+          <% if params[:id] == nil %>
+            
+            <div class="col-xs-6">
+              <label class="control-label">
+                <%= a.label :tenant_id,"Customer" %>
+              </label>
+              <div class="form-group"> 
+                <%= a.collection_select :tenant_id, Tenant.where(active: true).where.not(:name=>"Idlidabba").order("name"),:id,:name, {include_blank: true},{ :class=>"form-control boxed e1",:required=>"true"} %>
+              </div>
+            </div>
+
+            <div class="col-xs-6">
+              <label class="control-label">
+                <%= a.label :name %>
+              </label>
+              <div class="form-group"> 
+                <%= a.text_field :name, class: "form-control boxed" %>
+              </div>
+            </div>
+
+            <div class="col-xs-6">
+              <label class="control-label">
+                <%= a.label :email, "E-mail" %>
+              </label>
+              <div class="form-group">
+                <%= a.text_field :email,class: "form-control boxed" %>
+              </div>
+            </div>
+ 
+            <div class="col-xs-6">
+              <label class="control-label">
+                <%= a.label :mobile_number %>
+              </label>
+              <div class="form-group">
+                <%= a.text_field :mobile_number,class: "form-control boxed" %>
+              </div>
+            </div>
+
+            <div class="col-xs-4">
+              <label class="control-label">
+                <%= a.label :role_id, "Role" %>
+              </label>
+              <div class="form-group"> 
+                <%= a.collection_select :role_id, Role.order("name").where.not(site_category_id: SiteCategory.where(name:"Provider").ids[0]),:id,:name, {prompt:"select"},{ :class=>"form-control boxed e1",:required=>"true"} %><br>
+              </div>
+            </div>
+            
+            <br>
+
+          <% else %>
+              
+              <div class="col-xs-6">
+                <label class="control-label">
+                  <%= a.label :tenant_id,"Customer" %>
+                </label>
+                <div class="form-group">
+                  <%= @software_setup.user.tenant.name %>
+                </div>
+              </div>
+              
+              <div class="col-xs-6">
+                <label class="control-label">
+                  <%= a.label :name %>
+                </label>
+                <div class="form-group"> 
+                  <%= a.text_field :name, class: "form-control boxed " %>
+                </div>
+              </div>
+
+              <div class="col-xs-6">
+                <label class="control-label">
+                  <%= a.label :email, "E-mail" %>
+                </label>
+                <div class="form-group">
+                  <%= a.text_field :email,class: "form-control boxed" %>
+                </div>
+              </div>
+ 
+              <div class="col-xs-6">
+                <label class="control-label">
+                  <%= a.label :mobile_number %>
+                </label>
+                <div class="form-group">
+                  <%= a.text_field :mobile_number,class: "form-control boxed" %>
+                </div>
+              </div>
+
+              <div class="col-xs-4">
+                <label class="control-label">
+                  <%= a.label :role_id, "Role" %>
+                </label>
+                <div class="form-group"> 
+                  <%= a.collection_select :role_id, Role.order("name").where.not(site_category_id: SiteCategory.where(name:"Provider").ids[0]),:id,:name, {prompt:"select"},{ :class=>"form-control boxed e1",:required=>"true"} %>
+                </div>
+                <br>
+              </div>
+            
+            <br>
+
+          <% end %>
+   
+        <% end %>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-6">
+          <label class="control-label">
+            <%= f.label :software_privileges, "Software Privileges" %>
+          </label>
+          <div class="form-group">
+            <table>
+              <tr>
+                <td><%= f.label :software_privileges, "Yes", class: "form-control boxed" %></td>
+                <td><%= f.radio_button :software_privileges, true, checked: true, :value => "Yes", :onclick => "show2();", class: "form-control boxed radio_custom" %></td>    
+                <td><%= f.label :software_privileges, "No", class: "form-control boxed" %></td>    
+                <td><%= f.radio_button :software_privileges, false, :value => "No", :onclick => "show1();", class: "form-control boxed" %></td>
+              </tr>     
+            </table>  
+          </div>
+        </div>
+     
+        <div class="col-xs-6">
+          <label class="control-label">
+            <%= f.label :attendance, "Attendance Privileges" %>
+          </label>
+          <div class="form-group">
+            <table>
+              <tr>
+                <td><%= f.label :attendance, "Manual", :value => "Manual",class: "form-control boxed" %></td>
+                <td><%= f.radio_button :attendance, true,class: "form-control boxed" %></td>  
+                <td><%= f.label :attendance, "Barcode", :value => "Barcode",class: "form-control boxed" %></td>          
+                <td><%= f.radio_button :attendance, false,class: "form-control boxed"%></td>
+                <td><%= f.label :attendance, "None", :value => "nil",class: "form-control boxed" %></td>
+                <td><%= f.radio_button :attendance, nil,class: "form-control boxed"%></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div id="div1">
+          <%= f.fields_for @user, validate: true do |a| %>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <%= a.label :user_name, "Username" %>
+              </label>
+              <div class="form-group"> 
+                <%= a.text_field :user_name,  :class=>"form-control boxed ", :id=>"un", :required=>true %>
+              </div>
+              <center><b><span class="msg"></span></b></center>
+            </div>
+
+            <div class="col-xs-4">
+              <label class="control-label">
+                <%= a.label :password_digest, "Password" %>
+              </label>
+              <div class="form-group"> 
+                <%= a.text_field :password_digest, class: "form-control boxed", :required => true %>
+              </div>
+
+              <br>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    
+      <div class="form-group row mrgn-top">
+        <div class="col-sm-10 col-sm-offset-4">
+          <%= link_to "Back", software_setups_path, :class => "btn btn-primary" %> 
+          <%= f.submit "Submit", :class=>"btn btn-primary", id: "enable" %>
+        </div>
+      </div>
+
+    </form>
+  </article>
+<% end %>
+
+<script>
+  function show1(){
+    document.getElementById('div1').style.display ='none';
+  }
+  function show2(){
+    document.getElementById('div1').style.display = 'block';
+  }
+</script>
+
+<script type="text/javascript">
+
+  $(document).ready(function() { 
+    $(".e1").select2(
+      {
+        allowClear: true
+      }
+    );
+  });
+</script>
+
+<style>
+
+body {
+  font-family: arial;
+}
+.hide {
+  display: none;
+}
+p {
+  font-weight: bold;
+}
+
+</style>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+    $("#un").on("change", function () {
+
+  //alert("ht");
+      var username = $(this).val();
+      $.ajax({
+        type: "GET",
+        url: "/software_setups/check_username_present?username="+username,
+        success: function nt(msg) { 
+
+          //alert("hhih");
+          /*alert(msg.message);*/
+           $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+
+            if (msg.message != "") {
+            $('#enable').attr('disabled',true);
+            }
+             if (msg.message == "") {
+            $('#enable').attr('disabled',false);
+            }
+            /*else {
+             $('#enable').attr('disabled',false); 
+            }*/
+            $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+        }
+
+      });
+    });
+  });
+</script>
+
+<style type="text/css">
+  .msg{
+    color:red;
+  }
+</style>

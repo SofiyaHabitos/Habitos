@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Dispatch Utensils Mappings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dispatch_utensils_mappings.each do |dispatch_utensils_mapping| %>
+      <tr>
+        <td><%= link_to 'Show', dispatch_utensils_mapping %></td>
+        <td><%= link_to 'Edit', edit_dispatch_utensils_mapping_path(dispatch_utensils_mapping) %></td>
+        <td><%= link_to 'Destroy', dispatch_utensils_mapping, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dispatch Utensils Mapping', new_dispatch_utensils_mapping_path %>

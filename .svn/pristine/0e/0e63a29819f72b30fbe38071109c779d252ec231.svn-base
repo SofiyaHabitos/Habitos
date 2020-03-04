@@ -1,0 +1,141 @@
+class Utensil < ApplicationRecord
+  belongs_to :kitchen
+  belongs_to :utensils_category
+  has_one :dispatch_utensils_mapping, dependent: :destroy
+  #validates :price, :tare_weight, :lid_weight, :kitchen_id, presence: true 
+  validates :utensil_name, :tracking, presence: true, uniqueness: { case_sensitive: false}
+  acts_as_paranoid
+
+  # for automatic generation of tracking id  
+
+  def self.generate_tracking(utensil)   
+    if  utensil.utensils_category.nil?
+      catgry = utensil.utensiltype.split(' ')
+       utensils_category = nil; utnsl_num = nil    
+    utensils_category=catgry[0][0]
+
+    
+    elsif utensil.utensils_category.utensils_category_name.include?'('
+    catgry = utensil.utensils_category.utensils_category_name.split('(')
+    utensils_category = nil; utnsl_num = nil    
+    utensils_category=catgry[0][0]
+    else
+    catgry = utensil.utensils_category.utensils_category_name.split(' ')
+        if catgry.count == 3
+          utensils_category = nil; utnsl_num = nil    
+          utensils_category=catgry[0][0]+catgry[1][0]+catgry[2][0]
+        elsif catgry.count==2
+          utensils_category = nil; utnsl_num = nil    
+          utensils_category=catgry[0][0]+catgry[1][0]
+        else
+    utensils_category = nil; utnsl_num = nil    
+    utensils_category=catgry[0][0]
+    end
+    end
+    #utensils_category = catgry.split("").first.upcase + catgry.split("").last.upcase
+    
+    #utnsl_name = utensil.utensil_name.split("").first.upcase + utensil.utensil_name.split("").last.upcase
+    utnsl_num = category_wise_num_increment(utensil,utensils_category)
+    #utensil.tracking = utensils_category + utnsl_name + utnsl_num.to_s.rjust(3, '0') #(utnsl_num.utensil_tracking.split('/').last.split('-').last.to_i+1).to_s
+    utensil.tracking = utensils_category+utnsl_num.to_s.rjust(3, '0')
+    #utensil.tracking = utensils_category.to_s.rjust(3, '0')
+     
+
+  end
+
+  def self.category_wise_num_increment(utensil,utensils_category)
+    if utensil.utensils_category.nil?
+      catgry = utensil.utensiltype
+      utnsl_trckng = nil
+    else
+      catgry = utensil.utensils_category.utensils_category_name
+      utnsl_trckng = nil
+    end
+    if Utensil.where("tracking LIKE '%#{utensils_category}%'").present?        
+      utnsl_num = Utensil.where("tracking LIKE '%#{utensils_category}%'").last
+      utnsl_trckng = (utnsl_num.tracking.split('').last.to_i+1).to_s
+    else
+      utnsl_trckng = '1'
+    end
+    return utnsl_trckng
+  end
+=begin
+  def self.utensil_report
+    out_data = Utensil.get_data
+    p = Axlsx::Package.new
+    sheet = p.workbook.add_worksheet(:name => "Utensil Report")
+    title = sheet.styles.add_style(:fg_color=>"#FF000000",:b => true,:alignment=>{:horizontal => :center})
+
+    sheet.add_row ["Date", Date.today.strftime("%d-%m-%Y") ], :style=>title
+    sheet.add_row ["S.No", "Utensil Category", "Utensil Sub Category", "Total Count", "Available count"], :style => title
+    out_data.each do |data|
+      sheet.add_row [data[0], data[1], data[2], data[3], data[4]]
+    end
+    path = "#{Rails.root}/public/export_files/utensil_report.xlsx"
+    p.serialize(path)
+    return path
+  end
+
+  def self.get_data
+    result = []
+    tt, av = 0, 0
+    cnt = 1
+   Utensil.all.group_by(&:utensiltype).map do |cate, utensil|
+# Utensil.all.map do |cate, utensil|
+
+      category = utensil.first.utensils_category.utensils_category_name
+      sub_category = cate
+      total_count = utensil.count
+      available_count = utensil.select { |e| e.available_status == true }.count
+      result << [cnt, category, sub_category, total_count, available_count]
+      tt = tt+total_count
+      av = av+available_count
+      cnt = cnt + 1
+    end
+    result << [nil]
+    result << [nil, "Total", nil, tt, av]
+    return result
+  end
+
+
+=end
+  
+  def self.utensil_report
+    out_data = Utensil.get_data
+    p = Axlsx::Package.new
+    sheet = p.workbook.add_worksheet(:name => "Utensil Report")
+    title = sheet.styles.add_style(:fg_color=>"#FF000000",:b => true,:alignment=>{:horizontal => :center})
+
+    sheet.add_row ["Date", Date.today.strftime("%d-%m-%Y") ], :style=>title
+    sheet.add_row ["S.No", "Utensil Category", "Total Count", "Available count"], :style => title
+    out_data.each do |data|
+      sheet.add_row [data[0], data[1], data[2], data[3], data[4]]
+    end
+    path = "#{Rails.root}/public/export_files/utensil_report.xlsx"
+    p.serialize(path)
+    return path
+  end
+
+  def self.get_data
+    result = []
+    tt, av = 0, 0
+    cnt = 1
+    Utensil.all.group_by(&:utensils_category_id).map do |cate, utensil|
+      category = utensil.first.utensils_category.utensils_category_name
+     # sub_category = cate
+      total_count = utensil.count
+      available_count = utensil.select { |e| e.available_status == true }.count
+      #result << [cnt, category, sub_category, total_count, available_count]
+      result << [cnt, category, total_count, available_count]
+      tt = tt+total_count
+      av = av+available_count
+      cnt = cnt + 1
+    end
+    result << [nil]
+    result << [nil, "Total", tt, av]
+    return result
+  end
+
+
+
+end

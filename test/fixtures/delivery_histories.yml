@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2017-07-07
+  tenant: one
+  start_time: MyString
+  stop_time: MyString
+  pause_time: MyString
+  resume_time: MyString
+  meat_time: MyString
+  created_by: 1
+  updated_by: 1
+
+two:
+  date: 2017-07-07
+  tenant: two
+  start_time: MyString
+  stop_time: MyString
+  pause_time: MyString
+  resume_time: MyString
+  meat_time: MyString
+  created_by: 1
+  updated_by: 1

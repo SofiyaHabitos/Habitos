@@ -1,0 +1,35 @@
+<% @instant_orders = PointOfSale.where(date: Date.today) %>
+<% @parent_orders = ParentOrder.where(date: Date.today) %>
+<% if @instant_orders.present? or @parent_orders.present? %>
+  <% aa = @parent_orders + @instant_orders %>
+  <% bb = aa.sort_by(&:created_at).reverse! %>
+  <% bb.each do |data| %>
+    <ul class="list-unstyled">
+      <li class="d-flex">
+        <span class="tenant-logo">
+          <%= image_tag data.tenant.image.image_path,:style=>"width:40px; height:40px"%>
+          <!-- <img src="\assets\sample.png" width="40px" height="40px"> -->
+        </span>
+        <span>
+          <h3><%= data.tenant.name %></h3>
+          <h4><%= data.meal_time %></h4>
+          <p>
+            <% if data.as_json.keys.include?"identity_number" %>
+              Parent Order
+            <% else %>
+              Instant Order
+            <% end %>
+            <span class="float-right"><%= data.created_at.localtime.strftime('%I:%M %p') %></span>
+          </p>
+        </span>
+      </li>
+    </ul>
+  <% end %>
+
+<% else %>
+  <ul class="list-unstyled">
+    <li class="d-flex">
+      <p>No Records Found</p>
+    </li>
+  </ul>
+<% end %>

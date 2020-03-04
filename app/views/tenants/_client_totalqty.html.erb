@@ -1,0 +1,38 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Total Quantity Edit</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+    </div>
+        
+    <%= form_tag(update_total_qty_path, method: "post") do %>
+      <div class="modal-body">
+    		<div id="client_totalqty">
+    		  <table>
+    			  <thead>
+    			    <th>Client Name</th>
+    			    <th>Total Quantity</th>
+    			  </thead>
+      		  <tbody>
+              <% @menu_cycle.map do |menu| %>
+                <tr>
+          		    <td><%= menu.tenant_detail.tenant.name if menu.tenant_detail.present? %></td>
+          		    <td><%= text_field_tag "total_qty[#{menu.id}]", "", value: menu.quantity, class: "input-text", required: "true" %></td>
+                </tr>
+              <%end%>
+      		  </tbody>
+        	</table>
+        </div>
+      </div>
+
+      <%= hidden_field_tag :date_choosen, "", value: @date_choosen %>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn_cancel" data-dismiss="modal">Cancel</button>
+        <%= submit_tag "Update", :class=>"btn btn_submit" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+

@@ -1,0 +1,113 @@
+<head>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+
+<body ng-app="tripShowModule" ng-controller="tripShow">
+ <div id="client_totalqty" class="modal-dialogs modal fade"></div>
+  <div id="cooksheet_item_edit" class="modal-dialogs modal fade"></div>
+    <section class="page-content" ng-init="getTrip()">
+     <div class="container-fluid">
+      <p class="page_path">SCM / Driver App Report</p>
+      <h2 class="header_title border-bottom">
+        <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, tripplans_new_path, title:"Back", :class=>"btn btn_back"%>
+        Driver App Report
+      </h2>
+
+      <div class="row">
+
+        <!-- <div class="col-md-1 d-flex align-items-center">
+           <label>Date&nbsp;Filter:</label>
+        </div> -->
+
+        <div class="col-md-2">
+
+          <div class="control floating_label">
+            <input type="text" ng-model="getDate" ng-change="getTrip()" name="" class="input-text date_picker">
+            <label class="input-text-placeholder" for="date">Choose Date</label>
+          </div>
+
+       </div>
+
+
+
+      </div>
+      <div class="card table-container mb-3">
+        <div class="card-body without_dt">
+          <table class="table no_wrap_td">
+            <tr>
+              <th>Date</th>
+              <th>Meal Time</th>
+              <th>Trip Name</th>
+              <th>Vehicle</th>
+              <th>Vehicle Name</th>
+              <th>Driver</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Count</th>
+              <th>Trip Type</th>
+              <th>Pickup Vessel count</th>
+              <th>Delivery Vessel count</th>
+              <th>Pickup Time</th>
+              <th>Delivery Time</th>
+              <th>Actual Pickup Time</th>
+              <th>Actual Delivery Time</th>
+              <th>Total km</th>
+
+            </tr>
+    
+            <tr ng-repeat="data in datas">
+              <td class="date">{{data.date}}</td>
+              <td>{{data.meal_time}}</td>
+              <td>{{data.trip_name}}</td>
+              <td>{{data.vehicle}}</td>
+              <td>{{data.reg_no}}</td>
+              <td>{{data.driver}}</td>
+              <td>{{data.source}}</td>
+              <td>{{data.destination}}</td>
+              <td>{{data.count}}</td>
+              <td>{{data.status}}</td>
+              <td>{{data.pickup_count || '0'}}</td>
+              <td>{{data.delivery_count || '0'}}</td>
+              <td>{{data.pickup_time}}</td>
+              <td>{{data.delivery_time}}</td>
+              <td>{{data.actual_pickup || '00:00'}}</td>
+              <td>{{data.actual_delivery || '00:00'}}</td>
+              <td>{{data.total_km || '0'}}</td>
+            </tr>
+    
+          </table>
+        </div>
+      </div>
+     </div>
+    </section>
+  
+</body>
+
+<script type="text/javascript">
+var app = angular.module('tripShowModule', []);
+app.controller('tripShow', function($scope,$http,$filter) {
+    var plannerURL="<%= $api_service%>";
+    var newDate=new Date();
+   $scope.date=$filter('date')(newDate, "dd-MMM-yyyy")
+   $scope.getDate=$scope.date;
+
+   $scope.getTrip = function(){
+    $http({
+        method: 'GET',
+        url: plannerURL+'/api/v1/drivers/trip_assignment_table?date='+$scope.getDate,
+        }).then(function successCallback(response) {
+         $scope.datas = response.data
+        
+      });
+    }
+    })
+        
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".date_picker").flatpickr({
+      dateFormat: "d-m-Y"
+    });
+  });
+</script>

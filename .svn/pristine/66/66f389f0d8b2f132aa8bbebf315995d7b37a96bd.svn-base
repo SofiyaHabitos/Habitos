@@ -1,0 +1,106 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <center><h3 class="modal-title">Show - Assign Menu</h3></center>
+    </div>
+    <article class="content item-editor-page">
+      <div class="card card-block">
+        <div class="row">
+          <div class="form-group">
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Date</span>
+              </label>
+              <div class="form-group">
+                <%= @menu_customers.first.date %>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Customer</span>
+              </label>
+              <div class="form-group">
+                <%= @menu_customers.first.tenant.present? ? @menu_customers.first.tenant.name : nil %>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">No of packs to send:</span>
+              </label>
+              <div class="form-group">
+                <%= @menu_customers.first.packs_to_send %>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Category</span>
+              </label>
+              <div class="form-group">
+                <%= @menu_customers.first.category.present? ? @menu_customers.first.category.category_name : nil %>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Created_by</span>
+              </label> 
+              <div class="form-group">
+                <%= @menu_customers.first.created_by %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <%# menu_customer_ids = params[:id].split("/") %>
+            <% @menu_customers.each do |menu_customer| %>
+              <%# menu_customer = MenuCustomer.find(i) %>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="control-label">
+                    <span style="font-weight:bold">Menu Name</span>
+                  </label>
+                  <div class="form-group">
+                    <%= menu_customer.menu_master.present? ? menu_customer.menu_master.menu_master_name : nil %>
+                  </div>
+                </div>
+                <div class="col-xs-8">
+                  <label class="control-label">
+                    <span style="font-weight:bold">Menu Items :</span>
+                  </label>
+                  <br>
+                  <div class="form-group">
+                    <% if menu_customer.menu_master.present? %>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Food Name</th>
+                            <th>Quantity&nbsp;</th>
+                            <th>&nbsp;Uom </th>          
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% menu_customer.menu_master.menu_production_items.each do |item| %>
+                            <tr>
+                              <td><%= item.production_item.name %></td>
+                              <td><%= item.quantity.to_f * menu_customer.packs_to_send.to_i %></td>
+                              <td><%= item.production_item.unit_of_measurement.name %></td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    </article>
+    <div class="footer">
+      <%= link_to 'Back', normalmenu_sites_path, :class=>"btn btn-default" %>
+    </div>  
+  </div>
+</div>

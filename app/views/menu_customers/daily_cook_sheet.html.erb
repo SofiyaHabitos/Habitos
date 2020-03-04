@@ -1,0 +1,89 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3 style="text-align: center;font-family: initial;">Daily Menu - <%= Date.today.strftime("%a, %d-%b-%Y") %></h3>
+    </div>
+    <div class="body-content">
+      <div id="dashboard-container">
+        <%= form_for(:sheet, url: menu_customers_csv_sheet_path(format: "csv")) do |f| %>
+          <div class="col-md-12 row">
+            <div class="col-md-2">            
+              <%= f.text_field :from_date, class: "form-control", id: "txtFrom", required: true, placeholder:"dd/mm/yy" %>
+            </div>
+            <div class="col-md-2">            
+              <%= f.text_field :to_date, class: "form-control", id: "txtTo", required: true, placeholder:"dd/mm/yy"%>
+            </div>
+            <div class="col-md-2">
+              <%= f.submit 'Get Report', class: "btn btn-primary", id: "report", "data-disable-with": false %>
+            </div>
+          </div>
+        <% end %>    
+
+        
+         <!--    <div class="col-md-2">
+              <%#= link_to "Sample Csv", menu_customers_csv_sheet_path(format: "csv") ,:class =>"btn btn-primary" ,:style=>"float:right; margin-right:0;"%>
+            </div>
+          --> 
+
+        <div class="table-container">
+
+          <table class="table table-striped table-bordered table-hover display">
+          <thead></thead>
+            <tbody>
+            <% @menu_items.map do |i|%>
+              <tr>
+                  <td><b><%=i[:tenant].pluck(:meal_time).uniq.join('')%></b></td>
+                  <%i[:tenant].map do |list|%>
+                  <td><b><%= list[:tenant]+"-"+list[:stud]%></b></td>
+                  <td><b>Total-<%=list[:menus].flatten.first[:total]%></b></td>
+                  <%end%>
+                  <td><b>Total</b></td>
+              </tr>
+              <%i[:result].map do |v|%>
+              <tr>
+              <% v.each_with_index do |c, index|%>
+                <%#v.map do |c|%>
+                  <%if c =="-"%>
+                      <td style="text-align: center;"><%=c%></td> 
+
+                  <%else%>
+                  
+                        <td><%=c%><%#if index.odd? %><%#=link_to "Edit", menu_customers_cook_sheet_edit_path(data: c)%><%#end%></td> 
+                  <%end%>
+                <%end%> 
+              </tr>
+              <%end%> 
+            <%end%>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
+
+ <script type="text/javascript">
+$(function(){
+      $("#txtFrom").datepicker({
+        //numberOfMonths: 1,
+        onSelect: function (selected) {
+            var dt = new Date(selected);
+            dt.setDate(dt.getDate() );
+            $("#txtTo").datepicker("option", "minDate", dt);
+        },dateFormat: 'yy-mm-dd'
+       
+    });
+    $("#txtTo").datepicker({
+        numberOfMonths: 1,
+        onSelect: function (selected) {
+            var dt = new Date(selected);
+            dt.setDate(dt.getDate()  );
+            $("#txtFrom").datepicker("option", "maxDate", dt);
+        },dateFormat: 'yy-mm-dd'
+    });
+    });
+</script>

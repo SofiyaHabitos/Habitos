@@ -1,0 +1,63 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3>SCM<span> <%= link_to 'Add New',normalmenu_sites_menu_planner_path,:class=>"btn btn-primary btn-sm rounded-s"%> </span></h3>
+      <h2>MENU PLANNER</h2>
+    </div>
+    <div class="body-content">
+      <div id="dashboard-container">
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover display" id="menu_customer">
+            <thead>
+              <tr>
+      <th>Date</th>
+      <th>Tenant</th>
+      <th>Menu master</th>
+      <th>Category</th>
+      <th>Created by</th>
+      <!-- <th>Updated by</th> -->
+      
+    </tr>
+            </thead>
+            <tbody>
+                  <% @menu_customers.each do |menu_customer| %>
+        <tr id='<%=menu_customer.id%>'>
+        <td><%= format_date(menu_customer.date) %></td>
+        <td><%= menu_customer.tenant.name %></td>
+        <td><%= menu_customer.menu_master.menu_master_name %></td>
+        <td><%= menu_customer.category.category_name %></td>
+        <td><%= menu_customer.created_by %></td>
+        <!-- <td><%#= menu_customer.updated_by %></td> -->
+         </tr>
+    <% end %>
+            </tbody>
+          </table>
+          <% if   @menu_customers.present?%>
+           <div class="side-pop" style="color:white;display:none;">
+    <ul>
+    
+    <li><a title="Show" id="show" > <i class="btn btn-sm btn-default fa fa-sm fa-eye"></i></a></li> <!-- 
+<li><a title="Edit" id="edit" > <i class="btn btn-sm btn-default fa fa-sm fa-pencil" ></i></a></li>
+       
+    <li><a title="Delete" id="destroy" data-method="delete" class="confirmation"> <i class="btn btn-sm btn-default fa fa-sm fa-trash-o"></i></a></li>-->
+    
+
+    </ul>
+    </div>
+    <%end%>  
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <div class="clearfix"></div>
+</div>
+  
+<script>
+  $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+</script>

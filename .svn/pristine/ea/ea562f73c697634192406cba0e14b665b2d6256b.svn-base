@@ -1,0 +1,97 @@
+Category.create!([
+  {category_name: "Lunch", description: "", created_by: 1, updated_by: nil, deleted_at: nil},
+  {category_name: "Breakfast", description: "Morning Food", created_by: 1, updated_by: nil, deleted_at: nil},
+  {category_name: "Mid-day Snacks", description: "Snacks for School", created_by: 1, updated_by: nil, deleted_at: nil},
+  {category_name: "Dinner", description: "Night Food", created_by: 1, updated_by: nil, deleted_at: nil},
+  {category_name: "Tea Break - Morning", description: "Morning Tea Time", created_by: 1, updated_by: 1, deleted_at: nil},
+  {category_name: "Tea Break - Evening", description: "Evening Tea Time", created_by: 1, updated_by: 1, deleted_at: nil}
+])
+FoodCategory.create!([
+  {name: "Veg", description: "The foods sourced from vegetables but also includes Honey & Dairy products", created_by: 1, updated_by: 1, deleted_at: nil},
+  {name: "Jain", description: "These kind of peoples consumes Veg foods excepts and also avoids taking honey, dairy products, roots & tubers, cinnamon, butter, etc.", created_by: 1, updated_by: 1, deleted_at: nil}
+])
+Image.create!([
+  {image_path: "images.jpg", deleted_at: nil},
+  {image_path: "download.jpg", deleted_at: nil},
+  {image_path: "Yuva_logo.PNG", deleted_at: nil},
+  {image_path: "Altius.png", deleted_at: nil},
+  {image_path: "YBS_Logo_-_Kanuvai.png", deleted_at: nil},
+  {image_path: "YBS_Logo_-_Kanuvai.png", deleted_at: nil},
+  {image_path: "Chandrakanthi.png", deleted_at: nil},
+  {image_path: "GSPS.png", deleted_at: nil},
+  {image_path: "lil.jpg", deleted_at: nil},
+  {image_path: "KVMS.jpg", deleted_at: nil},
+  {image_path: "Habitos.png", deleted_at: nil}
+])
+ItemSubcategory.create!([
+  {name: "Papad / Fryums", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Continental", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Gravy", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Dairy", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Indian bread", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Juice", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Soup", description: "Rasam", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Poriyal / Koottu", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Salad / Vada", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Variety Rice Side dish", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Base", description: "", create_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "Sweets", description: "", create_by: 1, updated_by: nil, deleted_at: nil}
+])
+Kitchen.create!([
+  {name: "Idlidabba - saravanampatti", responsible_person: "Vivek", address: "Saravanampatti,Cbe", created_by: nil, updated_by: 1, deleted_at: nil}
+])
+MealRestriction.create!([
+  {meal_restriction_name: "Diabetic", created_by: nil, updated_by: nil, deleted_at: nil}
+])
+Question.create!([
+  {question: "Delivery on Time?", category: "delivery", created_by: nil, updated_by: nil, deleted_at: nil},
+  {question: "Menu Items Present?", category: "delivery", created_by: nil, updated_by: nil, deleted_at: nil},
+  {question: "Enough Service Person?", category: "service", created_by: nil, updated_by: nil, deleted_at: nil},
+  {question: "Service Area Clean?", category: "service", created_by: nil, updated_by: nil, deleted_at: nil},
+  {question: "Head caps and gloves were worn?", category: "service", created_by: nil, updated_by: nil, deleted_at: nil},
+  {question: "Clean drinking water provided?", category: "service", created_by: nil, updated_by: nil, deleted_at: nil},
+  {question: "Clean cutlery provided?", category: "service", created_by: nil, updated_by: nil, deleted_at: nil}
+])
+SiteCategory.create!([
+  {name: "Provider", description: nil, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Corporate", description: nil, created_by: 1, updated_by: nil, deleted_at: nil},
+  {name: "School", description: nil, created_by: 1, updated_by: 1, deleted_at: nil}
+])
+Role.create!([
+  {name: "CEO", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Administrator", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Chef", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Nutrition", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Audit Incharge", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Dispatch Incharge", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Admin", site_category_id: 2, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Head", site_category_id: 2, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Audit Manager", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Dispatch Manager", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil},
+  {name: "Delivery Incharge", site_category_id: 1, created_by: nil, updated_by: nil, deleted_at: nil}
+])
+UnitOfMeasurement.create!([
+  {name: "Kg", description: "Kg represents Kilogram which is a weight of per unit.", created_by: 1, updated_by: 1, deleted_at: nil},
+  {name: "Litre", description: "It is a measurement unit of liquidic items as measured by Volume", created_by: 1, updated_by: 1, deleted_at: nil},
+  {name: "No", description: "It is not unique Measurement but stable as known as Numbers which simply known as Count", created_by: 1, updated_by: 1, deleted_at: nil}
+])
+Tenant.create!([
+  {name: "Kikani Vidhya Mandir", description: "Educational Institutes", email: "sbkcbse@gmail.com", sex: "763", latitude: 11.011284, longitude: 76.957779, from_date: "2018-04-18", to_date: "2025-04-14", contact_person1: "Arumugam.C", contact_person2: "Another One", phone1: "9500998443", phone2: "", address: "No.9, Rangasamy Road,  \r\nR.S. Puram, \r\nCoimbatore – 641 002\r\nTamilNadu.", exclude: 3, active: true, image_id: 10, kitchen_id: 1, site_category_id: 2, created_by: 1, updated_by: 1, meal: true, deleted_at: nil},
+  {name: "Idlidabba Private Limited (Habitso)", description: "Catering Service Unit - Your Nutri Routine", email: "vivek@habitos.in", sex: "55", latitude: 11.054472, longitude: 76.996222, from_date: "2018-04-18", to_date: "2034-03-13", contact_person1: "Vivek Chidambaram", contact_person2: "Murali Gurusamy", phone1: "9842318000", phone2: "9994032406", address: "10C, Vivekanathar Street, \r\nSivananthapuram,\r\nSaravanampatti (Post),\r\nCoimbatore - 35", exclude: 0, active: true, image_id: 11, kitchen_id: 1, site_category_id: 3, created_by: 1, updated_by: nil, meal: true, deleted_at: nil},
+  {name: "Yuvabharathi Public School", description: "Educational Institute", email: "ybpsheadhr@gmail.com", sex: "130", latitude: 11.0681, longitude: 76.9164, from_date: "2018-04-18", to_date: "2025-05-13", contact_person1: "Sreeja", contact_person2: "Priya", phone1: "9843786817", phone2: "9443627677", address: "Yuva Enclave\r\nThudiyalur Road,\r\nSomayampalayam Post,\r\nCoimbatore - 641 108\r\nTamil Nadu, India.", exclude: 2, active: true, image_id: 4, kitchen_id: 1, site_category_id: 2, created_by: 1, updated_by: 1, meal: true, deleted_at: nil},
+  {name: "Altius Technologies Solutions", description: "Altius Technologies Solutions - Who develops Applications, ERP systems & Websites.", email: "subashkumarshanmugam@gmail.com", sex: "85", latitude: 11.025723, longitude: 76.943662, from_date: "2018-04-17", to_date: "2019-09-28", contact_person1: "Ishwarya Sevugan", contact_person2: "Malathi Sriram", phone1: "9500988371", phone2: "9003912641", address: "56C, Bharathi park, \r\nSecond Cross Road,\r\nSaibabacolony,\r\nCoimbatore - 641011, India", exclude: 2, active: true, image_id: 5, kitchen_id: 1, site_category_id: 3, created_by: 1, updated_by: 1, meal: true, deleted_at: nil},
+  {name: "Yuvabharathi Play School", description: "Yuva Nursery School - Students age between 3 to 5", email: "yuvanursery@rediffmail.com", sex: "400", latitude: 11.020556, longitude: 76.939257, from_date: "2018-04-18", to_date: "2025-05-13", contact_person1: "Head Master", contact_person2: "Another One", phone1: "8220059606", phone2: "", address: "Yuvabharathi Play School\r\nAlagesan Road,\r\nSai Baba Colony,\r\nCoimbatore - 641 011\r\nTamil Nadu, India.", exclude: 3, active: true, image_id: 6, kitchen_id: 1, site_category_id: 2, created_by: 1, updated_by: 1, meal: true, deleted_at: nil},
+  {name: "Chandrakanthi Public School", description: "Educational Institutes", email: "principal@chandrapublic.edu.in", sex: "60", latitude: 11.043451, longitude: 77.029761, from_date: "2018-04-18", to_date: "2025-04-14", contact_person1: "Senior Block", contact_person2: "Junior Block", phone1: "8220008833", phone2: "8220778877", address: "Chandrakanthi Public School\r\nTex Park Road, Peelamedu,\r\nCoimbatore – 641 014.\r\nTamilnadu, India.", exclude: 2, active: true, image_id: 7, kitchen_id: 1, site_category_id: 2, created_by: 1, updated_by: nil, meal: true, deleted_at: nil},
+  {name: "Rak's Pallikoodam", description: "Educational Institute", email: "info@pallikkoodam.in", sex: "50", latitude: 11.00319, longitude: 76.970675, from_date: "2018-04-18", to_date: "2025-04-14", contact_person1: "Contact - 1", contact_person2: "Contact - 2", phone1: "8344099085", phone2: "", address: "774, Avinashi Road, Coimbatore:641018.", exclude: 3, active: true, image_id: 9, kitchen_id: 1, site_category_id: 2, created_by: 1, updated_by: nil, meal: true, deleted_at: nil},
+  {name: "Guru Saraan Public School", description: "Educational Institutes", email: "gurusaraancbse@gmail.com", sex: "110", latitude: 11.076045, longitude: 77.036926, from_date: "2018-04-18", to_date: "2025-04-15", contact_person1: "Contact - 1", contact_person2: "Contact - 2", phone1: "9585528925", phone2: "9585528926", address: "Sitra Road, Kalapatti,\r\nCoimbatore - 641 048", exclude: 3, active: true, image_id: 8, kitchen_id: 1, site_category_id: 2, created_by: 1, updated_by: 1, meal: true, deleted_at: nil}
+])
+KitchenUser.create!([
+  {name: "Mayilraja Chelliah", user_name: "Mayilraja", password_digest: "mayil", email: "dispatchidlidabba@gmail.com", mobile_number: "9600395469", address: "10C, Vivekanandhar Street,\r\nSivanandhapuram,\r\nSaravanampatti (Post),\r\nCoimbatore - 35", auth_token: "8d921f7a8ce04232023c01b4764100e2", role_id: 6, kitchen_id: 1, tenant: [4], created_by: 1, updated_by: 1, status: true, is_logged_in: false, deleted_at: nil},
+  {name: "Vivek  Chidambaram", user_name: "vivek", password_digest: "Vivek@98423", email: "ceo@idlidabba.com", mobile_number: "9842318000", address: "10C, Eye Hospital Road, Vilankuruchi Rd, Sivanandh...", auth_token: "267b453c118802ee6d74dcd5cea4f325", role_id: 1, kitchen_id: 1, tenant: [4], created_by: nil, updated_by: 1, status: false, is_logged_in: true, deleted_at: nil},
+  {name: "Subash", user_name: "Aavinan", password_digest: "aavinan", email: "nutritionistidlidabba@gmail.com", mobile_number: "8344099085", address: "10C, Vivekanandhar Street,\r\nSivanandhapuram,\r\nSaravanampatti (Post),\r\nCoimbatore - 35", auth_token: "d826559c490ed0f9bf8ae531247a28a5", role_id: 4, kitchen_id: 1, tenant: [4], created_by: 1, updated_by: 1, status: false, is_logged_in: false, deleted_at: nil},
+  {name: "Subash kumar Shanmugam", user_name: "Auditor", password_digest: "aavinan", email: "subashkumarshanmugam@gmail.com", mobile_number: "8344099085", address: "10C, Vivekanandhar Street,\r\nSivanandhapuram,\r\nSaravanampatti (Post),\r\nCoimbatore - 35", auth_token: "744436a43c34465b9676f62a941f8e8e", role_id: 5, kitchen_id: 1, tenant: [4], created_by: 1, updated_by: 1, status: false, is_logged_in: false, deleted_at: nil},
+  {name: "Mayilraja", user_name: "Mayil", password_digest: "mayil", email: "deliveryidlidabba@gmail.com", mobile_number: "9791683372", address: "10c, Eye Hospital Road, Sivanandhapuram, Saravanampatti Post, Coimbatore - 35", auth_token: "507f2261c9bb786d52307f761793ee62", role_id: 11, kitchen_id: 1, tenant: [4], created_by: 1, updated_by: 1, status: false, is_logged_in: false, deleted_at: nil},
+  {name: "Murali Gurusamy", user_name: "Murali.G", password_digest: "murali", email: "operationidlidabba@gmail.com", mobile_number: "9994032604", address: "10C, Vivekanandhar Street,\r\nSivanandhapuram,\r\nSaravanampatti (Post),\r\nCoimbatore - 35", auth_token: "3210497c5d71eaf2c6d00cb108c55939", role_id: 2, kitchen_id: 1, tenant: [4], created_by: 1, updated_by: 1, status: false, is_logged_in: true, deleted_at: nil},
+  {name: "Aavinan Shanmugam", user_name: "Audit Manager", password_digest: "aavinan", email: "designidlidabba@gmail.com", mobile_number: "8344099085", address: "10C, Vivekanandhar Street,\r\nSivanandhapuram,\r\nSaravanampatti (Post),\r\nCoimbatore - 35", auth_token: "21015a7678d64864dd5bcc4251c1cd1b", role_id: 9, kitchen_id: 1, tenant: [4], created_by: 1, updated_by: 1, status: false, is_logged_in: false, deleted_at: nil},
+  {name: "Ananth", user_name: "ananth", password_digest: "chefhabitos", email: "chefidlidabba@gmail.com", mobile_number: "9655491010", address: "idlidabba Pvt.ltd,\r\n10c, eye hospital road . sivananthapuram,saravanmpatti (po), coimbatore-35.", auth_token: "953905555ac0a5e3e21cbe249c5d2bff", role_id: 3, kitchen_id: 1, tenant: [4], created_by: 1, updated_by: 1, status: true, is_logged_in: false, deleted_at: nil}
+])

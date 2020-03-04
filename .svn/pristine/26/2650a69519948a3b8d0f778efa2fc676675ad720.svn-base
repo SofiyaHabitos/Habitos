@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Page:</strong>
+  <%= @page_configuration.page %>
+</p>
+
+<p>
+  <strong>Tenant:</strong>
+  <%= @page_configuration.tenant %>
+</p>
+
+<%= link_to 'Edit', edit_page_configuration_path(@page_configuration) %> |
+<%= link_to 'Back', page_configurations_path %>

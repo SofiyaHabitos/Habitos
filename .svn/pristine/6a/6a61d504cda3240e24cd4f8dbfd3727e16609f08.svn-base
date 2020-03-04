@@ -1,0 +1,77 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+    <div class="body-header">
+      <center><h3 class="modal-title">Show - Individual Orders</h3></center>
+    </div>
+
+    <article class="content item-editor-page">
+      <div class="card card-block">
+        <div class="row">
+          <div class="form-group">
+            <div class="col-xs-4">      
+              <label class="control-label">
+                <span style="font-weight:bold">Customer</span>
+              </label>
+              <div class="form-group">
+                <%= @parent_order.tenant.name%>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Order Date</span>
+              </label>
+              <div class="form-group">
+                <%= @parent_order.date.strftime("%d-%m-%Y") %>
+              </div>      
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Identity Number</span>
+              </label>
+              <div class="form-group">
+                <%= @parent_order.identity_number%>                
+              </div>          
+            </div>            
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Meal Group</span>
+              </label>
+              <div class="form-group">
+                <%= @parent_order.meal_time %>                
+              </div>          
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Meal Type</span>
+              </label>
+              <div class="form-group">
+                <%= @parent_order.food_category.present? ? @parent_order.food_category.name : "-" %>
+              </div>          
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Meal Restriction</span>
+              </label>
+              <div class="form-group">
+                <%= @parent_order.meal_restriction.present? ? parent_order.meal_restriction.meal_restriction_name : "-" %>
+              </div>          
+            </div>
+            <div class="col-xs-4">
+              <label class="control-label">
+                <span style="font-weight:bold">Order Status</span>
+              </label>
+              <div class="form-group">
+                <%= @parent_order.status %>
+              </div>          
+            </div>            
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <div class="footer">    
+      <!--%= link_to 'Edit', edit_production_item_path(@production_item), :class=>"btn btn-primary"%-->    
+      <%= link_to 'Back', parent_orders_path, :class=>"btn btn-default" %>   
+    </div>  
+  </div>
+</div>

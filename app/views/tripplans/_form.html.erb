@@ -1,0 +1,141 @@
+<html>
+<body>
+
+  <table class="table table-striped table-bordered table-hover plan" id="tripplan" style="margin-top: 25px;">
+    <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+    </thead>
+  </table>
+</body>
+</html>
+  <%# @category.map do |category|%>
+<!-- <table style="width:100%">
+  <tr>
+    <th><%#= category.category_name%></th>
+    <th>Lastname</th> 
+    <th>Age</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+  <tr>
+    <td>John</td>
+    <td>Doe</td>
+    <td>80</td>
+  </tr>
+</table>
+  <%#end%>
+</body>
+</html> -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  <div class="accordion" id="accordionExample">
+  <%#@category.map do |category|%>
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne<%#=category.id%>" aria-expanded="true" aria-controls="collapseOne">
+          <input type="checkbox" name="meal_time" class="category"  value="<%#= category.id%>">
+              <%#=category.category_name%>
+        </button>
+      </h2>
+    </div>
+    <div id="collapseOne<%#=category.id%>" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+      	<div class="row">
+          <div class="col-md-3">
+            <%# @tenant.map do |tenantname|%>
+            <%# if tenantname.category_id == category.id%>
+             <input type="text" name="tenant_id[]" readonly="true" value="<%#=tenantname.tenant_detail.tenant.name%>" readonly="true">
+            <%#end%>
+            <%#end%>
+          </div>
+      		<div class="col-md-3">
+      			<%#= select_tag "driver[]", options_for_select(@drivers),{class: "form-control driver", id: "driver",required: true, prompt: "Please Select"} %>
+      		</div>
+      		<div class="col-md-3">
+      			<%#= select_tag "trip[]", options_for_select(@trip_name),{class: "form-control trip",id: "trip",prompt: "Please Select"} %>
+      		</div>
+      	</div>
+      </div>
+    </div>
+  </div>
+  <%#end%>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn_cancel" id="submit">Submit</button>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function (){
+    $('#submit').on('click',function (){
+    var category = []; 
+    $("input:checkbox[name=meal_time]:checked").each(function(){
+      alert($(this).val())
+      category.push($(this).val());
+    });
+    var category = [];
+
+     var driver = $('#driver').val();
+     var trip = $('#trip').val();
+    });
+  });
+</script> -->

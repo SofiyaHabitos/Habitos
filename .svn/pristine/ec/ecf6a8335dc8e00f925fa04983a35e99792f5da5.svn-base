@@ -1,0 +1,12 @@
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container ">  
+  <div class="body-header">
+        <h3 class="modal-title">Add - Allergy</h3>
+          </div>
+<%= render 'form', allery: @allery %>
+   </div>
+</div>
+
+
+

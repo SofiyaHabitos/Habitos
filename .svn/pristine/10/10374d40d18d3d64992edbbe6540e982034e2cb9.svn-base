@@ -1,0 +1,77 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Customer Category</h3></center>
+   </div>
+  
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+            <div class="row">
+              <div class="form-group">
+                <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Meal Group</span></label>
+                  <div class="form-group"> 
+                    <%= @food_group.meal_time%>
+                  </div>
+                </div>
+            
+            
+       
+                <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Meal Type</span></label>
+                  <div class="form-group"> 
+                    <%= @food_group.food_category.name %>
+                  </div>
+                </div>
+        
+            
+           
+           
+                <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Description</span></label> 
+                  <div class="form-group">
+                    <%= @food_group.description %>
+                  </div>
+                </div>  
+         
+       
+      
+          
+                <div class="col-xs-4">
+                 <span style="font-weight:bold"><label class="control-label">Image</label></span>
+                  <div class="form-group">
+                    <%=image_tag @food_group.image.image_path,:style=>"width:150px; height:150px"%>
+                  </div>
+                </div> 
+
+                 <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Created_by</span></label> 
+                  <div class="form-group">
+                    <%= create(@food_group) %>
+                  </div>
+                </div>
+
+                 <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  <div class="form-group">
+                    <%= update(@food_group) %>
+                  </div>
+                </div>
+      
+       
+        
+        </div>
+        </div>  
+        </div>
+      </article>
+
+      <div class="footer">
+      <%= link_to 'Back', food_groups_path, :class=>"btn btn-default"%>
+        <!--%= link_to 'Edit', edit_food_group_path(@food_group), :class=>"btn btn-primary"%-->
+      </div>
+      </div>
+      </div>
+  
+ 
+

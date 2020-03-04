@@ -1,0 +1,5 @@
+//	$('.meal_restriction').html("<%= escape_javascript(options_from_collection_for_select(@meal_restriction, :id, :meal_restriction_name))%>");
+
+
+
+$('.meal_restriction').html("<%= escape_javascript select("meal_restriction_id", "id", @meal_restriction.collect {|p| [ p["meal_restriction_name"], p["id"] ] },{:include_blank => "Please select"}, {class: "meal_restriction"})%>");

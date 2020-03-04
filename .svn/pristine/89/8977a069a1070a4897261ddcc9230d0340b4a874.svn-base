@@ -1,0 +1,4 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit', edit_dispatch_path(@dispatch) %> |
+<%= link_to 'Back', dispatches_path %>

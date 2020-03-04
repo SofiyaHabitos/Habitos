@@ -1,0 +1,10 @@
+$("#newpage-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newpage-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show")
+
+$(document).ready(function() {
+  $(".select").select2({
+    dropdownParent: $("#newpage-modal")
+  });
+});

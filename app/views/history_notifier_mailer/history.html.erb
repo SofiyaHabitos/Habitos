@@ -1,0 +1,32 @@
+<div><h3>Menu Added : <%= @menu_masters.count %></h3></div>
+
+<div><h3>Menu Assigned : <%= @menu_customers.count %></h3></div>
+
+<table border="1">
+  <thead>
+    <tr bgcolor="lightgrey"><th colspan="3">Dispatched Items</th></tr>
+    <tr>
+      <th>Customer</th>
+      <th>Meal Time</th>
+      <th>Item Name</th>
+      <!-- <th>No.of Dispatches</th> -->
+    </tr>   
+  </thead>
+  <tbody>
+    <% if @menu_customers.present? %>
+      <% @menu_customers.each do |i| %>        
+        <tr>
+          <td><%= i.tenant.name %></td>
+          <td><%= i.category.category_name %></td>
+          <td><%= i.menu_customer_dispatches.map { |e| e.dispatch.menu_production_item.production_item.name }.uniq.join(", ") %>            
+          </td>
+         <!-- <td><%#= i.menu_customer_dispatches.count %></td> -->
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td colspan="2" align="center">No records Found</td></tr>
+    <% end %>
+  </tbody>
+</table>
+
+

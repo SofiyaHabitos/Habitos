@@ -1,0 +1,5 @@
+$("#newasset-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newasset-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show");
+

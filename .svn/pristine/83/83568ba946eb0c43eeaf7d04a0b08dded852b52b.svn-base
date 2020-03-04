@@ -1,0 +1,4 @@
+$("#showenrol-modal").html("<%= escape_javascript(render 'show') %>")
+$("#showenrol-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show");

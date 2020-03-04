@@ -1,0 +1,7 @@
+<p id="notice"><%= notice %></p>
+<label>Name:</label>
+ <label><%= @unit_of_measurement.name %></label>
+<label>Discription:</label>
+ <label><%= @unit_of_measurement.discription %></label>
+<%= link_to 'Edit', edit_unit_of_measurement_path(@unit_of_measurement) %> |
+<%= link_to 'Back', unit_of_measurements_path %>

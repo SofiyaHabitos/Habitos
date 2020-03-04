@@ -1,0 +1,209 @@
+<!-- <First page new planner> -->
+<style type="text/css">
+  .modal-dialog {
+      max-width: 999px;
+  }
+</style>
+
+<section class="page-content">
+  <div class="container-fluid">
+
+    <%#----------Header-------------%>
+    <div class="row container_pad">
+
+      <div class="col-md-9 menu_body">
+        <p class="page_path">SCM / Vessel Planner</p>
+          <h2 class="header_title d-flex align-items-center justify-content-between">Vessel Planner</h2>
+      </div>
+
+    <div class="col-md-3 vessel_new">
+      <div class="row planned_unplanned">
+
+        <div class="col-md-6">
+          <div class="card" data-toggle="modal" data-target="#plannedModal">
+              <div class="card-body">
+                <h6>Planned</h6>
+                <h2><%= @planned.count %></h2>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card" data-toggle="modal" data-target="#unplannedModal">
+              <div class="card-body">
+                <h6>Un Planned</h6>
+                <h2><%= @unplanned.count %></h2>
+              </div>
+          </div>
+        </div>
+
+      </div>
+     </div>
+
+    </div>
+    
+
+    <%#--------------Popup start for Planned Details---------------%>
+    
+    <div id="plannedModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h4 class="modal-title">Planned Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span class="ti-close" aria-hidden="true"></span>
+              </button>
+          </div>
+
+          <div class="modal-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Date</th>
+                <th>Client Name</th>
+                <th>Meal Type</th>
+                <th>Client Type</th>
+                <th>Client Category</th>
+                <th>Spread Name</th>
+              </thead>
+
+              <tbody>
+                <% @planned.each do |plan| %>
+                  <tr>
+                    <td><%= plan.date.present? ? plan.date.strftime('%d-%m-%Y') : "" %></td>
+                    <td><%= plan.tenant_detail.present? && plan.tenant_detail.tenant.present? ? plan.tenant_detail.tenant.name : ""%></td>
+                    <td><%= plan.tenant_detail.present? ? plan.tenant_detail.meal_time : "" %></td>
+                    <td><%= plan.tenant_detail.present? && plan.tenant_detail.tenant.present? && plan.tenant_detail.tenant.site_category.present? ? plan.tenant_detail.tenant.site_category.name : ""%></td>
+                    <td><%= ClientCategory.find(plan.tenant_detail.stud_type.to_i).name if plan.present? && plan.tenant_detail.present? && plan.tenant_detail.stud_type.present? %></td>
+                    <td><%= @spread_type_response["Spread"].select{|i| i["spreadid"] == plan.tenant_detail.spread_type}[0]["spreadtype"] %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+
+            </table>
+          </div>
+        
+          <div class="modal-footer">
+              <button type="button" class="btn btn_cancel" data-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+        <%#--------------Popup end for Planned details-----------------%>
+
+
+        <%#--------------Popup start UnPlanned details-----------------%>
+    <div id="unplannedModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+              <h4 class="modal-title">Unplanned Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span class="ti-close" aria-hidden="true"></span>
+              </button>
+          </div>
+
+          <div class="modal-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Date</th>
+                <th>Client Name</th>
+                <th>Meal Type</th>
+                <th>Client Type</th>
+                <th>Client Category</th>
+                <th>Spread Name</th>
+              </thead>
+              <tbody>
+                <% @unplanned.each do |to_plan| %>
+                  <tr>
+                    <td><%= to_plan.date.present? ? to_plan.date.strftime('%d-%m-%Y') : "" %></td>
+                    <td><%= to_plan.tenant_detail.present? && to_plan.tenant_detail.tenant.present? ? to_plan.tenant_detail.tenant.name : "" %></td>
+                    <td><%= to_plan.tenant_detail.present? ? to_plan.tenant_detail.meal_time : "" %></td>
+                    <td><%= to_plan.tenant_detail.present? && to_plan.tenant_detail.tenant.present? && to_plan.tenant_detail.tenant.site_category.present? ? to_plan.tenant_detail.tenant.site_category.name : ""   %></td>
+                    <td><%= ClientCategory.find(to_plan.tenant_detail.stud_type.to_i).name if to_plan.present? && to_plan.tenant_detail.present? && to_plan.tenant_detail.stud_type.present? %></td>
+                    <td><%= @spread_type_response["Spread"].select{|i| i["spreadid"] == to_plan.tenant_detail.spread_type}[0]["spreadtype"] %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        
+          <div class="modal-footer">
+              <button type="button" class="btn btn_cancel" data-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <%#--------------Popup end for UnPlanned details-----------------%>
+
+    <%#----------filters in new1 page--------%>
+    <div class="filter_by">
+      <label>Filter&nbsp;by:</label>
+
+      <%#-----------form_for starts here--------------%>
+      <%= form_for :vessel, url: {action: "new1"} do |i|%>
+
+        <div class="row">
+
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= i.text_field :date , class: "input-text float-input", id: "date_input", autofocus: true,value: @dropdown.present? ? @dropdown[0].date.strftime('%Y-%m-%d'): "", required: true, placeholder: "dd-mm-yyyy"%>
+              <label class="input-text-placeholder" for="date">Date</label>
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= i.select "mealcourse" , options_for_select(Category.all.order('position').pluck(:category_name,:id),selected: @dropdown.present? ? Category.find_by(category_name: @dropdown[0].tenant_detail.meal_time).id : ""),{prompt: ""},{class: "input-text",required:true}%>
+              <label class="input-text-placeholder" for="date">Meal Course</label>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= i.select "clientname" , options_for_select(Tenant.pluck(:name,:id).sort_by{|k| k},selected: @dropdown.present? ? @dropdown[0].tenant_detail.tenant.id : ""),{prompt: ""},{class: "input-text", id: "clientname",required:true } %>
+              <label class="input-text-placeholder" for="date">Client Name</label>
+            </div>
+          </div>
+          
+          <div class="col-md-3 d-flex align-items-center">
+            <%= i.submit "Submit", class: "btn btn_submit"%>
+          </div>
+
+        </div>
+      <%end%>
+      <%#-----------form_for ends here--------------%>
+    </div>
+
+      <%#------------filters end-----------------%>
+
+      <%#----------------rendering page------------%>
+    <%unless @menucycle.nil?%>
+    <%= render 'vessel', menucycle: @menucycle %> 
+    <%end%>
+    
+    <%= render 'planner', planner: @index%> 
+
+    <%#----------------rendering page------------%>
+  </div>
+</section>
+
+<%#----JQuery-----%>  
+<script type="text/javascript">
+  $(document).ready(function(){
+<%#-------datepicker--------%>
+      $('#date_input').flatpickr({
+         minDate: 'today'
+      });
+<%#-------searchable dropdown--------%>      
+      $('#clientname').select2();
+
+  });
+</script>
+

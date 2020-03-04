@@ -1,0 +1,6 @@
+<h1>Editing Menu Customer</h1>
+
+<%= render 'form', menu_customer: @menu_customer %>
+
+<%= link_to 'Show', @menu_customer %> |
+<%= link_to 'Back', menu_customers_path %>

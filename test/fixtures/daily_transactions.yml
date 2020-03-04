@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: MyString
+  tenant_name: MyString
+  category_name: MyString
+  stud_type: MyString
+  menu_master_name: MyString
+  pack_to_send: 1
+  meal_restriction_name: MyString
+  food_category: MyString
+  items: MyText
+
+two:
+  date: MyString
+  tenant_name: MyString
+  category_name: MyString
+  stud_type: MyString
+  menu_master_name: MyString
+  pack_to_send: 1
+  meal_restriction_name: MyString
+  food_category: MyString
+  items: MyText

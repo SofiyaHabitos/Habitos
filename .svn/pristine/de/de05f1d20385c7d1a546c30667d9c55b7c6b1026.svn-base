@@ -1,0 +1,12 @@
+class TenantNotifierMailer < ApplicationMailer
+
+  def send_cnfrmtn_email(tenant)
+     
+    @tenant = tenant
+     mail( :to => @tenant.email,
+    :subject => 'Confirmation mail from Habitos' )
+  end
+
+end
+
+

@@ -1,0 +1,66 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / User Management</p>
+    <h2 class="header_title">User Management
+    <%if ["superadmin","Admin","CEO"].include?(KitchenUser.find(session[:kitchen_user_id]).role.name)%> 
+      <%= link_to '<i class="fa fa-plus"></i>'.html_safe,new_kitchen_user_path,:class=>"btn"%>
+    <%end%>
+    </h2>
+    <div id="dashboard-container">
+      <div class="card table-container mb-2">
+        <div class="card-body">
+          <table class="table table-striped table-datatable table-hover display" id="kitchen_user">
+            <thead>
+                <tr>
+                  <th>Kitchen</th>
+                  <th>Name</th>
+                  <!-- <th>Customers</th> -->
+                  <th>User name</th>
+                  <th>Role</th>
+                  <th>Email</th>
+                  <th>Mobile number</th>
+                  <th>Address</th>
+                  <th>Created_by</th>
+                  <th>Updated_by</th>
+                </tr>
+            </thead>
+            <tbody>
+              <% @kitchen_users.each do |kitchen_user| %>
+              <tr id='<%=kitchen_user.id%>'>
+                <td><%= kitchen_user.kitchen.name %></td>
+                <td><%= kitchen_user.name %></td>
+                <!-- <td><%#= Tenant.where(id: kitchen_user.tenant).pluck(:name).join(",")%></td> -->
+                <td><%= kitchen_user.user_name %></td>
+                <td><%= kitchen_user.role.name%></td>
+                <td><%= kitchen_user.email %></td>
+                <td><%= kitchen_user.mobile_number %></td>
+                <td><%= kitchen_user.address %></td>
+                <td><%= create(kitchen_user) %></td>
+                <td><%= update(kitchen_user) %>
+                <%if ["superadmin","Admin","CEO"].include?(KitchenUser.find(session[:kitchen_user_id]).role.name)%>
+                  <div class="side-pop position-absolute">
+                    <ul class="list-unstyled mb-0">
+                      <li><a href="/kitchen_users/<%=kitchen_user.id%>/edit" title="Edit" id="edit"> <i class="fas fa-edit" ></i></a></li>
+                     
+                   
+                      <%#= link_to "<i class='far fa-trash-alt' aria-hidden='true'></i>".html_safe, destroy_kitchen_users_path, title: 'Back', data: { toggle: 'tooltip'} %>
+                      <!-- <li><a href="/kitchen_users/<%#=kitchen_user.id%>" title="Delete" id="destroy"  class="confirmation"><i class="far fa-trash-alt"></i></a></li> -->
+                    </ul>
+                  </div>
+                <%end%>
+                </td>
+              </tr> 
+             <% end %>
+            </tbody>
+          </table>
+        </div> 
+      </div>
+    </div>
+      <div class="clearfix"></div>
+  </div>
+</section>  
+<script>
+  $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+</script>

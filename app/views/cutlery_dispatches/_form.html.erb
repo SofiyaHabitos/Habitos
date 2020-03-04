@@ -1,0 +1,17 @@
+<%= form_for(cutlery_dispatch) do |f| %>
+  <% if cutlery_dispatch.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(cutlery_dispatch.errors.count, "error") %> prohibited this cutlery_dispatch from being saved:</h2>
+
+      <ul>
+      <% cutlery_dispatch.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,59 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container ">  
+	<div class="body-header">
+      <h3 class="modal-title">Add - Meal Order</h3>
+  	</div>
+    <%#= render 'form', point_of_sale: @point_of_sale %>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+    <article class="content item-editor-page">      
+      <div class="title-block">        
+        <h4 class="title"> <span class="sparkline bar" data-type="bar"></span> </h4>
+      </div>
+      <form name="item">
+        <div class="card card-block">
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-4">
+                <label class="control-label">Tenant</label>
+                <div class="form-group">
+                  <%#= f.collection_select :tenant_id, Tenant.order(:name),:id,:name,{:prompt=>true} ,{class: "form-control tenant", :id=> "demo"}%>
+                  <%= select_tag 'tenant_id', options_from_collection_for_select(@tenants.order(:name), :id, :name), :id => "fold", :class => "e1", :include_blank => "-Select-" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>  
+    </article>
+
+    <div id="ten_detail">
+      <% if @tenant_details.present? %>
+      
+        <%= render 'pos_partial' %>
+       
+      <% end %>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#fold").change(function () {
+      var id=($(this).val());
+      $.ajax({
+        type: "GET",
+        url: "/point_of_sales/get_data."+id
+      })
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".e1").select2();
+  });            
+</script>

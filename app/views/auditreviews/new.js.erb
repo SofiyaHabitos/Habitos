@@ -1,0 +1,5 @@
+$("#newaudit-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newaudit-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show");
+

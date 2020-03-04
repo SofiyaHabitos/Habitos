@@ -1,0 +1,2 @@
+class TripSchedule < ApplicationRecord
+end

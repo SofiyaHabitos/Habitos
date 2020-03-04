@@ -1,0 +1,11 @@
+$("#editpage-modal").html("<%= escape_javascript(render 'edit') %>")
+$("#editpage-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show")
+
+
+
+$( ".dropdown" ).select2({
+});
+$( ".dropdown1" ).select2({
+});

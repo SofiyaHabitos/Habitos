@@ -1,0 +1,19 @@
+
+<!-- <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container ">  
+  <div class="body-header">
+        <h3 class="modal-title">Edit - Asset</h3>
+          </div>
+         <%#= render 'form', utensil: @utensil %>  
+   </div>
+</div> -->
+
+	
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Utensils / Edit Utensils</p>
+    <h2 class="header_title">Edit Utensils <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, utensils_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <%= render 'form', utensil: @utensil %>
+   </div>
+</section>
+

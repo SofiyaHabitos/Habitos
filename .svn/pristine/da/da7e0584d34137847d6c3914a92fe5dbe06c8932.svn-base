@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2017-10-03
+  tenant: one
+  menu_master: one
+  category: one
+  created_by: MyString
+  updated_by: MyString
+
+two:
+  date: 2017-10-03
+  tenant: two
+  menu_master: two
+  category: two
+  created_by: MyString
+  updated_by: MyString

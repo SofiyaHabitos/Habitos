@@ -1,0 +1,4 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit', edit_cutlery_dispatch_path(@cutlery_dispatch) %> |
+<%= link_to 'Back', cutlery_dispatches_path %>

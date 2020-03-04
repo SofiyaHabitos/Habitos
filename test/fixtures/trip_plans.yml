@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  driver: one
+  trip: one
+  date: 2019-04-19 11:22:53
+  category: one
+
+two:
+  driver: two
+  trip: two
+  date: 2019-04-19 11:22:53
+  category: two

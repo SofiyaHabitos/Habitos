@@ -1,0 +1,2 @@
+module PageConfigurationsHelper
+end

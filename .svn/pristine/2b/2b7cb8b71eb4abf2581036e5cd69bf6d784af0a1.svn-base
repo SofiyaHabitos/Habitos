@@ -1,0 +1,6 @@
+$("#newfood_category-modal").html('<%= escape_javascript(render 'new') %>')
+$("#newfood_category-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+

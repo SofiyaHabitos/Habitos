@@ -1,0 +1,503 @@
+<%id=session[:kitchen_user_id]%>
+<% category_id = Category.find_by(category_name: params[:meal_time]).id %>
+<html>
+  <head>
+    <script src="/assets/moment.js"></script>
+    <script src="/assets/interact.js"></script>
+    <script src="/assets/angular.js"></script>
+    <script src="/assets/animate.js"></script>
+    <script src="/assets/tpls.js"></script>
+    <script src="/assets/rule.js"></script>
+    <script src="/assets/colorpicker.js"></script>
+    <script src="/assets/calendar.tpls.js"></script>
+    <link href="/assets/colorpicker-visible.css" rel="stylesheet">
+    <link href="/assets/calendar.css" rel="stylesheet">
+    <link href="/assets/new_menu.css" rel="stylesheet">
+    <link href="/assets/old_menu.css" rel="stylesheet">
+    <link href="/assets/menuplaner.css" rel="stylesheet">
+  </head>
+  <body ng-app="myApp" >
+
+    <div ng-controller="DraggableExternalEventsCtrl as vm" class="">
+      
+      <div class="col-md-12 loading" ng-hide="dataLoaded">
+        <img src="/assets/green_spinner.gif" height="70">
+      </div>          
+      
+      <div class="col-md-3 card_bg">
+        <div class="inner-addon right-addon search_width">
+          <i class="fa fa-search"></i>
+          <input type="text" class="form-control search" ng-model="searchTitle" placeholder="Search Combo Items">
+        </div>
+        <div class="menu_card">
+          <div class="row menu_btns2">
+            <h1>Combo List</h1>
+          </div>
+       
+          <div class="item_list scroll">
+            <div ng-show="(vm.externalEvents | filter:{title:searchTitle}).length==0">
+              <p>No Matches found</p>
+            </div>
+            <div class="row row_pad" id="production_items">
+              <div class="col-md-4 item_hg" id="{{item.id}}" ng-repeat="event in vm.externalEvents | filter:{title:searchTitle} | unique:'title'"  mwl-draggable="true" drop-data="{event: event}">
+                <div class="img_bg">
+                  <img class="item_img" ng-src="/assets/item-1.png">
+                  <p class="wrap_name" data-toggle="tooltip" data-placement="top">{{event.title}}</p>
+                </div>          
+              </div>          
+            </div> 
+          </div>
+        </div>  
+      </div>
+      <style>
+        .col-md-4.item_hg:hover .wrap_name{
+          height: 40px;
+          overflow: visible;
+          white-space: unset;
+          text-overflow: none;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: 70px;
+        }
+      </style>
+      <div class="col-md-9 menu_body">
+       
+        <div class="title_head">
+          <h1 class="planner-title">Assign Menu - <%= params[:name] %> - <%= params[:meal_time] %></h1>
+        </div>
+         
+        <div class="row row_pad">
+          <div class="col-md-4 col_pad3 calendartitle">
+            <h1 data-toggle="tooltip" data-placement="top" title="{{calendarTitle}}">{{calendarTitle}}</h1>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-8">
+  
+            <mwl-calendar
+              events="vm.events"
+              view="vm.calendarView"
+              view-date="vm.viewDate"
+              cell-is-open="vm.cellIsOpen" 
+              view-title="calendarTitle"
+              cell-auto-open-disabled="false"
+              on-timespan-click="dateClicked(calendarCell.events)"
+              on-view-change-click="vm.viewChangeClicked(calendarNextView)"
+              on-event-times-changed="vm.eventTimesChanged(calendarEvent, calendarNewEventStart, calendarNewEventEnd);" id="open_right_bar">
+            </mwl-calendar>
+  
+<!--             <div class="float_right">
+              <button
+                class="btn btn-link"
+                mwl-date-modifier
+                date="vm.viewDate"
+                decrement="vm.calendarView">
+               <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
+              </button>
+              <button
+                class="btn btn-link"
+                mwl-date-modifier
+                date="vm.viewDate"
+                set-to-today>
+                Today
+              </button>
+              <button
+                class="btn btn-link"
+                mwl-date-modifier
+                date="vm.viewDate"
+                increment="vm.calendarView">
+                Next <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+              </button>
+            </div> -->
+
+          <div class="calendar_btn">
+            <div class="float_left">
+              <button
+                class="btn btn-link"
+                mwl-date-modifier
+                date="vm.viewDate"
+                decrement="vm.calendarView">
+               <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
+              </button>
+              <button
+                class="btn btn-link"
+                mwl-date-modifier
+                date="vm.viewDate"
+                set-to-today>
+                Today
+              </button>
+              <button
+                class="btn btn-link"
+                mwl-date-modifier
+                date="vm.viewDate"
+                increment="vm.calendarView">
+                Next <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+              </button>
+            </div>              
+            <button type="button" ng-disabled="vm.events.length==0" class="btn btn-info float_right" ng-click="CreateCalendarEvents(vm.events,tenant_name)">Assign Menu
+            </button>              
+          </div>            
+          </div>
+          
+          <div class="col-md-4 event_pad">
+            <div class="cal_events">
+              <h1>Events</h1>
+              <div class="event_block scroll">
+                <div class="empty_list" ng-show="DayEvents.length < 1">
+                  <div class="empty_comment row ">
+                    <div class="row">
+                      <img src="/assets/event-icon.png" height="90px">
+                      <p>Drag & Drop the items in the date</p>   
+                    </div>
+                  </div>
+                </div>
+                  <div class="card card_shw" ng-repeat="Day in DayEvents" ng-show="DayEvents.length > 0" ng-click="viewcollapse(Day)" ng-init="viewcollapse(Day)">
+                    <h2>{{Day.title}}
+                      <span class="float_right">
+                        <button class="btn btn-link" ng-click="check(Day)">Remove</button>
+                        <i class="fa" aria-hidden="true" ng-class="Day.menu_master_id == view_id  ?  'fa-chevron-down' : 'fa-chevron-right'" ></i>                        
+                      </span>
+                      <label>{{Day.category_name}}&nbsp;
+                        (<span>{{Day.food_category}}</span>)
+                      </label>
+                      </h2>                      
+                    
+                    <div ng-repeat="product in carterdetails" ng-show="Day.menu_master_id == view_id">
+                      <div class="card" ng-repeat="(coursekey,coursevalue) in product">
+                        <div class="card-block">
+                          <h4>{{coursekey}}</h4>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Items</th>
+                                <th>Quantity</th>
+                              </tr>
+                            </thead>
+                            <tbody >
+                              <tr ng-repeat="val in coursevalue">
+                                <th>{{val.production_item.name}}</th>
+                                <td>{{val.quantity}}</td>
+                              </tr>
+                            </tbody>
+                          </table>            
+                        </div>
+                      </div>
+                    </div>
+                  </div>  
+              </div>
+            </div>
+          </div>        
+        </div>
+  
+<!--         <div class="row">
+          <div class="col-md-12 col_pad text-right">
+            <button type="button" ng-disabled="vm.events.length==0" class="btn btn-info" ng-click="CreateCalendarEvents(vm.events,tenant_name)">Assign Menu
+            </button>
+          </div>
+        </div> -->                
+      </div>
+    </div>
+    <script src="/assets/nicescroll.js"></script>
+  </body>
+  
+  <script type="text/javascript">
+  angular.module('myApp',['mwl.calendar', 'ngAnimate', 'ui.bootstrap','colorpicker.module']);
+    angular.module('myApp')
+
+    .controller('DraggableExternalEventsCtrl', function(moment, calendarConfig,$http,$scope,$log,$rootScope,$filter) {
+      
+      //var commonUrl="http://api.idlidabba.com"
+      var commonUrl="http://api.learnstein.com:81"
+      //var commonUrl="http://192.168.1.72:3005"
+
+      $scope.mealtime_name="<%= params[:meal_time] %>";
+      $scope.student_type="<%=params[:stud_type]%>";
+      
+      $scope.meal_restrict="<%=params[:meal_restriction]%>";
+      if($scope.meal_restrict=="null"){
+        $scope.meal_restrict=null;
+      }
+
+      var vm = this;
+      vm.data = [];
+      vm.events=[];
+      $scope.dataLoaded = false; 
+      
+      $http.get(commonUrl+'/api/v1/menu_masters')
+      .then(function(response){
+        angular.forEach(response.data,function(value){
+          if(value.allery=="" || value.allery==null){      
+            $scope.allery ==null;       
+          }
+          else{
+            $scope.allery=value.allery.name;
+          }
+          if(value.meal_restriction=="" || value.meal_restriction==null){
+            $scope.meal_restriction=null;
+          }
+          else{
+            $scope.meal_restriction=value.meal_restriction.meal_restriction_name;
+          }
+          if($scope.meal_restrict == $scope.meal_restriction && value.category.category_name == $scope.mealtime_name && $scope.student_type == value.stud_type){
+            vm.data.push({
+              "title":value.menu_master_name,
+              "stud_type":value.stud_type,
+              "type": 'warning',
+              "color": calendarConfig.colorTypes.warning,
+              "draggable": false,
+              "category":value.category.id,
+              "menu_master_id":value.id,
+              "category_name":value.category.category_name,
+              "food_category":value.food_category.name,
+              "meal_restriction":$scope.meal_restriction,
+              "alergy":$scope.allery,
+              "menu_items":value.menu_production_items
+            });
+          }
+        });
+        $scope.dataLoaded = true;
+      })
+
+
+      $http.get(commonUrl+'/api/v1/all_tenants').then(function(tenant){
+        $scope.GetTenants=tenant.data;
+      })
+
+      vm.externalEvents =vm.data;
+      vm.calendarView = 'month';
+      vm.viewDate = moment().startOf('month').toDate();
+      vm.cellIsOpen = false;
+      vm.dateStart="<%= params[:from_date] %>"
+      vm.dateEnd="<%= params[:to_date] %>"
+      vm.selectdate="<%= params[:date] %>"
+      vm.dateStart=$filter('date')(vm.dateStart, "yyyy-MM-dd");
+      vm.dateEnd=$filter('date')(vm.dateEnd, "yyyy-MM-dd");
+      vm.selected_date=$filter('date')(vm.selectdate, "yyyy-MM-dd");
+    
+      vm.eventTimesChanged = function(event,start,end,dateStart,dateEnd) {
+        vm.start=$filter('date')(start, "yyyy-MM-dd");
+        var dateoption=false;
+        if(vm.events.length > 0){
+          for(var i in vm.events){
+            var existdate=$filter('date')(vm.events[i].startsAt, "yyyy-MM-dd");
+            var newchdate=$filter('date')(start, "yyyy-MM-dd");
+            /*if(existdate == newchdate){*/
+            if(vm.events[i].title == event.title && existdate == newchdate){  
+              dateoption=true;
+              $scope.comboname=vm.events[i].title
+            }
+          }
+        }
+        if(dateoption){
+          alert("Already assigned "+$scope.comboname)
+        }
+
+        if(vm.selected_date > vm.start){
+          dateoption=true;
+          var date=$filter('date')(vm.selected_date, "dd-MM-yyyy");
+          alert("Do not assign for the dates before "+ date);
+        }
+
+        if(dateoption != true){
+          vm.newDate=$filter('date')(new Date, "yyyy-MM-dd");
+          vm.start=$filter('date')(start, "yyyy-MM-dd");
+          vm.futuredate=$filter('date')("<%=Tenant.find(params[:tenant_id]).to_date%>", "yyyy-MM-dd");
+          if(vm.start >= vm.newDate && vm.dateEnd >= vm.newDate && vm.dateEnd >= vm.start ) { //&& vm.futuredate >= vm.start )) { 
+            if(event){
+              event.startsAt = start;
+              event.startsAt = new Date(event.startsAt);      
+              var externalIndex = vm.externalEvents.indexOf(event);
+              if(externalIndex > -1) {
+                vm.externalEvents =vm.data;
+                vm.externalEvents.splice(externalIndex, 1);
+                $http.get(commonUrl+'/api/v1/menu_masters')
+                .then(function(response){
+                  angular.forEach(response.data,function(value){
+                    if(value.allery=="" || value.allery==null){      
+                      $scope.allery ==null;       
+                    }
+                    else{
+                      $scope.allery=value.allery.name;
+                    }
+                    if(value.meal_restriction=="" || value.meal_restriction==null){
+                      $scope.meal_restriction=null;
+                    }
+                    else{
+                      $scope.meal_restriction=value.meal_restriction.meal_restriction_name;
+                    }
+                    if($scope.meal_restrict == $scope.meal_restriction && value.category.category_name == $scope.mealtime_name && $scope.student_type == value.stud_type){
+                      vm.data.push({
+                        "title":value.menu_master_name,
+                        "stud_type":value.stud_type,
+                        "type": 'warning',
+                        "color": calendarConfig.colorTypes.warning,
+                        "draggable": false,
+                        "category":value.category.id,
+                        "menu_master_id":value.id,
+                        "category_name":value.category.category_name,
+                        "food_category":value.food_category.name,
+                        "meal_restriction":$scope.meal_restriction,
+                        "alergy":$scope.allery,
+                        "menu_items":value.menu_production_items
+                      });
+                    }
+                  });
+                })
+              vm.externalEvents =vm.data;
+            }
+            
+            if(end){
+              event.endsAt = end;
+            }
+            
+            vm.viewDate = start;
+            vm.events.push(event);
+            $rootScope.dateClicked(event);
+          }
+          else{
+            console.log('Only one events are allowed per day');
+          }
+        }
+        else if(vm.start < vm.newDate){
+          alert("Date Already Exist!")
+        }
+        else if(vm.start > vm.dateEnd){
+          alert("You Assigned For " + vm.newDate +" TO "+ vm.dateEnd)
+        }
+      }
+    }
+    $scope.CreateCalendarEvents=function(data){ 
+      $scope.Alldata=[];
+      for(var i in data){
+        $scope.Alldata.push({
+          "date": data[i].startsAt,
+          "menu_master_id": data[i].menu_master_id,
+          "tenant_id" : "<%= params[:tenant_id] %>",
+          "category_id" : "<%= category_id %>",
+          "username": "<%= KitchenUser.find(id).name %>"
+        })
+      }
+      var CreateCalendar={
+        "menu_customer" :
+        $scope.Alldata
+      };
+      $http.post(commonUrl+'/api/v1/menu_customers',CreateCalendar)
+      .then(function(CalEventResponse){
+        if(CalEventResponse){
+          location.href="/normalmenu_sites";
+        }
+      })
+    }
+
+    $rootScope.dateClicked=function(event){
+      if(event == null || event == ''){
+        $scope.carterdetails=null;
+      }
+      else{
+        if(event.constructor === Array){
+          $scope.menu_masterids=[];
+          $scope.DayEvents=[];
+          for(i in event){
+            $scope.menu_masterids.push(event[i].menu_master_id)
+            $scope.DayEvents.push(event[i])
+          }
+          //$scope.DayEvents=event[0];
+          /*$http.get(commonUrl+'/api/v1/menu_details?id='+$scope.menu_masterids.toString())
+          .then(function(response){
+            $scope.carterdetails=response.data;
+          })*/
+        }
+        else{
+          $scope.menu_masterids=[];
+          $scope.DayEvents=[]
+          $scope.newEvents=event;
+          for(l in vm.events){
+            if($filter('date')(vm.events[l].startsAt, "yyyy-MM-dd")==$filter('date')($scope.newEvents.startsAt, "yyyy-MM-dd")){
+              $scope.menu_masterids.push(vm.events[l].menu_master_id)
+              $scope.DayEvents.push(vm.events[l])
+            }
+          }
+          //$http.get(commonUrl+'/api/v1/menu_details?name='+$scope.DayEvents.title)
+          /*$http.get(commonUrl+'/api/v1/menu_details?id='+$scope.menu_masterids.toString())
+          .then(function(response){
+            $scope.carterdetails=response.data;
+          })*/
+        }
+      }
+    }
+
+    $scope.viewcollapse=function(views){
+      
+      if($scope.view_id==views.menu_master_id){
+        $scope.view_id=null;
+      }
+      else{
+        $http.get(commonUrl+'/api/v1/menu_details?id='+views.menu_master_id)
+          .then(function(response){
+            $scope.carterdetails=response.data;
+            $scope.view_id=views.menu_master_id
+          })
+      }    
+    }
+ 
+    $scope.check=function(Day){
+      var eventIndex=vm.events.indexOf(Day[0]);
+      vm.events.splice(eventIndex,1)
+      vm.externalEvents.push(Day);
+      $scope.DayEvents.splice(eventIndex,1)
+    }
+
+    vm.viewChangeClicked = function(nextView) {
+      if (nextView === 'day') {
+        return false;
+      }
+    };
+
+})// controller closed
+
+.filter('unique', function() {
+  return function (arr, field) {
+    var o = {}, i, l = arr.length, r = [];
+    for(i=0; i<l;i+=1) {
+      o[arr[i][field]] = arr[i];
+    }
+    for(i in o) {
+      r.push(o[i]);
+    }
+    return r;
+  };
+});
+
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".sidebar").toggleClass("hide-nav");
+    $(".wrapper").toggleClass("active");
+
+    $('.scroll').slimScroll({});
+    
+    $("#right_btn").click(function(){
+      $("#rightbar").toggleClass("open_right");
+    });
+
+    $("#tab_scrolls").horizontalTabs();    
+  });
+
+  $(".right_sidebar_nav").click(function(){
+    $("#rightbar").toggleClass("open_right");
+  });
+
+  $("#open_right_bar").click(function(){
+    $("#rightbar").toggleClass("open_right");
+  });
+
+    $(".horizontal-tabs ul li a").click(function(){
+            $(".horizontal-tabs ul li a").toggleClass("active");
+    });   
+</script>
+
+</html>

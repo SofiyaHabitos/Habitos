@@ -1,0 +1,42 @@
+<%= form_for @site_category do |f| %>
+<form name="item">
+  <div class="card card_form mb-5">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="control floating_label">
+            <%= f.text_field :name,{:class => "input-text boxed ",:required=>"true",autofocus: true} %>  
+            <%= f.label :name ,"Client Type",:class => "input-text-placeholder"%>
+          </div>
+        </div>
+        <%= f.fields_for :client_type_category, :validate => true do |type_category| %>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= collection_select(:client_category_id, :id, ClientCategory.all, :id, :name, {selected: @site_category.client_categories.pluck(:id)}, {:multiple => true, class: "input-text ", id: "clientcategory",required: true}) %>
+              <%= type_category.label :client_category_id ,"Client Category",:class => "input-text-placeholder" %>
+            </div>
+          </div>
+        <%end%>
+        <%= f.fields_for :client_spread_type do |spread| %>
+          <div class="col-md-3">
+             <div class="control floating_label">
+              <%= select_tag :spread_type_id, options_for_select(spread_types, selected: @site_category.client_spread_types.pluck(:spread_type_id)), {class: "input-text select", id: 'spread_type', multiple: true, required: true } %>
+              <%= spread.label :client_category_id, "Spread Type",:class => "input-text-placeholder"%>
+
+             </div>
+          </div>
+        <%end%>
+       </div>
+       <%= f.submit "Submit",:class=>"btn btn_submit float-right"%>
+     </div>
+   </div>
+</form>
+<%end%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+ 
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script> -->
+<!-- <script type="text/javascript">
+
+  
+</script> -->
+

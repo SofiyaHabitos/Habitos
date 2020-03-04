@@ -1,0 +1,119 @@
+<section class="page-content">
+    <div class="container-fluid">
+       <ul class="d-flex align-items-center list-unstyled float-right">
+           <li class="action_button">
+           <%= link_to "<i class='ti-email mr-1'></i>Email".html_safe, mail_tenant_detail_path, class: "btn btn-link", title: 'Send Cooksheet via mail', "data-toggle" => "modal", 'data-target' => "#cooksheetModal" %></span>
+           </li>
+          </ul>
+        <p class="page_path">CRM / Assigned Menu </p>
+          <h5 class="header_title d-flex align-items-center justify-content-between">Assigned Menu</h5>
+        <br>
+
+        <div class="filter_by">
+           <!--  <label>Filter&nbsp;by:</label> -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="control floating_label">
+                            <%= text_field_tag :date_range , "", class: "input-text float-input", id: "date_range", autofocus: true, required: true %>
+                            <label class="input-text-placeholder" for="date">Date</label>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-md-2">
+                        <div class="control floating_label">
+                            <%#= date_field_tag :end_date , class: "input-text float-input", id: "end_date", required: true %>
+                            <label for="date">End Date</label>
+                        </div>
+                    </div> -->
+                    
+                    <div class="col-md-3">
+                      <div class="control floating_label">
+                        <%= select_tag "client_name" , options_for_select(tenant_list), {class: "input-text", id: "client_name", required:true , prompt: ""} %>
+                        <label class="input-text-placeholder" for="date">Client Name</label>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                      <div class="control floating_label">
+                        <%= select_tag "meal_course" , options_for_select(meal_course_list), {class: "input-text", id: "meal_course", required:true, prompt: ""} %>
+                        <label class="input-text-placeholder" for="date">Meal Course</label>
+                      </div>
+                    </div>
+
+                </div>
+
+            <div id="assigned_menu">
+
+            </div>
+
+        </div>
+
+        <div id="cooksheetModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">New Email</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span class="ti-close" aria-hidden="true"></span>
+              </button>
+            </div>
+            <%= form_tag(mail_tenant_detail_path, method: "post") do %>
+
+            <div class="modal-body">
+              <div class="control floating_label">
+                <%= email_field_tag "receiver_email", "", class: "input-text",required: "true",autofocus: "true" %>
+                <label class="input-text-placeholder" for="date">Mail To: 
+              </label>
+              </div>
+            </div> 
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn_cancel" data-dismiss="modal">Cancel</button>
+              <%= submit_tag "Send Mail", :class=>"btn btn_submit" %>
+            </div>
+            <% end %>
+        </div>
+      </div>
+    </div>
+         
+    </div>
+</section>
+
+  
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#date_range, #client_name, #meal_course').on('change', function () {
+        filter_assigned_menu();
+    });
+
+    // $('#client_name').on('change', function () {
+    //     filter_assigned_menu();
+    // });
+
+
+    // $('#meal_course').on('change', function () {
+    //     filter_assigned_menu();
+    // });
+
+
+    function filter_assigned_menu() {
+        var date_range = $("#date_range").val();
+        var input_dates = date_range.split("to");
+        var client_id = $("#client_name").val();
+        var meal_course_id = $("#meal_course").val();
+        if ((input_dates.length == 2) && (client_id != "")) {
+            $.ajax({
+                type: "GET",
+                url: "/dynamic_client_menu?start_date="+input_dates[0]+"&&end_date="+input_dates[1]+"&&client_id="+client_id+"&&meal_course_id="+meal_course_id,
+            })
+        }
+    }
+
+
+    $('#date_range').flatpickr({
+        mode: "range"
+    });
+});
+</script>
+

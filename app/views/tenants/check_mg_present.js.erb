@@ -1,0 +1,10 @@
+<% if @array  %>
+ <%datas=params[:each_id]%>
+  $('#<%=datas%>').html("<%= escape_javascript(options_for_select(@array)) %>");
+<% end %>
+
+
+<% if @tenant.present?%>
+	$('.student_type').html("<%= escape_javascript(options_for_select(@tenant[:client_categories].pluck(:name,:id))) %>");
+	$('.spread_type').html("<%= escape_javascript(options_for_select(@tenant[:Spread].pluck('spreadtype','spreadid'))) %>");
+<% end %>

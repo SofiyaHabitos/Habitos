@@ -1,0 +1,81 @@
+
+<%= form_for(department) do |f| %>
+ <!--  <%# if department.errors.any? %>
+    <div id="error_explanation">
+      <h2><%#= pluralize(department.errors.count, "error") %> prohibited this department from being saved:</h2>
+
+      <ul>
+      <%# department.errors.full_messages.each do |message| %>
+        <li><%#= message %></li>
+      <%# end %>
+      </ul>
+    </div>
+  <%# end %> -->
+ <!-- <article class="content item-editor-page wrap-center">
+    <div class="title-block">
+        <h3 class="title"><span class="sparkline bar" data-type="bar"></span> </h3>
+    </div> -->
+    <form name="item">
+      <div class="card card_form mb-5">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :name, {:class => "input-text float_input boxed ", required: true,autofocus: true}%>
+                <%= f.label :name , "Name",:class => "input-text-placeholder" %>
+
+            </div>
+          </div>
+          
+           <!--  <div class="col-xs-4"> 
+ <label class="control-label">
+  <div class="field">
+    <%#= f.label :name , "Name" %>
+  </div></label>
+
+   <div class="form-group"> 
+    <%#= f.text_field :name %>
+  </div>
+
+</div> -->
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_area :description, {:class => "input-text float_input boxed "}%>
+                <%= f.label :description , "Description (optional)",:class => "input-text-placeholder" %>
+
+              </div>
+            </div>
+        </div>
+        <%= f.submit "submit" , :class=>"btn btn_submit float-right" %>
+      </div>
+    </div>
+  </form>
+  <%end%>
+
+ <!-- <div class="col-xs-4" > 
+ <label class="control-label">
+  <div class="field">
+    <%#= f.label :description , "Description" %>
+  </div></label>
+   <div class="form-group"> 
+    <%#= f.text_area :description %>
+  </div>
+</div> -->
+
+
+
+<!-- <div class="row">
+  <div class="actions">
+    <div class="col col-md-3">
+    <%#= f.submit "submit" , :class=>"btn btn-primary" %></div>
+    <div class="col col-md-3"> <%#= link_to 'Back', departments_path , :class=>"btn btn-primary"%>
+  </div>
+</div>
+</div> -->
+
+
+
+<!-- </form> -->
+<!-- </article> -->
+<%# end %>

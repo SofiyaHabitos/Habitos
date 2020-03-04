@@ -1,0 +1,231 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+    <div class="body-header">
+      <center><h3 class="modal-title">Show - Enrollment List</h3></center>
+    </div>
+    <article class="content item-editor-page">
+      <div class="card card-block">
+        <div class="row">
+          <div class="form-group">              
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Tenant</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.tenant.name %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Name</span>
+              </label> 
+              <div class="form-group"> 
+                <%= @enrolment.name %>
+              </div>
+            </div>
+    
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Student Id</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.id_number %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Age Type</span>
+              </label> 
+              <div class="form-group">
+                <%= @enrolment.age_type %>
+              </div>
+            </div>  
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Gender</span>
+              </label> 
+              <div class="form-group">
+                <%= @enrolment.sex.titleize %>
+              </div>
+            </div>  
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Standard</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.standard %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Meal Group</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.meal_time %>
+              </div>
+            </div>
+<!-- 
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Meal Type</span>
+              </label>
+              <div class="form-group"> 
+                <%#= @enrolment.food_category.name.titleize unless @enrolment.food_category_id.nil? %>
+              </div>
+            </div>            
+      -->
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Date of Birth</span>
+              </label>
+              <div class="form-group">
+                <%= format_date(@enrolment.date_of_birth) %>
+              </div>
+            </div>  
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Parent Name</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.parent_name %>
+              </div>
+            </div>            
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Email</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.email %>
+              </div>
+            </div>    
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Meal Restriction</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.meal_restriction.meal_restriction_name unless @enrolment.meal_restriction_id.nil? %>
+              </div>
+            </div>    
+  
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Height</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.height %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Weight</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.weight %>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Bmi</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.bmi %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>From Date</span>
+              </label>
+              <div class="form-group"> 
+                <%= format_date(@enrolment.from_date) %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>To Date</span>
+              </label>
+              <div class="form-group"> 
+                <%= format_date(@enrolment.to_date) %>
+              </div>
+            </div>
+
+<!--             <div class="col-md-4">
+              <label class="control-label">
+                <span>Enrolment Type</span>
+              </label>
+              <div class="form-group"> 
+                <%#= @enrolment.enrolment_type %>
+              </div>
+            </div>
+ -->
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Order Source</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.order_source %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Comment</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.comment %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Academic-Year</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.academic_year %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Created_by</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.created_by %>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="control-label">
+                <span>Updated_by</span>
+              </label>
+              <div class="form-group"> 
+                <%= @enrolment.updated_by %>
+              </div>
+            </div>
+        
+          </div>
+        </div>  
+      </div>
+    </article>
+    <div class="footer">
+      <%= link_to 'Back', enrolments_path(@enrolment.tenant_id), :class=>"btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<style type="text/css">
+  span {
+    font-weight: bold;
+  }
+</style>

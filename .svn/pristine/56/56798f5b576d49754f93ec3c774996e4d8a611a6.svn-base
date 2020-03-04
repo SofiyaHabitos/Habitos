@@ -1,0 +1,427 @@
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Item List</h3></center>
+   </div>    
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+
+                <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Item Code</span></label>
+                
+                    <div class="form-group"><%= @production_item.item_code.present? ? @production_item.item_code : nil %></div>
+                
+                  </div>
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Name</span></label>
+                
+                    <div class="form-group"><%= @production_item.name %></div>
+                
+                  </div>
+            
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">No of packs</span></label>
+      
+                    <div class="form-group"><%= @production_item.quantity.present? ? @production_item.quantity : nil %></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Group</span></label>
+      
+                    <div class="form-group"><%= Category.where(:id=>@production_item.category).pluck(:category_name).join(",") unless @production_item.category==nil %></div>
+                
+                  </div>
+
+                   
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Type</span></label>
+      
+                    <div class="form-group"><%= @production_item.food_category.present? ? @production_item.food_category.name : nil %></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">UOM</span></label>
+      
+                    <div class="form-group"><%= @production_item.unit_of_measurement.present? ? @production_item.unit_of_measurement.name : nil %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Item Category</span></label>
+      
+                    <div class="form-group"><%= @production_item.production_category_id.present? ? @production_item.production_category.name : nil %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Item Subcategory</span></label>
+                
+                    <div class="form-group"><%= @production_item.item_subcategory.present? ? @production_item.item_subcategory.name : nil %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Allergy</span></label>
+      
+                    <div class="form-group"><%= Allery.where(:id=>@production_item.allergy).pluck(:name).join(",")%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Item Cost</span></label>
+      
+                    <div class="form-group"><%= @production_item.cost %></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+                    <label class="control-label"><span style="font-weight:bold">Meal Course</span></label>
+                      <div class="form-group">  
+                        <% @production_item.item_meal_courses.map do |i| %>
+                        <%= i.meal_course.meal_course_name %>
+                        <% end %>
+                      </div>
+                  </div>
+
+
+                  <div class="col-xs-4">
+                    <label class="control-label"><span style="font-weight:bold">Meal Restriction</span></label> 
+                      <div class="form-group">
+                        <% @production_item.item_meal_restrictions.map do |i| %>
+                        <%= i.meal_restriction.meal_restriction_name if i.meal_restriction.present? %>
+                        <% end %>
+                      </div>
+                  </div>
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Calorie(kcal)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.caloire %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Protein(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.protein %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Fat(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.fat %></div>
+                
+                  </div>
+
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Carbohydrates(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.carbohydrates %></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Fibre(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.fibre %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Minerals(milli.gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.minerals %></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Vitamins(micro.gm)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.vitamins %></div>
+                
+                  </div>
+
+
+
+
+
+                  <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Created_by</span></label> 
+                  <div class="form-group">
+                    <%= create(@production_item) %>
+                  </div>
+                </div>
+
+                 <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  <div class="form-group">
+                    <%= update(@production_item) %>
+                  </div>
+                </div>
+                  
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+
+  
+    <div class="footer">
+     
+      <%= link_to 'Back', production_items_path, :class=>"btn btn-default"%>
+
+      <!--%= link_to 'Edit', edit_production_item_path(@production_item), :class=>"btn btn-primary"%-->
+        
+   
+    </div>
+  
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% if false %>
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Item List</h3></center>
+   </div>    
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+
+                <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Item Code</span></label>
+                
+                    <div class="form-group"><%= @production_item.item_code%></div>
+                
+                  </div>
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Name</span></label>
+                
+                    <div class="form-group"><%= @production_item.name%></div>
+                
+                  </div>
+            
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">No of packs</span></label>
+      
+                    <div class="form-group"><%= @production_item.quantity %></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Group</span></label>
+      
+                    <div class="form-group"><%= Category.where(:id=>@production_item.category).pluck(:category_name).join(",") unless @production_item.category==nil %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">UOM</span></label>
+      
+                    <div class="form-group"><%= @production_item.unit_of_measurement.name %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Item Category</span></label>
+      
+                    <div class="form-group"><%= @production_item.production_category.name %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Item Subcategory</span></label>
+                
+                    <div class="form-group"><%= @production_item.item_subcategory.name%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Allergy</span></label>
+      
+                    <div class="form-group"><%= Allery.where(:id=>@production_item.allergy).pluck(:name).join(",")%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Item Cost</span></label>
+      
+                    <div class="form-group"><%= @production_item.cost %></div>
+                
+                  </div>
+
+
+
+
+
+
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Calorie(kcal)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.caloire %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Protein(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.protein %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Fat(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.fat %></div>
+                
+                  </div>
+
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Carbohydrates(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.carbohydrates %></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Fibre(gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.fibre %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Minerals(milli.gms)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.minerals %></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Vitamins(micro.gm)</span></label>
+      
+                    <div class="form-group"><%= @production_item.nutrition.nil? ? nil : @production_item.nutrition.vitamins %></div>
+                
+                  </div>
+
+
+
+
+
+                  <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Created_by</span></label> 
+                  <div class="form-group">
+                    <%= create(@production_item) %>
+                  </div>
+                </div>
+
+                 <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  <div class="form-group">
+                    <%= update(@production_item) %>
+                  </div>
+                </div>
+                  
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+
+  
+    <div class="footer">
+     
+      <%= link_to 'Back', production_items_path, :class=>"btn btn-default"%>
+
+      <!--%= link_to 'Edit', edit_production_item_path(@production_item), :class=>"btn btn-primary"%-->
+        
+   
+    </div>
+  
+  </div>
+
+</div>
+
+
+
+<% end %>

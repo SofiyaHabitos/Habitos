@@ -1,0 +1,16 @@
+
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">CRM / CRM Info / Add CRM Info</p>
+    <h2 class="header_title">Add CRM Info <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, tenants_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <%= render 'form', tenant: @tenant, tenant_details: @tenant_details, image: @image  %>
+  </div>
+</section>
+<!--   <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+        <h3 class="modal-title">Add - CRM INFO</h3>
+   </div>
+	  <%#= render 'form', tenant: @tenant, tenant_details: @tenant_details, image: @image  %>      
+</div>
+</div> -->

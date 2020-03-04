@@ -1,0 +1,589 @@
+<nav id="sidebar" class="active">
+  <div class="sidebar-header">
+    <img src="\assets\logo-circle.png">
+  </div>
+  <div class="list-group panel sidebar_scroll">
+
+    <%if Nutrition? %>
+      <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">SCM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu2">
+        <a href="/summaries" class="list-group-item" data-parent="#menu2">OD Summary</a>
+      </div>
+      <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Masters</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu4">
+        <a href="/menu_masters" class="list-group-item" data-parent="#menu4">All Menu</a>
+        <a href="/production_items" class="list-group-item" data-parent="#menu4">Item List</a>
+        <a href="/nutritions" class="list-group-item" data-parent="#menu4">Item Nutrition</a>
+      </div>
+    <%end%>
+
+    <% if Procurement? %>
+
+     <!-- <a href="http://18.225.12.140:81/">Stores</a>  -->
+      <a href="http://18.225.12.140:81/" class="list-group-item collapsed"><i class="fa fa-university" aria-hidden="true"></i><span>Stores</span><i class="ti-angle-right" aria-hidden="true"></i></a>
+
+    <% end %>
+
+   <% if Superadmin? %>
+
+     <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+
+     <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-th-large"></i><span class="hidden-sm-down">CRM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+     <div class="collapse" id="menu1">
+
+        <a href="/tenants" class="list-group-item" data-parent="#menu1">CRM Info</a>
+
+        <a href="/software_setups" class="list-group-item" data-parent="#menu1">Customer Login</a>
+
+        <a href="/customer_view_controls" class="list-group-item" data-parent="#menu1">Data Upload</a>
+
+        <a href="/assigned_menu" class="list-group-item" data-parent="#menu1">Assigned Menu</a>
+
+      </div>
+
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">SCM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+        <div class="collapse" id="menu2">
+
+          <a href="<%= vesselplanners_new1_path %>" class="list-group-item">Vessel Planner</a>
+         
+          <a href="<%= vesselplanners_vessel_dispatch_path %>" class="list-group-item">Vessel Dispatch</a>
+
+          
+
+          <a href="/drivers" class="list-group-item" data-parent="#menu2">Driver Management</a>
+
+          <a href="/trip_details" class="list-group-item" data-parent="#menu2">Trip Management</a>
+          
+          <a href="/tripplans/new" class="list-group-item" data-parent="#menu2">Trip Assignment</a>
+
+          <a href="/vesselplanners/vessel_wastage" class="list-group-item" data-parent="#menu2">Wastage</a>
+
+          <a href="/normalmenu_sites/notreceive_status" class="list-group-item" data-parent="#menu3">Vessel Receive</a>
+
+      </div>
+
+      <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-calendar-alt"></i><span class="hidden-sm-down">Facility Management</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+       <div class="collapse" id="menu3">
+
+        <a href="/kitchens" class="list-group-item" data-parent="#menu3">Facility</a>
+
+        <a href="/utensils" class="list-group-item" data-parent="#menu3">Assets</a>
+
+       </div>
+
+       <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Kitchen</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu4">
+
+        <a href="/normalmenu_sites/new_menu_planner" class="list-group-item" data-parent="#menu4">Menu Planner</a>
+
+        <a href="/normalmenu_sites/menu_cycle" class="list-group-item" data-parent="#menu4">Menu Cycle</a> 
+
+        <a href="/menu_customers/cook_sheet_edit" class="list-group-item">Cook Sheet</a>
+
+      </div>
+
+     <!--   <a href="http://18.225.12.140:81/">Stores</a>  -->
+       <a href="http://18.225.12.140:81/" class="list-group-item collapsed"><i class="fa fa-university" aria-hidden="true"></i><span>Stores</span><i class="ti-angle-right" aria-hidden="true"></i></a>
+      
+       <a href="#menu5" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Reports</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+        <div class="collapse" id="menu5">
+
+          <a href="/feedbacks/feedbackchart" class="list-group-item" data-parent="#menu5">Feedback</a>
+          
+          <a href="/feedbacks/driver_report" class="list-group-item" data-parent="#menu5">Driver Report</a>
+
+          <a href="/tenants/user_feedback" class="list-group-item" data-parent="#menu5">User Feedback</a>
+
+          <a href="/status" class="list-group-item" data-parent="#menu5">Dispatch Delivery Received</a>
+
+          <a href="/auditreviews" class="list-group-item" data-parent="#menu5">Audit Report</a>
+
+        </div>
+
+       <a href="#menu6" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Masters</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+        <div class="collapse" id="menu6">
+
+          <a href="/categories" class="list-group-item" data-parent="#menu6">Meal Course</a>
+
+          <a href="<%= client_categories_path %>" class="list-group-item">Client Categories</a>
+
+          <a href="<%= site_categories_path %>"  class="list-group-item">Client Type Categories</a>
+
+          <a href="<%= departments_path %>" class="list-group-item">Department Categories</a>
+
+          <a href="<%= depriciation_categories_path %>" class="list-group-item">Depreciation Category</a>
+
+          <a href="<%= utensilnames_path %>" class="list-group-item">Utensil Name</a>
+
+          <a href="<%= vehicles_path %>" class="list-group-item">Vehicle Management</a>
+
+          <a href="/kitchen_users" class="list-group-item" data-parent="#menu6">User Management</a>
+
+          <a href="<%= audit_feedback_categories_path %>" class="list-group-item">Audit Feedback Category</a>
+         
+        </div>
+
+        <a href="#menu7" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Others</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+        <div class="collapse" id="menu7">
+
+          <a href="/enrol_index" class="list-group-item" data-parent="#menu7">Individual Enrollment</a>
+
+          <a href="/summaries" class="list-group-item" data-parent="#menu7">OD Summary</a>
+
+          <a href="/parent_orders" class="list-group-item" data-parent="#menu7">Individual Orders</a>
+
+        </div>
+
+    <% end %> 
+
+
+    <%if Admin? %>
+
+      <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+
+      <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-th-large"></i><span class="hidden-sm-down">CRM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu1">
+
+        <a href="/tenants" class="list-group-item" data-parent="#menu1">CRM Info</a>
+
+        <a href="/software_setups" class="list-group-item" data-parent="#menu1">Customer Login</a>
+
+        <a href="/customer_view_controls" class="list-group-item" data-parent="#menu1">Data Upload</a>
+
+        <a href="/assigned_menu" class="list-group-item" data-parent="#menu1">Assigned Menu</a>
+
+      </div>
+
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">SCM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu2">
+
+        <a href="<%= vesselplanners_new1_path %>" class="list-group-item">Vessel Planner</a>
+
+        <a href="<%= vesselplanners_vessel_dispatch_path %>" class="list-group-item">Vessel Dispatch</a>
+
+        <a href="/tripplans/new" class="list-group-item" data-parent="#menu2">Trip Plan</a>
+
+        <a href="/trip_details" class="list-group-item" data-parent="#menu2">Trip Management</a>
+
+        <a href="/drivers" class="list-group-item" data-parent="#menu2">Driver Management</a>
+
+        <a href="/normalmenu_sites/notreceive_status" class="list-group-item" data-parent="#menu2">Vessel Receive</a>
+
+      </div>
+
+      <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-calendar-alt"></i><span class="hidden-sm-down">Facility Management</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu3">
+
+        <a href="/kitchens" class="list-group-item" data-parent="#menu3">Facility</a>
+
+        <a href="/utensils" class="list-group-item" data-parent="#menu3">Assets</a>
+
+      </div>
+
+      <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Kitchen</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu4">
+
+        <a href="/normalmenu_sites/new_menu_planner" class="list-group-item" data-parent="#menu4">Menu Planner</a>
+
+        <a href="/normalmenu_sites/menu_cycle" class="list-group-item" data-parent="#menu4">Menu Cycle</a> 
+
+        <a href="/menu_customers/cook_sheet_edit" class="list-group-item">Cook Sheet</a>
+
+      </div>
+
+       <!-- <a href="http://18.225.12.140:81/">Stores</a>  -->
+       <a href="http://18.225.12.140:81/" class="list-group-item collapsed"><i class="fa fa-university" aria-hidden="true"></i><span>Stores</span><i class="ti-angle-right" aria-hidden="true"></i></a>
+
+       <a href="#menu5" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-file"></i><span class="hidden-sm-down">Reports</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu5">
+
+        <a href="/feedbacks" class="list-group-item" data-parent="#menu5">Feedback</a>  
+
+        <a href="/tenants/user_feedback" class="list-group-item" data-parent="#menu5">User Feedback</a>
+       
+        <a href="/status" class="list-group-item" data-parent="#menu5">Dispatch Delivery Received</a>
+
+        <a href="/auditreviews" class="list-group-item" data-parent="#menu5">Audit Report</a>
+
+      </div>
+
+      <a href="#menu6" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Masters</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+        
+        <div class="collapse" id="menu6">
+
+          <a href="/categories" class="list-group-item" data-parent="#menu6">Meal Course</a>
+
+          <a href="<%= client_categories_path %>" class="list-group-item">Client Categories</a>
+
+          <a href="<%= site_categories_path %>"  class="list-group-item">Client Type Categories</a>
+
+          <a href="<%= departments_path %>" class="list-group-item">Department Categories</a>
+
+          <a href="<%= depriciation_categories_path %>" class="list-group-item">Depreciation Category</a>
+
+          <a href="<%= utensilnames_path %>" class="list-group-item">Utensil Name</a>
+
+          <a href="/kitchen_users" class="list-group-item" data-parent="#menu6">User Management</a>
+
+        </div>
+
+        <a href="#menu7" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Others</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+        
+        <div class="collapse" id="menu7">
+
+          <a href="/enrol_index" class="list-group-item" data-parent="#menu7">Individual Enrollment</a>
+
+          <a href="/summaries" class="list-group-item" data-parent="#menu7">OD Summary</a>
+
+          <a href="/parent_orders" class="list-group-item" data-parent="#menu7">Individual Orders</a>
+
+        </div>
+
+    <%end%>
+
+    
+    <% if CEO? %>
+
+      <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+
+      <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-th-large"></i><span class="hidden-sm-down">CRM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu1">
+
+        <a href="/tenants" class="list-group-item" data-parent="#menu1">CRM Info</a>
+
+        <a href="/software_setups" class="list-group-item" data-parent="#menu1">Customer Login</a>
+
+        <a href="/customer_view_controls" class="list-group-item" data-parent="#menu1">Data Upload</a>
+
+        <a href="/assigned_menu" class="list-group-item" data-parent="#menu1">Assigned Menu</a>
+        
+      </div>
+
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">SCM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu2">
+
+        <a href="<%= vesselplanners_new1_path %>" class="list-group-item">Vessel Planner</a>
+
+        <a href="<%= vesselplanners_vessel_dispatch_path %>" class="list-group-item">Vessel Dispatch</a>
+
+        <a href="/tripplans/new" class="list-group-item" data-parent="#menu2">Trip Plan</a>
+
+        <a href="/trip_details" class="list-group-item" data-parent="#menu2">Trip Management</a>
+
+        <a href="/drivers" class="list-group-item" data-parent="#menu2">Driver Management</a>
+
+        <a href="/normalmenu_sites/notreceive_status" class="list-group-item" data-parent="#menu2">Vessel Receive</a>
+
+      </div>
+
+      <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-calendar-alt"></i><span class="hidden-sm-down">Facility Management</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu3">
+
+        <a href="/kitchens" class="list-group-item" data-parent="#menu3">Facility</a>
+
+        <a href="/utensils" class="list-group-item" data-parent="#menu3">Assets</a>
+
+      </div>
+
+    
+      <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Kitchen</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu4">
+
+        <a href="/normalmenu_sites/new_menu_planner" class="list-group-item" data-parent="#menu4">Menu Planner</a>
+
+        <a href="/normalmenu_sites/menu_cycle" class="list-group-item" data-parent="#menu4">Menu Cycle</a> 
+
+        <a href="/menu_customers/cook_sheet_edit" class="list-group-item">Cook Sheet</a>
+
+      </div>
+
+      <!-- <a href="http://18.225.12.140:81/">Stores</a> -->
+      <a href="http://18.225.12.140:81/" class="list-group-item collapsed"><i class="fa fa-university" aria-hidden="true"></i><span>Stores</span><i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <a href="#menu5" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-file"></i><span class="hidden-sm-down">Report</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu5">
+
+        <a href="/feedbacks" class="list-group-item" data-parent="#menu5">Feedback</a> 
+
+        <a href="/tenants/user_feedback" class="list-group-item" data-parent="#menu5">User Feedback</a>
+       
+        <a href="/status" class="list-group-item" data-parent="#menu5">Dispatch Delivery Received</a>
+
+        <a href="/auditreviews" class="list-group-item" data-parent="#menu5">Audit</a>
+
+      </div>
+
+      <a href="#menu6" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Masters</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu6">
+      
+       <a href="/categories" class="list-group-item" data-parent="#menu6">Meal Course</a>
+
+       <a href="<%= client_categories_path %>" class="list-group-item">Client Categories</a>
+
+       <a href="<%= site_categories_path %>"  class="list-group-item">Client Type Categories</a>
+
+       <a href="<%= departments_path %>" class="list-group-item">Department Categories</a>
+
+       <a href="<%= depriciation_categories_path %>" class="list-group-item">Depreciation Category</a>
+
+       <a href="<%= utensilnames_path %>" class="list-group-item">Utensil Name</a>
+
+       <a href="/kitchen_users" class="list-group-item" data-parent="#menu6">User Management</a>
+
+      </div>
+
+
+      <a href="#menu7" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Others</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu7">
+
+       <a href="/enrol_index" class="list-group-item" data-parent="#menu7">Individual Enrollment</a>
+
+       <a href="/summaries" class="list-group-item" data-parent="#menu7">OD Summary</a>
+
+       <a href="/parent_orders" class="list-group-item" data-parent="#menu7">Individual Orders</a>
+
+      </div>
+
+    <%end%>
+
+    <%if Chef? %>
+
+      <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+
+      <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-th-large"></i><span class="hidden-sm-down">CRM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu1">
+
+        <a href="/tenants" class="list-group-item" data-parent="#menu1">CRM Info</a>
+
+        <a href="/assigned_menu" class="list-group-item" data-parent="#menu1">Assigned Menu</a>
+
+      </div>
+
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Kitchen</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu2">
+
+        <a href="/normalmenu_sites/new_menu_planner" class="list-group-item" data-parent="#menu2">Menu Planner</a>
+
+        <a href="/normalmenu_sites/menu_cycle" class="list-group-item" data-parent="#menu2">Menu Cycle</a> 
+
+        <a href="/menu_customers/cook_sheet_edit" class="list-group-item">Cook Sheet</a>
+
+      </div>
+
+      <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Reports</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu3">
+
+        <a href="/feedbacks" class="list-group-item" data-parent="#menu3">Feedback</a>  
+
+        <a href="/tenants/user_feedback" class="list-group-item" data-parent="#menu3">User Feedback</a>
+
+        <a href="/auditreviews" class="list-group-item" data-parent="#menu3">Audit</a>
+
+      </div>
+
+      <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Reports</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu4">
+
+       <a href="/categories" class="list-group-item" data-parent="#menu4">Meal Course</a>
+
+       <a href="<%= client_categories_path %>" class="list-group-item">Client Categories</a>
+
+       <a href="<%= site_categories_path %>"  class="list-group-item">Client Type Categories</a>
+
+      </div>
+
+
+    <%end%>
+
+    <%if DispatchManager? %>
+
+      <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+
+      <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-th-large"></i><span class="hidden-sm-down">CRM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu1">
+
+        <a href="/tenants" class="list-group-item" data-parent="#menu1">CRM Info</a>
+
+        <a href="/assigned_menu" class="list-group-item" data-parent="#menu1">Assigned Menu</a>
+
+      </div>
+
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">SCM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu2">
+
+        <a href="<%= vesselplanners_new1_path %>" class="list-group-item">Vessel Planner</a>
+
+        <a href="<%= vesselplanners_vessel_dispatch_path %>" class="list-group-item">Vessel Dispatch</a>
+
+        <a href="/tripplans/new" class="list-group-item" data-parent="#menu2">Trip Plan</a>
+
+        <a href="/trip_details" class="list-group-item" data-parent="#menu2">Trip Management</a>
+
+        <a href="/drivers" class="list-group-item" data-parent="#menu2">Driver Management</a>
+
+        <a href="/normalmenu_sites/notreceive_status" class="list-group-item" data-parent="#menu2">Vessel Receive</a>
+
+      </div>
+
+      <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-calendar-alt"></i><span class="hidden-sm-down">Facility Management</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu3">
+
+        <a href="/kitchens" class="list-group-item" data-parent="#menu3">Facility</a>
+
+        <a href="/utensils" class="list-group-item" data-parent="#menu3">Assets</a>
+
+      </div>
+
+      <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Kitchen</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu4">
+
+        <a href="/normalmenu_sites/menu_cycle" class="list-group-item" data-parent="#menu4">Menu Cycle</a> 
+
+        <a href="/menu_customers/cook_sheet_edit" class="list-group-item">Cook Sheet</a>
+
+      </div>
+
+      <a href="#menu5" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-file"></i><span class="hidden-sm-down">Reports</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu5">
+       
+        <a href="/feedbacks" class="list-group-item" data-parent="#menu5">Feedback</a>
+
+        <a href="/tenants/user_feedback" class="list-group-item" data-parent="#menu5">User Feedback</a>
+
+        <a href="/status" class="list-group-item" data-parent="#menu5">Dispatch Delivery Received</a>
+
+        <a href="/auditreviews" class="list-group-item" data-parent="#menu5">Audit Report</a>
+
+      </div>
+
+      <a href="#menu6" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Master</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu6">
+
+        <a href="<%= depriciation_categories_path %>" class="list-group-item">Depreciation Category</a>
+
+        <a href="<%= utensilnames_path %>" class="list-group-item">Utensil Name</a>
+
+      </div>
+
+      <a href="#menu7" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Others</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu7">
+
+        <a href="/summaries" class="list-group-item" data-parent="#menu7">OD Summary</a>
+
+        <a href="/parent_orders" class="list-group-item" data-parent="#menu7">Individual Orders</a>
+
+      </div>
+
+    <%end%>
+
+    <%if Administrator? %>
+      <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+      <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-th-large"></i><span class="hidden-sm-down">CRM</span> <i class="fas fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu1">
+        <a href="/tenants" class="list-group-item" data-parent="#menu1">CRM Info</a>
+        <a href="/software_setups" class="list-group-item" data-parent="#menu1">Customer Login</a>
+        <a href="/enrol_index" class="list-group-item" data-parent="#menu1">Individual Enrollment</a>
+        <a href="/customer_view_controls" class="list-group-item" data-parent="#menu1">Data Upload</a>
+        <a href="/assigned_menu" class="list-group-item" data-parent="#menu1">Assigned Menu</a>
+      </div>
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">SCM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu2">
+        <a href="/summaries" class="list-group-item" data-parent="#menu2">OD Summary</a>
+        <a href="/parent_orders" class="list-group-item" data-parent="#menu2">Individual Orders</a>
+        <a href="/normalmenu_sites" class="list-group-item" data-parent="#menu2">Assign Menu</a>
+        <a href="/status" class="list-group-item" data-parent="#menu2">Dispatch Delivery Received</a>
+        <a href="/auditreviews" class="list-group-item" data-parent="#menu2">Audit</a>
+        <a href="/feedbacks" class="list-group-item" data-parent="#menu2">Feedback</a>         
+      </div>
+    <%end%>
+
+
+    <% if AccountsExecutive? %>
+
+      <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+
+      <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fas fa-th-large"></i><span class="hidden-sm-down">CRM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu1">
+
+        <a href="/tenants" class="list-group-item" data-parent="#menu1">CRM Info</a>
+
+        <a href="/software_setups" class="list-group-item" data-parent="#menu1">Customer Login</a>
+
+        <a href="/customer_view_controls" class="list-group-item" data-parent="#menu1">Data Upload</a>
+
+        <a href="/assigned_menu" class="list-group-item" data-parent="#menu1">Assigned Menu</a>
+
+      </div>
+
+      <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Kitchen</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+      <div class="collapse" id="menu2">
+
+       <!--  <a href="/normalmenu_sites/menu_cycle" class="list-group-item" data-parent="#menu2">Menu Cycle</a>  -->
+
+        <a href="/menu_customers/cook_sheet_edit" class="list-group-item">Cook Sheet</a>
+
+      </div>
+
+      <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Reports</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+        <div class="collapse" id="menu3">
+
+          <a href="/feedbacks" class="list-group-item" data-parent="#menu3">Feedback</a>
+
+        </div>
+
+      <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">Others</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+
+        <div class="collapse" id="menu4">
+
+          <a href="/enrol_index" class="list-group-item" data-parent="#menu4">Individual Enrollment</a>
+        
+        </div>
+ 
+    <% end %>
+
+   
+
+    <% if AuditManager? %>
+       <a href="/normalmenu_sites/dashboard" class="list-group-item collapsed" data-parent="#sidebar"><i class="fas fa-tv"></i> <span class="hidden-sm-down">Dashboard</span></a>
+       <a href="#menu2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="far fa-chart-bar"></i><span class="hidden-sm-down">SCM</span> <i class="ti-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu2">
+        <a href="/auditreviews" class="list-group-item" data-parent="#menu2">Audit</a>
+        <a href="/feedbacks" class="list-group-item" data-parent="#menu2">Feedback</a>         
+      </div>
+    <%end%>
+  </div>
+</nav>

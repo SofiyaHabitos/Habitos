@@ -1,0 +1,71 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3>SCM </h3>
+      <h2>Assign Menu</h2>      
+    </div>
+    <div class="body-content">
+      <div id="dashboard-container">     
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%" id="normal_menu">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Type</th>
+                <th>Meal Time</th>
+                <th>Meal Restricion</th>
+                <th>Status</th> 
+              </tr>
+            </thead>
+            <tbody>
+              <% if @orders.present? %>
+                <% @orders.each do |order| %>
+                  <tr>
+                    <td><%= order[0] %></td>
+                    <td><%= order[1] %></td>
+                    <td><%= order[2] %></td>
+                    <td><%= order[3] %></td>
+                    <td><%= order[4] %></td>
+                    <% rest = (order[4] == "Normal" ? "null" : order[4]) %>
+                    <% tn = Tenant.find_by(name: order[1]) %>
+
+                    
+                    <% if order[5] == "Assign menu" %>
+                      <td><%= link_to "Assign Menu", normalmenu_sites_menu_assign_path(:tenant_id => tn.id, :date => order[0].to_date.to_s, :stud_type => order[2], :meal_time => order[3], :meal_restriction => rest, :from_date => tn.from_date, :to_date => tn.to_date, :name => tn.name), class: "assign"  %></td>
+                    <% elsif order[5].count == 1 %>
+
+                      <td class="assigned"><%#= link_to "ReAssign menu", normalmenu_sites_re_assign_path(:tenant_id => tn.id, :date => order[0].to_date.to_s, :stud_type => order[2], :meal_time => order[3], :meal_restriction => rest, :from_date => tn.from_date, :to_date => tn.to_date, :name => tn.name), class: "assign"  %>
+
+ 
+                      <%= "Assigned (#{ order[5][0] })" %>-<%= link_to "Remove ", normalmenu_sites_path(cus_id:order[6].first), class: "assign"%></td>
+                    <% elsif order[5].last == "Assigned" %>
+                      <td style="background: #ed5323;color: white;"><%= order[5][0] %></td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+   
+<script type="text/javascript">
+  $('.confirmation2').on('click', function () {
+    return confirm('Are you sure?');
+  });
+</script>
+
+<style type="text/css">
+  .assigned {
+    color: #ed5323!important;
+  }
+  .assign {
+    color: #23720e !important;
+  }
+</style>

@@ -1,0 +1,20 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container"> 
+  <div class="body-header">  
+<h3 class="modal-title">EDIT-DEPARTMENT</h3>
+</div>
+
+
+<%=form_for @vesselten, url: {action: "update"}, html: {class: "nifty_form"} do |f| %>
+<%=f.number_field :menuitem %>
+<%=f.hidden_field :id%>
+<%=f.select('utensil_id', options_for_select(Utensil.all.pluck(:utensil_name , :id)), prompt: "Select", class: "form-control", style: "width:200px")%><br>
+
+<%=@vesselten["id"]%>
+<%=@vesselten["menuitem"].keys.join("")%><br>
+<%=@vesselten.tenant_detail.tenant.name%><br>
+<%=@vesselten.tenant_detail.spread_type%><br>
+<%=@vesselten.tenant_detail.stud_type%><br>
+
+<%=submit_tag "update" , class: "btn btn-primary" , style: 'width: 100px' %>
+<%end%>

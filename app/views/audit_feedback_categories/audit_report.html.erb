@@ -1,0 +1,215 @@
+<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+</head>
+<style>
+.audit-table th {
+    width: 300px;
+    font-weight: 500;
+    border-right: 1px solid #dddddd;
+ }
+</style>
+<body ng-app="auditModule" ng-controller="auditController">
+        <div id="client_totalqty" class="modal-dialogs modal fade"></div>
+        <div id="cooksheet_item_edit" class="modal-dialogs modal fade"></div>
+        <section class="page-content trip_assign" id="trip_assign" ng-init="getTrip()">
+        
+        <div class="container-fluid">
+        <p class="page_path">SCM / Audit Report</p>
+        <h1 class="page_title d-flex align-items-center justify-content-between"><label>Audit Report
+        </label>
+        </h1>
+        <div class="card">
+        <div class="card-body">
+        <div>
+                <label>Customer Names :</label>
+                <select ng-model='customer' ng-change='auditCategory(customer)'>
+                    <option ng-repeat='x in customers'>{{x}}</option>
+                </select>
+                <label>Month :</label>
+                <select ng-model='month' ng-change='auditCategory(month)' >
+                    <option ng-repeat='month in months' >{{month}}</option>
+                </select>
+                <label>Audit Category :</label>
+                <select ng-model='audit' ng-change='sendAudit(audit)' ng-disabled='!customer || !month'>
+                    <option ng-repeat='x in names'>{{x}}</option>
+                </select>
+        </div>
+        
+           
+        <table class="table audit-table table-striped table-hover">
+          <!-- <thead>
+            <th>Audit By</th>
+            <th>Phase</th>
+            <th>Date</th>
+            <th>Meal Course</th>
+            <th ng-repeat="questions in question track by $index">{{questions}}</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat='audit in ans track by $index'>
+            <td>{{audit.feedback_audit_by}}</td>
+            <td>Audit {{$index + 1}}</td>
+            <td>{{audit.audit_date | date: 'dd-MMM-yyyy'}}</td>
+            <td>{{audit.feedback_meal_course}}</td>
+            <td>{{audit.feedback_answer}}{{audit.feedback_comment}}</td>
+            </tr>
+            
+          </tbody> -->
+          
+                <tr>
+                <th>Audit By</th> 
+                <td ng-repeat='audit in dateArray1'>{{audit.feedback_audit_by}}</td>
+                </tr>
+                <tr>
+                <th>Phase</th>
+                <td ng-repeat='audit in dateArray1'>Audit {{$index + 1}}</td>
+                </tr>
+                <tr>
+                <th>Date</th>
+                <td ng-repeat="date in dateArray1">{{date.audit_date | date: 'dd-MMM-yyyy'}}</td>
+                </tr>
+                <tr>
+                <th>Meal Course</th>
+                <td ng-repeat="meal in dateArray1">{{meal.feedback_meal_course}}</td>
+                </tr>
+                <tr ng-repeat="a in dateArrayqty"> 
+                  <th>{{a}}</th>
+                  <td ng-repeat="ab in dateArray1">{{ab.qty == a ? ab.feedback_answer : '---'}}</td>
+                  </tr>
+                </table>
+                </div>
+                </div>
+        </div>
+        </section>
+</body>
+<script type="text/javascript">
+ var app = angular.module('auditModule', []);
+  app.controller('auditController', function($scope,$http,$filter) {
+    var plannerURL="<%= $api_service%>"; 
+    $scope.months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    $scope.month=null;
+    $scope.customer=null;
+    $scope.dateArray1 = [];
+    $scope.dateArray2 = [];
+    $http({
+        method: 'GET',
+        url: plannerURL+'/api/v1/audit_feedback_reports/audit_customer',
+      }).then(function successCallback(response) {
+          $scope.customers=response.data
+    });
+
+    $scope.auditCategory = function(){
+    $http({
+        method: 'GET',
+        url: plannerURL+'/api/v1/audit_feedback_reports/category_name?tenant_name='+$scope.customer+'&&month='+$scope.month,
+      }).then(function successCallback(response) {
+          $scope.names=response.data
+    });
+
+    }
+    $scope.question = [];
+    $scope.ans = [];
+    $scope.sendAudit = function(){
+      $scope.dateArray1 = [];
+    $scope.dateArray2 = [];
+        $http({
+        method: 'GET',
+        url: plannerURL+'/api/v1/audit_feedback_reports/audit_report?tenant_name='+$scope.customer+'&&month='+$scope.month+'&&audit='+$scope.audit,
+      }).then(function successCallback(response) {
+          $scope.auditBy=response.data;
+           
+          var dateArray = []
+          $scope.dateArrayqty = []
+          $scope.dateArray1 = [];
+          var dataset;
+        for(var i of $scope.auditBy){
+            // length+=$scope.auditBy[i]['audit_feedback_reports'].length
+            // console.log(dateArray.some(item => item.a === 'b'))
+           for(var j of i.audit_feedback_reports){
+            var dates = dateArray.includes(j.audit_date);
+            if(dates == false){
+              dateArray.push(j.audit_date)
+              $scope.dateArray1.push(j)
+              $scope.dateArray2.push(i)
+            }
+            
+           }    
+        }
+          for(var a in $scope.dateArray1){
+            var qtys = $scope.dateArrayqty.includes($scope.dateArray2[a].feedback_question);
+            if(qtys == false){
+              $scope.dateArrayqty.push($scope.dateArray2[a].feedback_question)
+              dataset = $scope.dateArray2[a].feedback_question
+            }
+            $scope.dateArray1[a].qty = dataset
+          }
+        console.log($scope.dateArray1)
+        // var data = $scope.auditBy;
+        // $scope.test = data;
+        // var getLength  = 4;
+        // var findLength = 0;
+        // var test1 = [];
+        // $scope.mergeArray = [];
+        // for(var j in $scope.test){
+        //   console.log(j)
+          // $scope.mergeArray = $scope.mergeArray.concat($scope.test[j]['audit_feedback_reports'])
+         
+        //  var previousLength = 0
+        //  for(var date in $scope.test[j]['audit_feedback_reports']){
+        //    if(date == 0){
+        //     previousLength = test1.length
+        //    }
+           
+          //  for(var k=0;k<previousLength;k++){
+             
+          //   test1[k]={};
+            
+          //  }
+        //   let number = Number(previousLength)+Number(date);
+        //    test1[number]=$scope.test[j]['audit_feedback_reports'][date];
+
+        //    for(var k=test1.length-1;k<getLength;k++){
+        //     test1[k]={}
+        //    }
+        //    console.log(test1)
+        //  }
+         
+        //  if($scope.test[j]['audit_feedback_reports'].length==0){
+        //     test1.push({})
+        //     for(var m=test1.length-1;m<getLength;m++){
+        //       test1[m]={};
+        //     }
+            
+        //  }
+         
+        //  $scope.test[j]['audit_feedback_reports']=test1;
+        //  console.log(test1) 
+        // }
+        
+        //   $scope.question.push($scope.auditBy[i].feedback_question);
+        //   for(var j = 0; j<$scope.auditBy[i].audit_feedback_reports.length; j++){
+          
+        //     $scope.ans.push($scope.auditBy[i].audit_feedback_reports[j])
+        //   }
+          
+        // }
+        // console.log($scope.question)
+        // console.log($scope.ans)
+
+          // $scope.auditDate=response.data.audit_date;
+          // console.log($scope.auditDate)
+          // $scope.auditMealCourse=response.data.audit_meal_course;
+          // console.log($scope.auditMealCourse)
+
+    });
+    // $http({
+    //     method: 'GET',
+    //     url: plannerURL+'/api/v1/audit_feedback_reports/category_name?tenant_name='+$scope.customer+'&&month='+$scope.month,
+    //   }).then(function successCallback(response) {
+    //       $scope.names=response.data
+    // });
+    }
+
+  })
+</script>

@@ -1,0 +1,38 @@
+<!-- <div class="modal-dialog">
+
+	<div class="modal-header">
+    
+    	<button type="button" class="close" data-dismiss="modal">&times;</button>
+    
+    	<h4 class="modal-title">Edit - Menu Planner</h4>
+  
+  	</div>
+  
+  	<div class="modal-content">      
+    
+    	<div class="modal-body">
+
+        <!%@mealtime.map{|kk|kk.meal_time="#{kk.meal_time}"+"-"+"#{kk.food_category.name}" }%>
+
+        <!%@food_category.map{|kk| kk.meal_type="#{kk.food_category.name}" }%>
+
+        <!%= render 'form', normalmenu_site: @normalmenu_site, normal_menus: @normal_menus %>    
+    
+    	</div>
+  	
+  	</div>
+
+</div> -->
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container ">  
+  <div class="body-header">
+        <h3 class="modal-title">Edit - Meal Planner</h3>
+          </div>
+           <%@mealtime.map{|kk|kk.meal_time="#{kk.meal_time}"+"-"+"#{kk.food_category.name}" }%>
+
+        <%@food_category.map{|kk| kk.meal_type="#{kk.food_category.name}" }%>
+
+        <%= render 'form', normalmenu_site: @normalmenu_site, normal_menus: @normal_menus %> 
+   </div>
+</div>

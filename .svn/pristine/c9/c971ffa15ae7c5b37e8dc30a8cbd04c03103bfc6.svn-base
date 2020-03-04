@@ -1,0 +1,109 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Software Setups</h3></center>
+   </div> 
+
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+    
+              <div class="row">
+        
+                <div class="form-group">
+            
+                  <div class="col-xs-4">
+                
+                    <label class="control-label"><span style="font-weight:bold">Customer</span></label>
+                  
+                    <div class="form-group"><%= @software_setup.user.tenant.name%></div>
+                
+                  </div>
+       
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Software Privileges</span></label>
+      
+                    <div class="form-group"><%= (@software_setup.software_privileges.to_s == "true")? "Yes" : "No" %></div>
+                
+                  </div>
+           
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Name</span></label> 
+    
+                    <div class="form-group"><%= @software_setup.user.name%></div>
+                
+                  </div>  
+         
+                  <!-- <div class="col-xs-4">
+                  
+                    <label class="control-label"><span style="font-weight:bold">User Name</span></label> 
+                  
+                    <div class="form-group"><!%= @software_setup.user.user_name%></div>
+                
+                  </div> -->  
+
+                  <div class="col-xs-4">
+                  
+                    <label class="control-label"><span style="font-weight:bold">Email</span></label> 
+                  
+                    <div class="form-group"><%= @software_setup.user.email%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+                  
+                    <label class="control-label"><span style="font-weight:bold">Mobile Number</span></label> 
+                  
+                    <div class="form-group"><%= @software_setup.user.mobile_number%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+                  
+                    <label class="control-label"><span style="font-weight:bold">Attendance Privileges</span></label> 
+                  
+                    <div class="form-group"><%attend=@software_setup.attendance.to_s%>
+                  <td><%case attend 
+                   when ""%> none
+                  <%when "true"%>Manual 
+                  <%when "false"%>Barcode
+                  <%end%></td></div>
+                
+                  </div>  
+
+                  <div class="col-xs-4">
+                  
+                    <label class="control-label"><span style="font-weight:bold">Created_by</span></label> 
+                  
+                    <div class="form-group"><%= create(@software_setup) %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+                  
+                    <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  
+                    <div class="form-group"><%= update(@software_setup) %></div>
+                
+                  </div>
+
+       
+                </div>
+          
+              </div>  
+        
+            </div>
+      
+          </article>
+    <div class="footer">
+    
+      <%= link_to 'Back', software_setups_path, :class=>"btn btn-default"%>
+    
+      <!--%= link_to 'Edit', edit_software_setup_path(@software_setup), :class=>"btn btn-primary"%-->    
+    </div> 
+ 
+  </div>
+
+</div>

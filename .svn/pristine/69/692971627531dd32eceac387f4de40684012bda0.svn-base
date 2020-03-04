@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  #host: 192.168.1.59
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+
+  username: altius
+  password: altius@123
+  #username: jenkins
+  #password: jenkins
+  #username: ubuntu
+  #password: ubuntu
+
+
+development:
+  <<: *default
+  #database: idlidabba_db
+  database: idlidabba_development
+  #database: idlidabba_test

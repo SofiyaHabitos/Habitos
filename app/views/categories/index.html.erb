@@ -1,0 +1,103 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Meal Course</p>
+     <h2 class="header_title">Meal Course
+     <%if ["superadmin","CEO"].include?KitchenUser.find(session["kitchen_user_id"]).role.name %>
+     <%= link_to '<i class="fa fa-plus"></i>'.html_safe,new_category_path,:class=>"btn"%>
+    <%end%>
+    </h2>
+    <div id="dashboard-container">
+      <div class="card table-container mb-2">
+        <div class="card-body">
+          <table class="table table-striped table-datatable table-hover display" id="category">
+            <thead>
+               <tr>
+                  <th>Category</th>
+                 <!--  <th>No of Items</th> -->
+                  <th>Display Position</th>
+                  <th>Description</th>
+                  <th>Created On</th>
+                  <!-- <th>Action</th> -->
+                </tr>
+            </thead>
+            <tbody>
+              <% @categories.each do |category| %>
+                <tr id="<%=category.id%>">
+                  <td><%= category.category_name %></td>
+                  <td class="position"><%= category.position %></td>
+                 <!--  <td><%#= ProductionItem.select { |m| m.category.include?(category.id) }.count %></td> -->
+                  <!--td><!%= category.production_items.count unless ProductionItem.where(:categroy_id=> nil)%></td-->
+                  <td><%= category.description %></td>
+                  <td><%= category.created_at.strftime('%v') %>
+                   <%if ["superadmin","CEO"].include?KitchenUser.find(session["kitchen_user_id"]).role.name %> 
+                    <div class="side-pop position-absolute">
+                      <ul class="list-unstyled mb-0">
+                        <li><a href="/categories/<%=category.id%>" title="Show" id="show"><i class="fas fa-eye"></i></a></li>
+                        <li><a href="/categories/<%=category.id%>/edit" title="Edit" id="edit"><i class="fas fa-edit" ></i></a></li>
+                        <!-- <li><a title="Delete" id="destroy" data-method="delete" class="confirmation"> <i class="btn btn-sm btn-default fa fa-sm fa-trash-o"></i></a></li> -->
+                      </ul>
+                    </div> 
+                    <%end%>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table> 
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+<script >
+  $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+
+  $(function() {
+  var tableRows = $("#meal_course tbody tr"); //find all the rows
+  var colors = ["#bbdefb", "#ffcdd2", "#c8e6c9", "#ffecb3", "#f5b"];
+  var rowValues = {};
+  tableRows.each(function() {
+    var rowValue = $(this).find(".position").html();
+    if (!rowValues[rowValue]) {
+      var rowComposite = new Object();
+      rowComposite.count = 1;
+      rowComposite.row = this;
+      rowComposite.color = colors.shift();
+      rowValues[rowValue] = rowComposite;
+    } else {
+      var rowComposite = rowValues[rowValue];
+      rowComposite.count++;
+      $(this).css('backgroundColor', rowComposite.color);
+      $(rowComposite.row).css('backgroundColor', rowComposite.color);
+    }
+  });
+});
+
+</script>
+
+
+                    <!-- <div class="side-pop position-absolute">
+                      <ul class="list-unstyled mb-0">
+                        <li><a href="/categories/<%#=category.id%>" title="Show" id="show" > <i class="fas fa-eye"></i></a></li>
+                        <li><a href="/categories/<%#=category.id%>/edit" title="Edit" id="edit"> <i class="fas fa-edit" ></i></a></li> -->
+                        <!-- <li><a title="Delete" id="destroy" data-method="delete" class="confirmation"> <i class="btn btn-sm btn-default fa fa-sm fa-trash-o"></i></a></li> -->
+                      <!-- </ul>
+                    </div>
+                  </td> -->
+                 <!--  <td><%#=link_to "",category, method: :delete, data: { confirm: 'Are you sure?' } ,class: "btn btn-sm btn-default fa fa-sm fa-trash-o",:style=>"color:red"%></td> -->
+                
+        <!-- </div>  
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</section> -->
+  
+<!-- <script >
+  $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+</script> -->

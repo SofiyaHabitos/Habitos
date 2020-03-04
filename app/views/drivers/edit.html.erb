@@ -1,0 +1,14 @@
+<!-- <h1>Editing Driver</h1>
+
+<%#= render 'form', driver: @driver %>
+
+<%#= link_to 'Show', @driver %> |
+<%#= link_to 'Back', drivers_path %> -->
+
+<section class="page-content">
+  <div class="container-fluid edit_form">
+    <p class="page_path">SCM / Driver Management/ Edit Driver Management</p>
+    <h2 class="header_title">Edit Driver Management <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, drivers_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <%= render 'form', driver: @driver %>
+  </div>
+</section>

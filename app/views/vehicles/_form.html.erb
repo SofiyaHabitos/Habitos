@@ -1,0 +1,164 @@
+<%= form_for(vehicle) do |f| %>
+  <%# if vehicle.errors.any? %>
+    <!-- <div id="error_explanation">
+      <h2><%#= pluralize(vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h2>
+
+      <ul>
+      <%# vehicle.errors.full_messages.each do |message| %>
+        <li><%#= message %></li>
+      <%# end %>
+      </ul>
+    </div> -->
+  <%# end %>
+  <form name="item">
+      <div class="card card_form mb-5">
+          <div class="card-body">
+              <div class="row">
+
+                <div class="col-md-3">
+                   <div class="control floating_label">
+                    <%= f.select :vehicle_type_id, options_for_select(VehicleType.pluck(:vehicle_type_name,:id), selected: f.object.vehicle_type_id),{prompt: ""},{class: "input-text boxed e1 ", required: true,autofocus: true}%> 
+                    <%= f.label :vehicle_type_id,"Vehicle Type", :class=> "input-text-placeholder"%>
+                   </div>
+                </div>
+
+                <div class="col-md-3">
+                   <div class="control floating_label">
+                    <%= f.text_field :vehicle_name, {:class=>"input-text float_input boxed name" }%>
+                    <%= f.label :vehicle_name , "Vehicle Name (Optional)", :class => "input-text-placeholder" %>
+                   </div>
+                </div>
+
+
+                <div class="col-md-3">
+                   <div class="control floating_label">
+                    <%= f.text_field :reg_no, {:class=>"input-text float_input boxed name register", required: true, :maxlength => 15, :minlength => 7, :size => 22, :id=>"reg_no"}%>
+                    <%= f.label :registration_number , "Registration Number", :class => "input-text-placeholder" %>
+                    <div class="msg" style="color: red"></div>
+                   </div>
+                </div>
+
+                
+               
+
+                <div class="col-md-3">
+                   <div class="control floating_label">
+                    <%= f.text_field :vehicle_owner, {:class=>"input-text float_input boxed name"}%>
+                    <%= f.label :vehicle_owner , "Vehicle Owner (Optional)", :class => "input-text-placeholder" %>
+                   </div>
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                <div class="col-md-3">
+                   <div class="control floating_label">
+                    <%#= f.text_field :vehicle_contact_no, {:class=>"input-text float_input boxed name", required: true, :maxlength => 10, :minlength => 10, :size => 22 }%>
+                    <%= f.text_field :vehicle_contact_no, class: "input-text float_input boxed e1",required: true,type:'text',title:'Phone Number (Format: +91(91)********)',:pattern=>'^\+?\d{0,10}',minlength:"10",maxlength:"10"  %>
+                    <%= f.label :vehicle_contact_no , "Vehicle Contact Number", :class => "input-text-placeholder" %>
+                   </div>
+                </div>
+
+              </div>
+              
+              <%= f.submit "submit" , :class=>"btn btn_submit  enable float-right" %>
+
+          </div>
+        </div>
+  </form>
+
+<% end %>
+
+ <script type="text/javascript">
+
+    $(".register").on("change", function () {
+
+      var register = $(this).val();
+      $.ajax({
+        type: "GET",
+        url: "/drivers/check_vehicle_register_present?register="+register,
+        success: function nt(msg) { 
+
+           $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+
+            if (msg.message != "") {
+            $('.enable').attr('disabled',true);
+            }
+             if (msg.message == "") {
+            $('.enable').attr('disabled',false);
+            }
+            $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+        }
+
+      });
+    });
+
+   
+
+
+</script> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- <div class="field">
+    <%#= f.label :reg_no %>
+    <%#= f.text_field :reg_no %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :vehicle_type_id %>
+    <%#= f.text_field :vehicle_type_id %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :vehicle_name %>
+    <%#= f.text_field :vehicle_name %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :vehicle_owner %>
+    <%#= f.text_field :vehicle_owner %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :vehicle_contact_no %>
+    <%#= f.text_field :vehicle_contact_no %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :gps_status %>
+    <%#= f.check_box :gps_status %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :gps_id %>
+    <%#= f.text_field :gps_id %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :status %>
+    <%#= f.number_field :status %>
+  </div>
+
+  <div class="actions">
+    <%#= f.submit %>
+  </div> -->

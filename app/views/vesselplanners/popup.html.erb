@@ -1,0 +1,219 @@
+<% if @tenant_details.present? %>
+<% @tenant_details.map do |i| %>
+ <div class="card"  >
+   <h5 class="card-header"></h5>
+    <div class="card-body">
+      <h5 class="card-title"></h5>
+        <p class="card-text">
+          <div data-toggle="modal" data-target="#flipFlop<%=i.id%>"><b><center><%=i.tenant.name %><br></center></b>
+              <p><center><b style="color:rgb(255,69,0)";><%=i.category.category_name %></b></center></p>
+                <%= i.id %>
+              <center><%=i.stud_type%></center>
+          </div>
+        </p>
+    </div>
+ </div>
+ <div class="modal fade" id="flipFlop<%=i.id%>" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">    
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+                  <%#  @tenant_details.map do |i| %>
+            <h4 class="modal-title" id="modalLabel"><%= i.tenant.name %> </h4>
+            <%= i.id %>
+            <h5><%=i.category.category_name%> / <%=i.date.strftime("%d-%B-%Y")%> / <%=i.date.strftime("%A")%> </h5>
+        </div>
+        <div class="modal-body">
+            <div class="bs-example">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                    <th><b>Items</b></th>
+                    <th><b>Oty(per/head)</b></th>
+                    <th><b>Total Qty</b></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+         <%i.menu_items.each do |p|%>
+
+         <tr>
+          <td><%=p["name"]%></td>
+          <td><%=p["qty"].to_f%></td>
+          <%qty=TenantDetail.find_by(tenant_id: i.tenant_id,stud_type:i.stud_type,spread_type: i.spread_type, meal_time: Category.find(i.category_id).category_name,food_category_id: i.food_category_id)%>
+          
+          <td><%=qty.present? ? qty.quantity.to_f * p["qty"].to_f : "0" %></td>
+          <%end%>
+         </tr>
+        <br>
+       </tbody>
+    </table>
+  </div>
+  
+  
+<%= form_for :planner, url: {action: "create"}, html: {class: "nifty_form"} do |f| %>
+
+                <div class="card">
+                  <h5 class="card-header">Add Container</h5>
+                  <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-6">
+                        <b>Select Foods</b><br>
+                        <%= f.select :menuitem, options_for_select(i.menu_items.pluck("name")),{:prompt => 'Select'},{:class=>"qty#{i.id} form-control",  :style => 'width: 80%'}%>
+                        </div>
+
+                          <% t_detail_id = TenantDetail.where(tenant_id: i.tenant_id,stud_type:i.stud_type,spread_type: i.spread_type, meal_time: Category.find(i.category_id).category_name,food_category_id: 1).pluck(:id) %>
+                          <%= f.hidden_field :tenant_detail_id, value: t_detail_id, class: "t_id#{i.id}" %>
+                          <%#= hidden_field_tag 'menucycle_id', value: i.id, :class =>"cycle_id#{i.id}"%>
+                          <input type="hidden" name="menucycle_id" class="cycle_id<%=i.id%>" value= "<%=i.id%>"> 
+                          <%date=i.date.strftime("%d-%B-%Y")%>
+                          <%= f.hidden_field :date , value: date ,class: "date#{i.id}" %>
+
+                        <div class="col-md-6">
+                        <b>Qty</b><br>
+                        <%= f.number_field :countdummy,{:class=> "count#{i.id} form-control"} %>
+                        </div>
+                        <div class="col-md-6">
+                        <b>Utensil name</b><br>
+                        <% @a = Department.where(name: "Dispatch").pluck(:id) %>
+                        <%=f.select "utensil_id" ,options_for_select(Utensil.where(department_id: @a).pluck(:utensil_name ,:id)),{:prompt => 'Select'},{:class=> "utensil_name#{i.id} form-control",:style => 'width: 80%'}%>
+                        </div>
+                      </div>
+                    </div>
+                    </p>
+                  </div>
+                </div>
+                <div id="result<%=i.id%>"></div>
+              <% end %>
+              <%# end %>
+        </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button"  class="save<%=i.id%> btn btn-secondary ">Save</button>
+                  <!-- <button type="button" disabled  class="dispatch<%=i.id%> btn btn-secondary ">Setupdispatch</button> -->
+                  <%= link_to "Setupdispatch" , vesselplanners_assigned_vessel_path , class: "dispatch#{i.id} btn btn-secondary" , disabled:"true" %>
+                </div>
+    </div>
+  </div>
+</div>
+
+
+ <script >
+  $(document).ready(function(){
+      
+        array = []; 
+
+     $('.save<%=i.id%>').click(function(){
+
+     
+      //$("#flipFlop<%=i.id%>").on("click", ".save<%=i.id%>", function() {
+
+      var menuitem = $('.qty<%=i.id%> :selected').text();
+      
+      var item1 = $('.utensils_category :selected').text();
+
+      var item2 = $('.utensil_name<%=i.id%>  :selected').text();
+      
+      var item4 = $('.utensil_name<%=i.id%>  :selected').val();
+      
+      var count = $('.count<%=i.id%>').val();
+      
+      var date = $('.date<%=i.id%>').val();
+      
+      var td_id = $('.t_id<%=i.id%>').val();
+      
+      var cycle_id = $('.cycle_id<%=i.id%>').val();
+      
+      array.push({"menuitem": menuitem , "item2": item2 , "count": count ,"item4": item4, "date": date , "td_id": td_id, "menucycle_id": cycle_id});
+
+      $('.count<%=i.id%>').val("");
+       //remove the selected fields from dropdown
+      $(".qty<%=i.id%> option[value="+menuitem+"]").remove();
+
+
+      console.log(array);
+      display();
+      dynamic_display();  
+
+});
+     
+     function display(){
+  $('#result<%=i.id%>').text('');
+     $.each(array, function(index, value){
+    $("#result<%=i.id%>").append( value['menuitem'] + " " + value['item2']+ " " + value['count']+' <button class="delete button button1" data-index=" ' +index+'">-</button>'+'<br>');
+        });
+
+}
+
+
+$("#result<%=i.id%>").on("click", ".delete", function() {
+         var key = $(this).data('index')
+         
+          array.forEach(function(e, index){
+
+           if(key == index)
+            { 
+              
+             console.log(array);
+             //Dropdown add and remove values
+            var val= array[index].menuitem;
+            var newOption = $('<option value="'+val+'">'+val+'</option>');
+            $('.qty<%=i.id%>').append(newOption);
+
+
+              var del_utensil_id = array[index].item4;
+              array.splice(index,1 ) 
+
+              }
+           });
+          display();
+          dynamic_display();
+    
+  })
+
+  $(".dispatch<%=i.id%>").click(function(e){
+  
+  console.log(array);
+    $.ajax({
+      method: 'post',
+      url: '/vesselplanners/create',
+     
+      contentType: 'application/json',
+      data : JSON.stringify({planner: array}),
+      success:function(data) {
+     alert(success);
+      }
+    })
+  })
+
+function dynamic_display()
+    {
+
+      if($('.qty<%=i.id%>').children('option').length == 1) {
+            $('.save<%=i.id%>').attr('disabled', true);
+            $('.dispatch<%=i.id%>').attr('disabled' , false);
+        }
+      
+        else
+        {
+
+            $('.save<%=i.id%>').attr('disabled', false);        
+        }
+     
+    }
+       
+});
+
+
+
+
+
+   </script>  
+ <%end%>
+<%end%>  
+

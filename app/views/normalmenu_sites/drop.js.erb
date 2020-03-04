@@ -1,0 +1,47 @@
+<% if @mealtime %>
+
+	<% @mealtime = [@mealtime].flatten %>
+	
+	<%@mealtime.map{|kk|kk.meal_time = "#{kk.meal_time}"}.uniq%>	
+	
+	
+	<%if @mealtime.present?%>
+	
+		<%data=[]%>
+	
+		<%tenant_idd=@mealtime.pluck(:tenant_id)[0]%>
+	
+		<%uniqdata=@mealtime.pluck(:meal_time).uniq%>
+	
+		<%uniqdata.map do |i|%>
+	
+			<%data<<TenantDetail.find_by(:meal_time=>i,:tenant_id=>tenant_idd)%>
+	
+		<%end%>
+	
+		<%data.flatten%>
+
+	<%end%>
+	
+	<%meal = TenantDetail.new(:meal_time=>"Select Mealtime")%>
+    
+    <% @mealtime = [meal,@mealtime].flatten %>
+    
+    <% @data = [meal,data].flatten %>
+	
+	<%if data.present?%>
+   	
+   		$('.fold1').html("<%= escape_javascript options_from_collection_for_select(@data, :id ,:meal_time)%>");
+   	
+   	
+   	<%else%>
+   	
+   		$('.fold1').html("<%= escape_javascript options_from_collection_for_select(@mealtime, :id ,:meal_time)%>");
+   	
+   	
+   		
+
+	<%end%>
+
+<% end %>
+

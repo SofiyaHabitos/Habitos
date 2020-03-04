@@ -1,0 +1,124 @@
+<%= form_for(kitchen_user) do |f| %>
+  <form name="item">
+    <div class="card card_form mb-5">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= f.collection_select :kitchen_id, Kitchen.order("name"), :id, :name,{:prompt=>""},{class: "input-text boxed",required: true,autofocus: true}%>
+              <%= f.label :kitchen_id,"Facility", :class => "input-text-placeholder" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+                <% if ["superadmin"].include?(KitchenUser.find(session[:kitchen_user_id]).role.name) %>
+                  <%# @kitchen_users = KitchenUser.all %>
+                    <% @kitchen_users%>
+                 
+                  <% elsif KitchenUser.find(session[:kitchen_user_id]).role.name == "CEO" %>
+                    <%# @kitchen_users = Role.where(name: ["Chef","Dispatch Manager","Admin","Accounts executive","procurement"])%>
+                    <% @kitchen_users = Role.where(name: ["Admin","Chef","Dispatch Manager","Accounts executive", "procurement"])%>
+
+                     <% elsif KitchenUser.find(session[:kitchen_user_id]).role.name == "Admin" %>
+                     <% @kitchen_users = Role.where(name: ["Chef","Dispatch Manager","Accounts executive", "procurement"])%>
+                     
+                      <% else %>
+                      <% @kitchen_users = "" %>
+                  <% end %>
+
+               <% role = @kitchen_users.pluck(:id) if @kitchen_users.present? %>
+              <%= f.collection_select :role_id, Role.all.where(id: role), :id, :name,{prompt:""},{class: "input-text boxed",required: true}%>
+              <%= f.label :role_id, "Role", :class => "input-text-placeholder"%>
+              
+            </div>              
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= f.text_field :name,class: "input-text boxed",required: true %>
+              <%= f.label :name, "Name", :class => "input-text-placeholder"%>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= f.email_field :email,class: "input-text boxed",required: true %>
+              <%= f.label :email, "E-mail", :class => "input-text-placeholder"%>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= f.text_field :user_name,class: "input-text boxed",required: true %>
+              <%= f.label :user_name, "User Name", :class => " input-text-placeholder"%>
+              <!-- <p>*Too short (minimum character 3)</p> -->
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= f.text_field :password_digest, class: "input-text boxed",required: true %>
+              <%= f.label :password_digest, "Password", :class => "input-text-placeholder"%>
+              <!-- <p>*Too short (minimum character 5)</p> -->
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= f.text_field :mobile_number,class: "input-text boxed",required: true %> 
+              <%= f.label :mobile_number, "Mobile Number", :class => "input-text-placeholder"%>
+            </div>
+          </div>
+         <!--  <div class="col-md-3">
+            <div class="control floating_label">
+              <%#= f.collection_select :tenant, Tenant.order("name").where(active: true).where.not(:name=>"Idlidabba"), :id, :name,{prompt:""},{class: "input-text boxed single",multiple: true}  %>
+              <%#= f.label :tenant, "Customer", :class => "input-text-placeholder"%>
+            </div>
+          </div> -->
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= f.text_area :address,class: "input-text float_input boxed" %>
+              <%= f.label :address, "Address", :class => "input-text-placeholder"%>
+            </div>
+          </div>
+         <!--  <div class="col-md-3 align-items-center">
+            <label class="checkbox-label">
+              <%#= f.check_box :status,class: "custom_checkbox boxed" %>
+              <span>Active Log<%#= f.label :status, "Active Log"%></span>
+            </label>
+          </div> -->
+        </div>
+        <%= f.submit "submit",:class=>"btn btn_submit float-right"%>
+      </div>
+    </div>
+  </form>
+<% end %>
+
+<script type="text/javascript">
+  // $(document).ready(function() {
+  //   $(".single").select2();
+  // });
+  // $(document).ready(function() {
+  //   $( "#kitchen_user_user_name, #kitchen_user_password_digest" ).keyup(function() {
+  //     debugger;
+  //     var field_length = $(this).val();
+  //     if ($(this).val().length<3) {
+  //       $(this).parent().addClass("field_error");
+  //       $(".btn_submit").attr("disabled", true);
+  //     }
+  //     else{
+  //       $(this).parent().removeClass("field_error");
+  //       $(".btn_submit").attr("disabled", false);
+  //     }
+  //   });
+  // }); 
+</script>
+<!-- <style type="text/css">
+  .control.floating_label p{
+    position: absolute;
+    bottom: -3px;
+    font-size: 14px;
+    color: #e41212;
+    margin: 0;
+    display: none;
+  }
+  .control.floating_label.field_error p {
+    display: block;
+  }
+</style> -->

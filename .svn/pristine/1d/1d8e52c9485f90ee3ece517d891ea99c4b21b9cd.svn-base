@@ -1,0 +1,45 @@
+<%= form_for(standard) do |f| %>
+  <article class="content item-editor-page wrap-center">
+  	<div class="title-block">
+  	  <h3 class="title"><span class="sparkline bar" data-type="bar"></span></h3>
+    </div>
+    <form name="item">
+      <div class="row">
+        <div class="form-group">
+          <div class="col-xs-4">
+            <label class="control-label">
+              <%= f.label :tenant_id, 'Tenant' %>
+            </label>
+            <div class="form-group"> 
+              <%= f.collection_select :tenant_id, @tenants, :id, :name, {prompt: true}, {class: "form-control", required: true} %>              
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+       	<div class="form-group">
+       	  <div class="col-xs-4">
+       	    <label class="control-label">
+       	      <%= f.label :standard %>
+            </label>
+            <div class="form-group">
+              <%= f.text_field :standard, required: true, class: "form-control boxed" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col col-md-3">
+          <%= link_to "Cancel", standards_path, class: "btn btn-primary" %>
+        </div>
+        <div class="col col-md-3">
+         <%= f.submit 'Submit', class: "btn btn-primary", "data-disable-with": false %>
+
+          
+        </div>
+      </div>
+  	</form>
+  </article>
+<% end %>

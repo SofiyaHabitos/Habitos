@@ -1,0 +1,2 @@
+class TripAssignment < ApplicationRecord
+end

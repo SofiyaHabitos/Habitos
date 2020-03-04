@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  menu_master_name: MyString
+  category: one
+  cost: MyString
+  food_category: one
+  meal_restriction: one
+  allery: one
+  created_by: MyString
+  updated_by: MyString
+
+two:
+  menu_master_name: MyString
+  category: two
+  cost: MyString
+  food_category: two
+  meal_restriction: two
+  allery: two
+  created_by: MyString
+  updated_by: MyString

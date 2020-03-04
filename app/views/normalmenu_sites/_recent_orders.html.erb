@@ -1,0 +1,49 @@
+<div class="col-md-8">
+  <div class="card">
+    <div class="card-header">
+      <h1>Recent Orders</h1>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tenant</th>
+            <th>Meal Time</th>
+            <th>Instant Orders</th>
+            <th>Parent Orders</th>
+            <th>Total Orders</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @parent_orders.present? or @instant_orders.present? %>
+            <% s_no = 1 %>
+            <% @tenants.map do |tenant| %>
+              <% @categories.map do |meal_time| %>
+                <% instant_orders = PointOfSale.where(date: Date.today, tenant_id: tenant.id, meal_time: meal_time) %>
+                <% parent_orders = ParentOrder.where(date: Date.today, tenant_id: tenant.id, meal_time: meal_time) %>
+                <% if parent_orders.present? or instant_orders.present? %>
+                  <tr>
+                    <td><%= s_no %></td>
+                    <td><%= truncate(tenant.name, length: 17) %></td>
+                    <td><%= meal_time %></td>
+                    <td class="text-right"><%= aa = instant_orders.pluck(:quantity).compact.sum %></td>
+                    <td class="text-right"><%= bb = parent_orders.count %></td>
+                    <td class="text-right"><%= aa+bb %></td>
+                  </tr>
+                  <% s_no = s_no + 1 %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <tr><td colspan="6">No Records Found</td></tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% if @parent_orders.present? or @instant_orders.present? %>
+    <a href="/summaries" class="btn btn-default float-right" role="button">View More</a>
+  <% end %>
+  <!-- <button class="btn btn-default float-right"> View More</button> -->
+</div>

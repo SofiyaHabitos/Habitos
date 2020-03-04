@@ -1,0 +1,52 @@
+ 
+<h1>VESSEL PLANNERS</h1>
+DATE <input type="date" name="bday" id="datepicker">
+
+<input type="Submit" value="submit" id="submit"></br><!-- 
+<%#= form_for(@vessel,validate: true) do |f| %>
+<%#= f.collection_select :Tenant_id, @b, :id, :name,{:prompt=>true} ,{class: "form-control boxed e1",required: "true"}%>
+<%# end %> -->
+<%= select_tag "tenant", options_for_select(@filtertenant.present? ?  @filtertenant : []),{ class:"target form-control" , style: "width:35%"} %>
+<%#= @tenantdetail%>
+ 
+<div class="vessel"></div>
+
+
+
+
+
+<script>
+  $(document).ready(function(){
+$( ".target" ).change(function() {
+  var value = $(".target option:selected").val();
+  var date = $('#datepicker').val();
+  
+
+$.ajax({
+    url: '/vesselplanners/details',  
+    data: { id: value ,date: date}
+});
+}); 
+});
+</script>
+
+<script >
+	 $(document).ready(function(){
+$( "#submit" ).click(function() {
+        var selected = $("#datepicker").val();
+        //alert(selected);
+
+	$.ajax({
+    url: '/vesselplanners/tenantdetails',  
+    data: { id: selected }
+
+});
+});
+});
+
+</script>
+
+
+
+
+

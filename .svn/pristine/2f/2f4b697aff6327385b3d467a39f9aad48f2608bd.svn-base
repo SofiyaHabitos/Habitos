@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @item_subcategory.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @item_subcategory.description %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @item_subcategory.create_by %>
+</p>
+
+<p>
+  <strong>Updated by:</strong>
+  <%= @item_subcategory.updated_by %>
+</p>
+
+<%= link_to 'Edit', edit_item_subcategory_path(@item_subcategory) %> |
+<%= link_to 'Back', item_subcategories_path %>

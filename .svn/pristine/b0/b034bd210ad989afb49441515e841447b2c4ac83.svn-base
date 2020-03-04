@@ -1,0 +1,8 @@
+
+<% if @meal_time %>
+
+ $('.meal_time').html("<%= escape_javascript(options_for_select(@meal_time)) %>");
+ $('.foodcat').html("<%= escape_javascript(options_for_select(@foodcat_name)) %>");
+ $('#f').html("<%= escape_javascript @fdate.to_s %>");
+ $('#t').html("<%= escape_javascript @tdate.to_s %>");
+<% end %>

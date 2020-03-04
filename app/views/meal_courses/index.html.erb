@@ -1,0 +1,78 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Meal Courses</p>
+    <h2 class="header_title">Meal Courses <%= link_to '<i class="fa fa-plus"></i>'.html_safe,new_meal_course_path,:class=>"btn"%></h2>
+    <div id="dashboard-container">
+      <div class="card table-container mb-2">
+        <div class="card-body">
+          <table class="table table-striped table-datatable table-hover" id="sitelist">
+            <thead>
+             <tr>
+                <th>Meal Course Name</th>
+                <th>MealCourse Position</th>
+                <th>Description</th>
+                <th>Created_by</th>
+                <th>Updated_by</th>
+                <th>Action</th>
+                <!-- <th >Delete</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <% @meal_courses.each do |meal_course| %>
+                <tr>
+                  <td><%= meal_course.meal_course_name %></td>
+                  <td><%= meal_course.position %></td>
+                  <td><%= meal_course.description %></td>
+                  <td><%= meal_course.created_by %><%#= created(meal_course) %></td>
+                  <td><%= meal_course.updated_by %><%#= update(meal_course) %></td>
+                  <!-- <td><!%= link_to 'Show', site_category %></td> -->
+                  <td><%= link_to 'Edit', edit_meal_course_path(meal_course),:class=>"" %></td>
+                  <!--<td><%#= link_to '', meal_course, method: :delete, data: { confirm: 'Are you sure?' },:class=>"fa fa-trash-o" %></td>--> 
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</section>
+
+<% if false %>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Meal Courses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Meal course name</th>
+      <th>Description</th>
+      <th>Created by</th>
+      <th>Updated by</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @meal_courses.each do |meal_course| %>
+      <tr>
+        <td><%= meal_course.meal_course_name %></td>
+        <td><%= meal_course.description %></td>
+        <td><%= meal_course.created_by %></td>
+        <td><%= meal_course.updated_by %></td>
+        <td><%= link_to 'Show', meal_course %></td>
+        <td><%= link_to 'Edit', edit_meal_course_path(meal_course) %></td>
+        <td><%= link_to 'Destroy', meal_course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Meal Course', new_meal_course_path %>
+
+<%end%>

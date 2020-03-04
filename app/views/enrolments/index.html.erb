@@ -1,0 +1,184 @@
+ <section class="page-content">
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="col-md-12">
+      <div class="container">
+        <% flash.each do |key, value| %>
+          <div class="alert alert-<%= key %>">
+            <% value.split(".").map do |val| %>            
+              <%= val %><br>
+            <% end %>
+            <button type="button" class="close" data-dismiss="alert"> &times; </button>
+          </div>
+        <% end %>
+        <div class="body-header">
+          <div class="row">
+            <div class="col-md-6">
+              <!-- <h3>CRM </h3> -->
+              <h2>Enrolment List - <%= Tenant.find(params[:format]).name %></h2>
+            </div>
+            <!-- <div class="col-md-3">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"> Enrolment Count</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">Import Student Details</button>
+            </div> -->
+            <div class="col-md-4">
+              <h2>Enrollment Count - <%= @enrolments.count %></h2>
+            </div>
+            <div class="col-md-2">
+              <%= link_to "Back", enrol_index_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      </div>        
+    </div>  
+  </div>  
+    
+  <div class="body-content">
+    <div id="dashboard-container">
+      <div class="table-container">
+        <table class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%" id="enrolment">
+          <thead>
+            <tr>
+              <!-- <th>Customer</th> -->
+              <th>Student Id</th>
+              <th>Name</th>              
+              <th>Sex</th>
+              <th>Date of birth</th> 
+              <th>Age type</th>              
+              <th>Standard</th>
+              <th>Meal Time</th>
+              <!-- <th>Meal Type</th> -->
+              <th>MealRestriction</th>
+              <th>From date</th>
+              <th>To date</th>
+              <!-- <th>Height</th>
+              <th>Weight</th>
+              <th>Bmi</th> -->
+              <!-- <th>Enrolment type</th> -->
+              <th>Order Source</th>              
+            </tr>
+          </thead>
+          <tbody>
+            <% @enrolments.each do |enrolment| %>      
+              <tr id='<%=enrolment.id%>'>
+                <!-- <td><%#= enrolment.tenant.name.titleize if enrolment.tenant.present? %></td> -->
+                <td><%= enrolment.id_number %></td>
+                <td><%= enrolment.name.titleize if enrolment.name.present? %></td>             
+                <td><%= enrolment.sex.titleize %></td>
+                <td><%= format_date(enrolment.date_of_birth) %></td>
+                <td><%= enrolment.age_type.titleize if enrolment.age_type.present? %></td>
+                <td><%= enrolment.standard %></td>                
+                <td><%= enrolment.meal_time.titleize %></td>
+                <!-- <td><%#= enrolment.food_category.name.titleize if enrolment.food_category.present? %></td> -->
+                <td><%= enrolment.meal_restriction.present? ? enrolment.meal_restriction.meal_restriction_name.titleize : "-" %></td>
+                <td><%= format_date(enrolment.from_date) %></td>
+                <td><%= format_date(enrolment.to_date) %></td>
+                <!-- <td><%#= enrolment.height %></td>
+                <td><%#= enrolment.weight %></td>
+                <td><%#= enrolment.bmi %></td>                 -->
+                <!-- <td><%#= enrolment.enrolment_type.titleize if enrolment.enrolment_type.present? %></td> -->
+                <td><%= enrolment.order_source.titleize if enrolment.order_source.present? %></td>                
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="side-pop" style="color:white;display:none;">
+          <ul>
+            <li><a title="Show" id="show" > <i class="btn btn-sm btn-default fa fa-sm fa-eye"></i></a></li>  
+          </ul>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
+<div class="container">
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Customer Details</h4>        
+        </div>
+        <div class="modal-body">
+          <% ten_id = Enrolment.pluck(:tenant_id).uniq %>
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <th>Customer Name</th>
+              <th>Meal Time</th>
+              <th>Total Count</th>
+            </thead>
+            <tbody> 
+              <% ten_id.map do |ii| %>
+                <% tendata = Enrolment.where(tenant_id:ten_id) %>
+                <% mealtime = tendata.pluck(:meal_time).uniq %>
+                <% mealtime.map do|jj| %>
+                  <tr>  
+                    <td><%= Tenant.find(ii).name %></td>  
+                    <td><%= jj %></td>    
+                    <td><%= count = Enrolment.where(tenant_id:ii,meal_time:jj).count %></td>
+                  </tr>              
+                <% end %>
+              <% end %>
+            </tbody>  
+          </table>
+        </div>          
+        <div class="modal-footer">          
+          <button type="button" class="btn btn-danger btn-sm rounded-s" data-dismiss="modal">Close</button>        
+        </div>                
+      </div>      
+    </div>          
+  </div>  
+</div>
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+<div class="container">
+  <div class="modal-dialog" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <center><h4 class="modal-title" id="exampleModalLabel">Import Students for a Tenant</h4></center>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%= form_for Enrolment.new,:url=> {:controller=>"enrolments", :action=>"upload_process"} do |f| %>
+        <div class="modal-body">
+          <div class="col-md-6">
+            <%= f.collection_select :tenant_id, Tenant.all, :id, :name, {prompt: "Select a tenant"}, {required: true, class: "single tenant"} %>
+          </div>
+          <div class="col-md-6 file" style="display: none;">
+            Select File : <%= f.file_field :file1, accept: 'text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', required: true, class: "btn btn-default btn-file" %>
+            <%= f.submit "Upload", :class=>"btn btn-primary" %>
+          </div>
+        </div>
+        <div class="modal-footer">          
+          <label class="btn btn-secondary" data-dismiss="modal">Cancel</label>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".single").select2();
+  });
+
+  $(document).ready(function() {
+    $(".tenant").change(function() {
+      if ($(".tenant").val() != "") {
+        $(".file").show();
+      }
+      else{
+        $(".file").hide();
+      }
+    });
+  }); 
+
+</script>

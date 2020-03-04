@@ -1,0 +1,72 @@
+ 
+<div class="col-md-10 col-sm-8 body-wrap">
+  <div class="body-container ">  
+  <div class="body-header">
+        <h3 class="modal-title">Edit - Meal Planner</h3>
+          </div>
+ <%= form_for(@tenant_detail) do |f| %>
+
+     <article class="content item-editor-page">
+    <form name="item">
+        <div class="card card-block">
+            <div class="row">
+                <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                 <%= f.label :tenant,"Customer" %></label>
+                 <div class="form-group"> 
+                   <%= @tenant_detail.tenant.name %>
+                 </div>
+                 </div>
+                <div class="col-xs-4">
+                <label class="control-label"><%= f.label :meal_time ,"Meal Group"%></label>
+                <div class="form-group">
+                 <%= @tenant_detail.meal_time %>
+                 </div>
+                 </div>
+                 </div>
+                 </div>
+                 <div class="row">
+                <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                          <%= f.label :meal_type %>     
+                </label>
+                <div class="form-group">
+                     <%= @tenant_detail.food_category.name  %>
+                </div>
+                </div>
+                <div class="col-xs-4">
+                <label class="control-label">
+                         <%= f.label :order %>    
+                </label>
+                <div class="form-group">
+               <%= @tenant_detail.order%>
+                </div>
+                </div>
+                <div class="col-xs-4">
+                <label class="control-label">
+                         <%= f.label :quantity,"No of Packs" %>    
+                </label>
+                <div class="form-group">
+               <%= f.number_field :quantity,min:0,require: true%>
+                </div>
+                </div>
+            </div>
+        </div>
+        </div><br>
+
+        <div class="form-group row mrgn-top btn_center">
+            <%= link_to 'Back', summaries_path, :class=>"btn btn-default"%>
+            <%= f.submit "submit",:class=>"btn btn-primary"%>
+       </div>
+  </form>
+  
+  </article>
+  <%end%>
+
+      </div>
+    
+    </div>
+
+

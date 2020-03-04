@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  plan: one
+  category: one
+  menu_items: MyText
+  day: 2018-11-23 12:00:31
+  tenant: one
+  food_category: one
+  stud_type: MyString
+  spread_type: MyString
+
+two:
+  plan: two
+  category: two
+  menu_items: MyText
+  day: 2018-11-23 12:00:31
+  tenant: two
+  food_category: two
+  stud_type: MyString
+  spread_type: MyString

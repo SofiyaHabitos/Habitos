@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Production item:</strong>
+  <%= @item_meal_course.production_item %>
+</p>
+
+<p>
+  <strong>Meal course:</strong>
+  <%= @item_meal_course.meal_course %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @item_meal_course.created_by %>
+</p>
+
+<p>
+  <strong>Updated by:</strong>
+  <%= @item_meal_course.updated_by %>
+</p>
+
+<%= link_to 'Edit', edit_item_meal_course_path(@item_meal_course) %> |
+<%= link_to 'Back', item_meal_courses_path %>

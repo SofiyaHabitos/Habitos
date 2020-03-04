@@ -1,0 +1,256 @@
+c
+Feedback.where(tenant_id: params["tenant"]["id"],date: params["tenant"]["from_date"]..params["tenant"]["to_date"] )
+Feedback.where(tenant_id: params["tenant"]["id"])
+Feedback.last
+params
+c
+params
+c
+params["id"]
+params
+exit
+utensil = Utensil.new(utensil_params)
+params["utensils_category_id"]
+params["utensil_category_id"]
+params["upload_type"]
+params["utensil"]
+params["utensil"]["upload_status"]
+params["upload_status"]
+params
+utensil_params
+UtensilsCategory.find(4)
+UtensilCategory.find(4)
+params
+c
+@utensil_category
+c
+@utensil_category
+c
+params
+c
+params
+c
+exit
+utensil_params
+exit
+utensil_params
+params
+c
+DispatchUtensilsMapping.find(params[:format]).utensil
+DispatchUtensilsMapping.find(params[:format])
+c
+params["audit"]["from_date"].present? and params["to_date"].present?
+c
+Answer.where(tenant_id: params["audit"]["id"],date: params["audit"]["from_date"]..params["audit"]["to_date"])
+Answer.where(tenant_id: params["audit"]["id"],date: params["audit"]["from_date"]..params["to_date"])
+params["audit"]["id"]
+params["audit"]
+params
+params["id"]
+Answer.where(tenant_id: params["id"])
+Tenant.find(3)
+Tenant.find(4)
+Tenant.find(5)
+Tenant.find(6)
+Tenant.find(7)
+Tenant.find(8)
+Tenant.find(9)
+Tenant.find(7)
+Tenant.find(8)
+Tenant.find(1)
+Tenant.find(2)
+Tenant.find(7)
+Tenant.find(6)
+Tenant.find(4)
+Tenant.find(5)
+params
+c
+ @menu_items2[0]
+@result2
+c
+@result2
+@sub_result2
+sub_result2
+ @menu_items2[0]
+@result2
+c
+cc
+@orders.first
+c
+@orders.first
+@orders
+c
+cc
+ccc
+c
+cc
+c
+ od = (menu_customer.present? ? menu_customer.order_no : nil)
+ dt = dat.to_date.strftime("%d-%m-%Y")
+   menu_customer = MenuCustomer.find_by(tenant_id: tenant.id, date: dat, category_id: Category.find_by_category_name(k[0]), meal_restriction_id: k[1], stud_type: k[2])
+ attendances = Attendance.where(date: dat, tenant_id: tenant.id, meal_time: k[0], attendance_log: true)
+qry = {date: dat, tenant_id: tenant.id, meal_time: k[0], meal_restriction_id: k[1], stud_type: k[2]}
+tenant.tenant_details.group_by{ |e| [e.meal_time, e.meal_restriction_id, e.stud_type] }
+c
+my_days
+my_dayss
+tenant
+dat
+c
+dat
+c
+cc
+c
+tenant
+exclude_days = tenant.exclude
+my_days
+dat.wday
+dat
+tenant
+dat
+c
+dat
+c
+dat
+cc
+c
+dat
+c
+dat
+c
+dat
+cc
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+dat
+c
+                enroll = v.select { |e| e.order == "Enroll" }.pluck(:quantity).sum.to_i
+dat
+ dat.to_date.strftime("%d-%m-%Y")
+menu_customer
+(menu_customer
+ MenuCustomer.find_by(tenant_id: tenant.id, date: dat, category_id: Category.find_by_category_name(k[0]), meal_restriction_id: k[1], stud_type: k[2])
+ qry = {date: dat, tenant_id: tenant.id, meal_time: k[0], meal_restriction_id: k[1], stud_type: k[2]}
+k
+k[0]
+v
+k
+c
+enrolments
+enrolments.first.where(order_source: "Enroll")
+enrolments.where(order_source: "Enroll")
+enrolments.first
+enrolments
+c
+enrolment.uniq.first
+enrolment.uniq
+enrolment.first
+enrolment
+c
+val
+c
+Tenant.find(5).tenant_details.find_by(meal_time: enrol.meal_time, meal_restriction:  enrol.meal_restriction,stud_type: enrol.stud_type)
+Tenant.find(1).tenant_details.find_by(meal_time: enrol.meal_time, meal_restriction:  enrol.meal_restriction,stud_type: enrol.stud_type)
+Tenant.find(1).tenant_details.find_by(meal_time: enrol.meal_time, meal_restriction:  enrol.meal_restriction)
+Tenant.find(5).tenant_details.find_by(meal_time: enrol.meal_time, meal_restriction:  enrol.meal_restriction)
+Tenant.find(5).tenant_details.find_by(meal_time: enrol.meal_time)
+Tenant.find(5).tenant_details
+Tenant.find(5)
+tenant.tenant_details
+tenant.tenant_detail
+tenant = Tenant.find_by("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+Tenant.find_by("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+Tenant.find_by("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date).tenant_details
+Tenant.find_by("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date).tenant_detail
+Tenant.where("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date).tenant_detail
+Tenant.where("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+tenant.tenant_detail
+TenantDetail
+tenant.tenants_detail
+tenant.tenant_detail
+tenant.tenant_details
+tenant
+tenant.tenant_details
+tenant = Tenant.where("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+Tenant.where("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+Tenant.where("from_date <= ? AND to_date >= ? AND id =?" ,enrol.from_date, enrol.to_date)
+Tenant.where("from_date <= ? AND to_date >= ? AND id =?" ,enrol.from_date, enrol.to_date, enrol.tenant_id)
+Tenant.where("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+enrol.tenant.find_by("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+enrol.tenant.where("from_date <= ? AND to_date >= ?" ,enrol.from_date, enrol.to_date)
+enrol.tenant.where("from_date <= ? AND to_date >= ?" enrol.from_date, enrol.to_date)
+enrol.tenant
+enrol = Enrolment.where(id: [1772,1771],status: "Approved", is_active: true).first
+Enrolment.where(id: [1772,1771],status: "Approved", is_active: true).first
+Enrolment.where(id: [1772,1771],status: "Approved", is_active: true)
+Enrolment.where(id: [1772,1771] status: "Approved", is_active: true)
+Enrolment.where(id: [1772,1771])
+Enrolment.where(1772,1771)
+params
+c
+tenant = Tenant.where("from_date <= ? AND to_date >= ? AND id= ?",i.from_date,i.to_date,i.tenant_id)
+tenant = Tenant.where("from_date <= ? AND to_date >= ? AND id=",i.from_date,i.to_date,i.tenant_id)
+tenant.where(id: i.tenant_id)
+tenant.where(id: enrolment.tenant_id)
+enrolment
+tenant.count
+tenant
+c
+Enrolment.where(id: params[:approval_id]).update(is_active: true, status:"Approved").first.errors
+Enrolment.where(id: params[:approval_id]).update(is_active: true, status:"Approved")
+Enrolment.where(id: params[:approval_id])
+c
+Enrolment.where(id: params[:approval_id]).update(is_active: true, status: "Approved")
+ params["commit"] == "Approve"
+c
+ Enrolment.find_by(id: params[:approval_id]).update(status: "Approved")
+ Enrolment.find_by(id: params[:approval_id]).update(date_of_birth: "10-7-2018")
+ Enrolment.find_by(id: params[:approval_id]).update(date_of_birth: sds)
+ Enrolment.find_by(id: params[:approval_id])
+ Enrolment.find_by(id: params[:approval_id]).update(status: nil)
+ Enrolment.find_by(id: params[:approval_id]).update(status: nil).errors
+ Enrolment.where(id: params[:approval_id]).update(status: nil).errors
+ Enrolment.where(id: params[:approval_id]).update(status: nil)
+ Enrolment.where(id: params[:approval_id])
+ Enrolment.where(id: params[:approval_id]).update(is_active: true, status: "Approved").errors
+ Enrolment.where(id: params[:approval_id]).update(is_active: true, status: "Approved")
+enrolment
+c
+enrolment.status == "Approved"
+enrolment
+enrolment.status
+enrolment
+c
+tenant.where(id: enrolment.tenant_id,meal_time: enrolment.meal_time)
+tenant.where(id:enrolment.tenant_id,meal_time:enrolment.meal_time)
+ tenant.where(id: enrolment.tenant_id,meal_time: enrolment.meal_time)
+c
+Tenant.where(id: enrolment.tenant_if)c
+Enrolment.last.update(to_date: 2019-06-13)
+Enrolment.last.update(to_date: 2019-06-13,id_number: "859655").errors
+Enrolment.last.update(to_date: 2019-06-13,id_number: "859655")
+Enrolment.last.update(to_date: 2019-06-13,id_number: "8596")
+Enrolment.last.update(to_date: 2019-06-13)
+Enrolment.last

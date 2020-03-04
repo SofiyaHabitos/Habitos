@@ -1,0 +1,82 @@
+class User < ApplicationRecord
+  require 'csv'
+  #has_secure_password
+  
+  belongs_to :tenant
+  belongs_to :kitchen
+  belongs_to :role
+  has_many :attendances, dependent: :destroy
+  has_one  :software_setup, dependent: :destroy
+  before_create :generate_auth_token
+
+  validates :name, presence: true, length: { in: 3..100 }
+  validates :user_name, presence: true, length: { in: 3..100 }, uniqueness: true
+  validates :email, presence: true, length: { in: 6..100 }
+  validates_format_of :email, :with => /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/
+  #validates :mobile_number,:numericality => true,presence: true, length: { in: 10..10}
+  validates_format_of :mobile_number ,with: /\A(\d{10}|\(?\d{3}\)?[-. ]\d{3}[-.]\d{4})\z/
+  validates_format_of :email, with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i
+  validates :password_digest, length: 4..70#, allow_blank: { on: :update }, presence: { on: :create }
+  acts_as_paranoid
+  #validates_format_of :amount_paid, :with => /^[0-9]+\.[0-9]{2}*$/,:multiline => true , :message => "must contain dollars and cents, seperated by a period"
+  
+private
+
+ def generate_auth_token
+
+  begin
+  
+    self.auth_token = SecureRandom.hex
+  
+  end while self.class.exists?(auth_token: auth_token)
+ 
+ end
+
+  def self.userdetail(params)
+
+    userdetail=[]
+    
+    #userid = User.find(params[:user_id])
+       
+    tn = Tenant.find(params[:tenant_id])
+
+    user=User.where(tenant_id:tn)
+
+    if params[:type] == "dense"
+
+      userdetail={:tenant=>tn.name,:role=>Role.pluck("id","name"),:usercount=>User.count,:User=>user.map {|pp| {:id=>pp.id,:tenant_id=>Tenant.find(pp.tenant_id).name,:role=>Role.find(pp.role_id).name,:meal_type=>pp.meal_type,:name=>pp.name,:user_name=>pp.user_name,:age_type=>pp.age_type,:subcrip_type=>pp.subcrip_type,:email=>pp.email,:mobile_number=>pp.mobile_number,:address=>pp.address,:amount_paid=>pp.amount_paid,:identity_number=>pp.identity_number,:meal_time=>pp.meal_time,:standard=>pp.standard,:from_date=>pp.from_date,:to_date=>pp.to_date,:comment=>pp.comment,meal_category:pp.meal_category}}}
+
+    elsif params[:type] == "lite"
+
+      userdetail=[{:userdata=>User.where(tenant_id:tn,standard:params[:class]).pluck("id","name","identity_number")}]
+
+    end  
+    
+    return userdetail
+ 
+  end 
+
+  def self.export
+
+    columns=[ "name", "user_name","tenant_id", "role_id", "standard","identity_number", "age_type", "email", "mobile_number", "address", "meal_time","meal_type", "subcrip_type","from_date", "to_date", "amount_paid","comment"]
+    
+      CSV.open("#{Rails.root}/public/files/Userexport.csv",'w') do |csv|
+    
+        csv << columns.map{|aa|aa.humanize}
+     
+        all.each do |product|
+       
+          mm=product.attributes.values_at(*columns)
+       
+          mm[2]=product.tenant.name
+        
+          mm[3]=product.role.name
+       
+          csv << mm
+      
+        end
+        
+      end
+  end
+
+end

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    
+ <!--    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+
+    
+   <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
+    <!-- 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
+<!-- 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css"> -->
+    
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+ -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
+
+<!--     <script src="/assets/angular-sanitize.min.js"></script>
+ -->
+
+</head>
+<body>
+
+
+<div ng-app="test" ng-controller="tes">
+<p>{{name}}</p>
+
+ <select  class="selectpicker" title="Choose Meal course" multiple  ng-model="datafhdsf" required ng-change="click(datafhdsf)">  
+    <option ng-repeat="course in data" >{{course.category_name}}</option>
+ </select>   
+
+</div>
+
+</body>
+<script type="text/javascript">
+  
+    $(document).ready(function() {
+        /*$('#multi-select-demo').multiselect();*/
+        $('.selectpicker').selectpicker();
+    });
+</script>
+
+<script type="text/javascript">
+    var app= angular.module("test",[]);
+    app.controller('tes', ['$scope', function($scope) {
+        $scope.name="raji";
+        $scope.datafhdsf=["Tea Break-Evening"]
+          $scope.data = [
+     {"category_name": "Lunch", "id":1}, 
+     {"category_name": "Breakfast", "id":2},
+     {"category_name": "Dinner", "id":3}, 
+     {"category_name": "Mid-day Snacks", "id":4}, 
+     {"category_name": "Tea Break-Morning", "id":5}, 
+     {"category_name": "Tea Break-Evening", "id":6}, 
+   ];
+
+   $scope.click=function(tests){
+    console.log(tests)
+   }
+   console.log($scope.data)
+  
+}]);
+</script>
+</html>
+

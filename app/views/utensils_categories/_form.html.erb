@@ -1,0 +1,96 @@
+<%= form_for(utensils_category,validate: true) do |f| %>
+  <!--% if utensils_category.errors.any? %>
+    <div id="error_explanation">
+      <h2><!%= pluralize(utensils_category.errors.count, "error") %> prohibited this utensils_category from being saved:</h2>
+
+      <ul>
+      <!% utensils_category.errors.full_messages.each do |message| %>
+        <li><!%= message %></li>
+      <!% end %>
+      </ul>
+    </div>
+  <!% end %-->
+
+  <article class="content item-editor-page wrap-center">
+    <div class="title-block">
+        <h3 class="title"><span class="sparkline bar" data-type="bar"></span> </h3>
+    </div>
+    <form name="item">
+        <div class="row new_row">
+            <div class="col-xs-6">
+              <label class="control-label">
+              <%= f.label :utensils_category_name ,"Utensil Category"%>
+              </label>
+              <div class="form-group"> 
+                <%= f.text_field :utensils_category_name,required:true,class: "form-control boxed " %>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <label class="control-label">
+              <%= f.label :asset_type ,"Asset Type"%>
+              </label>
+              <div class="form-group"> 
+                <%= select_tag "asset_type", options_for_select([ "Kitchen", "Dispatch" ],{selected: utensils_category.asset_type.present? ?  utensils_category.asset_type : "Dispatch" }),{class: "form-control boxed e1",required: "true", id: "type1" , prompt: "Select"}%>
+              </div>
+            </div>
+          </div>
+          <div class="row new_row">
+            <div class="col-xs-6">
+              <label class="control-label">
+              <%= f.label :upload_status ,"Dispatch Quantity"%>
+              </label>
+              <div class="form-group"> 
+                <%= select_tag "upload_type", options_for_select([ "Single", "Multiple" ],{selected: utensils_category.upload_status.present? ?  utensils_category.upload_status : "Single" }),{class: "form-control boxed e1",required: "true", id: "type" , prompt: "Select"}%>
+              </div>
+            </div>
+            <div class="col-xs-6">                
+              <label class="control-label"><%= f.label :Uom ,"Weight measurement"%></label>
+              <div class="form-group">
+                  <%= f.collection_select :unit_of_measurement_id, UnitOfMeasurement.all.order('name'),:id,:name, {:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>                
+              </div>
+            </div>
+          </div>
+          <!--        <div class="row"> -->
+                <!-- <div class="form-group">
+                 <div class="col-xs-4">
+                <label class="control-label">
+                 <!%= f.label :movable_status %>
+                 </label><div class="form-group"> 
+                 <table>
+
+      <tr>-->          
+                 <!-- <div class="form-group"> -->
+                   
+
+        <!--<td><1%= f.label :movable_status, "Yes", :value => "Yes"  %></td>
+    
+        <td><!%= f.radio_button :movable_status, true , :checked => true %></td>
+    
+        <td><1%= f.label :movable_status, "No", :value => "No" %></td>
+    
+        <td><!%= f.radio_button :movable_status, false%></td>
+
+      </tr>
+      
+    </table>
+                 </div>
+                 </div>
+             </div> -->
+      
+        
+        <div class="row new_row">
+            <div class="col-md-3">
+              <%= link_to "Back", utensils_categories_path ,:class=>"btn btn-primary"%>
+            </div>
+            <div class="col-md-3">
+            <%= f.submit "Submit",:class=>"btn btn-primary"%>
+            </div>
+        </div>
+
+        <!-- <div class="form-group row mrgn-top">
+            <div class="col-sm-10 col-sm-offset-4"> <%#= f.submit "submit",:class=>"btn btn-primary"%></div>
+       </div> -->
+  </form>
+  </article>
+
+<% end %>

@@ -1,0 +1,80 @@
+<%= form_for(customer_view_control, validate: true) do |f| %>
+  
+  <article class="content item-editor-page">
+    <form name="item">
+      <div class="card card-block">
+        <div class="row">
+          <div class="form-group">
+            <div class="col-xs-6">
+              <label class="control-label">
+                <%= f.label :tenant,"Customer" %>
+              </label>
+              <div class="form-group"> 
+                <!--%= f.collection_select :tenant_id, Tenant.all,:id,:name,{}, readonly %-->
+                <%= f.collection_select :tenant_id, Tenant.order("name").where(active:true).where.not(:name=>"Idlidabba"),:id,:name, {include_blank: true},{ :class=>"form-control", :required=>"true"} %>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <label class="control-label"><%= f.label :title %></label>
+              <%= f.text_area :title ,class: "form-control boxed" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <% unless @customer_view_control.billing_upload.present? %>
+              <div class="col-xs-6">
+                <label class="control-label">
+                  <%= f.label :billing_upload %>(Pdf files only)
+                </label>
+                <%= f.file_field :billing_upload, accept: "application/pdf", class: "form-control boxed", :style=>"height: auto;" %>
+              </div>
+            <% else %>
+              <div class="col-xs-6">
+                <label class="control-label">                     
+                  <%= f.label :billing_upload %>(Pdf files only)
+                </label>
+                <% if  @customer_view_control.billing_upload %>
+                  <div class="form-group"><br>
+                    <label class="control-label">Last Bill:</label>
+                    <%= link_to @customer_view_control.billing_upload_identifier, @customer_view_control.billing_upload_url, download: @customer_view_control.billing_upload_url, target: "_blank", :style=>"width:150px; height:150px" %>
+                  </div>
+                <% end %>
+                <%= f.file_field :billing_upload, accept: "application/pdf", class: "form-control boxed",validate: false,:style=>"height: auto;" %>
+              </div>
+            <% end %>
+            <% unless @customer_view_control.nutrition_upload.present? %>
+              <div class="col-xs-6">
+                <label class="control-label">
+                  <%= f.label :Newsletter_upload %>(Pdf files only)
+                </label>
+                <%= f.file_field :nutrition_upload, accept: "application/pdf", class: "form-control boxed",:style=>"height: auto;" %>
+              </div>
+            <% else %>
+              <div class="col-xs-6">
+                <label class="control-label">
+                  <%= f.label :nutrition_upload %>(Pdf files only)
+                </label>
+                <div class="form-group" ><br>
+                  <label class="control-label">Last Newsletter:</label>
+                  <%= link_to @customer_view_control.nutrition_upload_identifier, @customer_view_control.nutrition_upload_url, download: @customer_view_control.nutrition_upload_url, target: "_blank", :style=>"width:150px; height:150px" %>
+                </div> 
+                <%= f.file_field :nutrition_upload, accept: "application/pdf",class: "form-control boxed",validate: false,:style=>"height: auto;" %>
+              </div>
+            <% end %>
+          </div>
+        </div><br><br>
+        <div class="form-group row mrgn-top btn_center">
+          <%= link_to "Back",customer_view_controls_path,:class=>"btn btn-default" %>
+          <%= f.submit "submit",:class=>"btn btn-primary" %>
+        </div>
+      </div>
+    </form>    
+  </article>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#single").select2();
+  }); 
+</script>

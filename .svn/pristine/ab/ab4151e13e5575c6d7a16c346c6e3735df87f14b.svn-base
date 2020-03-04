@@ -1,0 +1,94 @@
+<!-- <p id="notice"><%= notice %></p> -->
+
+                            
+       <!-- <div class="digg_pagination">
+    
+        <div class="page_info"><!%= page_entries_info @utensils %></div>
+      
+        <!%= will_paginate @utensils, :container => false %>
+  
+      </div> -->
+   
+    <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3>Facility Management <span><%= link_to 'New Asset', new_utensil_path, :class=>"btn btn-primary btn-sm rounded-s"%> </span></h3>
+      <h2>Assets</h2>
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>" style="color: coral;">
+          <%= value %>
+          <button type="button" class="close" data-dismiss="alert"> &times; </button>
+         </div>
+      <% end %>
+      
+    </div>
+    <div class="body-content">     <span><%= link_to 'Export Asset Status', utensil_report_path, :class=>"btn btn-primary btn-sm rounded-s"%> </span>
+
+      <div id="dashboard-container">
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%" id="utensil">
+            <thead>
+                <tr>
+                           <th>Tracking ID</th>
+                          <th>Utensil Name</th>
+                           <th>Map to facility</th>
+                           <th>Dispatch Quantity</th>
+                           <th>Utensil Category</th>
+                            <th>Utensil subcategory</th>
+                            <th>Count</th> 
+                           <!-- <th>Asset Counts</th> -->
+                           <th>Available Status</th>
+                           <th>Dispatch Status</th>
+                           <!-- <th>Action</th> -->
+                           <%if CEO? %><th>Edit</th><%end%>
+                           <th>Show</th>
+                           <%if false %><th>Delete</th><%end%>
+                           
+                </tr>
+            </thead>
+            <tbody>
+                   <% @utensils.each do |utensil| %>
+                       <tr id='<%=utensil.id%>'>
+                           <td><%=utensil.tracking%></td>
+                           <td><%= utensil.utensil_name %></td>
+                           <td><%= utensil.kitchen.name %></td>
+                           <td><%= utensil.upload_status%></td>
+                           
+                           <td><%= utensil.utensils_category.utensils_category_name if utensil.utensils_category.present?%></td>
+                           <td><%= utensil.utensiltype%></td>
+                           <%if utensil.upload_status == "Multiple"%>
+                           <td><%= utensil.count%></td>
+                           <%else%>
+                           <td></td>
+                           <%end%>
+                           
+                           <!--td><!%= utensil.utensils_count %></td-->
+                           <td><%= (utensil.available_status.to_s == "true")? "Available" : "UnAvailable"  %></td>
+                           <td><%= (utensil.status.to_s == "1") ? "Received" : "Not Received" %></td>
+                              <%if CEO? %><td><%if utensil.status.to_s == "1"%><%=link_to "",edit_utensil_path(utensil),class: "btn btn-sm btn-default fa fa-sm fa-pencil"%></td><%end%><%end%>
+                           <td><%=link_to "",utensil_path(utensil),class: "btn btn-sm btn-default fa fa-sm fa-eye"%></td>
+<!--                                <%#if CEO? %><td><%#if utensil.status.to_s == "1"%><%#=link_to "",utensil, method: :delete, data: { confirm: 'Are you sure?' } ,class: "btn btn-sm btn-default fa fa-sm fa-trash-o",:style=>"color:red"%></td><%#end%><%#end%> -->
+                       </tr> 
+                   <% end %>
+            </tbody>
+          </table>
+           <!--div class="side-pop" style="color:white;display:none;">
+    <ul>
+    <li><a title="Show" id="show" > <i class="btn btn-sm btn-default fa fa-sm fa-eye"></i></a></li>
+     <!%if CEO? %>
+     <li><a title="Edit" id="edit" > <i class="btn btn-sm btn-default fa fa-sm fa-pencil" ></i></a></li>
+    <li><a title="Delete" id="destroy" data-method="delete" class="confirmation"> <i class="btn btn-sm btn-default fa fa-sm fa-trash-o"></i></a></li><!%end%>
+     </ul>
+    </div-->  
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+ <script >
+  $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+</script> 

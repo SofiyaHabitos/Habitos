@@ -1,0 +1,109 @@
+
+
+      <!-- <div class="digg_pagination">
+    
+        <div class="page_info"><!%= page_entries_info @tenants %></div>
+      
+        <!%= will_paginate @tenants, :container => false %>
+  
+      </div> -->
+
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3>CRM <span> <%= link_to 'Add New',new_tenant_path,:class=>"btn btn-primary btn-sm rounded-s"%> </span></h3>
+      <h2>CRM INFO</h2>
+
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>" style="color: coral;">
+          <%= value %>
+          <button type="button" class="close" data-dismiss="alert"> &times; </button>
+         </div>
+      <% end %>
+    
+    </div>
+    <div class="body-content">
+      <div id="dashboard-container">
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover display" id="tenant">
+            <thead>
+              <tr style="font-weight:bold">
+               <th>Company Logo</th>
+                <th>Customer</th>
+                <th>Facility</th>
+                <th>Category</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Contact Person</th>
+               <!--  <th>Alternative Contact Person</th> -->
+                <th>Mobile Number_1</th>
+                <!-- <th>Phone2</th>
+                <th>Address</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Note</th>
+                <th>Exclude</th> -->
+                <th>IsActive</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @tenants.each do |tenant| %>
+                <tr id='<%=tenant.id%>'>
+                  <td><%= image_tag tenant.image.image_path,:style=>"width:50px; height:50px"%></td>
+                  <td><%=tenant.name.titleize%></td>
+                  <td><%=tenant.kitchen.name if tenant.kitchen.present? %></td>
+                  <td><%=tenant.site_category.name if tenant.site_category.present? %></td>
+                  <td><%=format_date(tenant.from_date)%></td>
+                  <td><%=format_date(tenant.to_date)%></td>
+                  <td><%=tenant.contact_person1%></td>
+                  <!-- <td><!%=tenant.contact_person2%></td> -->
+                  <td><%=tenant.phone1%></td>
+                 <!--  <td><!%=tenant.phone2%></td> -->
+                  <!-- <td><!%=tenant.address%></td>
+                  <td><!%=tenant.latitude%></td>
+                  <td><!%=tenant.longitude%></td>
+                  <td><!%=tenant.description%></td>
+                  <!%exclude=tenant.exclude%>
+                  <!%case exclude%>
+                  <!%when 1%>
+                      <td>Saturday</td>
+                   <!%when 2%>
+                      <td>Sunday</td>
+                   <!%when 3%>
+                      <td>Saturday&Sunday</td>
+                      <!%else%>
+                      <td>No</td>
+                  <!%end%-->
+                  <td><%=(tenant.active.to_s == "true")? "Avaliable" : "UnAvaliable"%></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <% if  @tenants.present?%>
+           <div class="side-pop" style="color:white;display:none;">
+    <ul>
+    
+    <li><a title="Show" id="show" > <i class="btn btn-sm btn-default fa fa-sm fa-eye"></i></a></li> 
+     <li><a title="Edit" id="edit" > <i class="btn btn-sm btn-default fa fa-sm fa-pencil" ></i></a></li>
+
+    <!-- <%#if CEO? %>
+    <li><a title="Delete" id="destroy" data-method="delete" class="confirmation"> <i class="btn btn-sm btn-default fa fa-sm fa-trash-o"></i></a></li>
+    <%#end%>-->
+
+    </ul>
+    </div>
+    <%end%>  
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+  
+<script>
+  $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+</script>

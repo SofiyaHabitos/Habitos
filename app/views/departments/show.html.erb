@@ -1,0 +1,41 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Department / Show Departments</p>
+    <h2 class="header_title">Show Departments <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, departments_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+         <label class="control-label">Name</label>
+            <h3><%= @department.name %></h3>
+          
+        </div>
+            <div class="col-md-3">
+          <label class="control-label">Description</label>
+            <h3><%= @department.description %></h3>
+         </div>
+           
+    </div>
+</div>
+</div>
+</section>
+
+
+
+
+
+<!-- <p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%#= @department.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%#= @department.description %>
+</p>
+
+<%#= link_to 'Edit', edit_department_path(@department) %> |
+<%#= link_to 'Back', departments_path %>
+ -->

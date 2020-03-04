@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vehicle_type_name: MyString
+  type_details: MyString
+  transport_type: 1
+  status: 1
+
+two:
+  vehicle_type_name: MyString
+  type_details: MyString
+  transport_type: 1
+  status: 1

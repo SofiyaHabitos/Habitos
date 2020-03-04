@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Normal Menus</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @normal_menus.each do |normal_menu| %>
+      <tr>
+        <td><%= link_to 'Show', normal_menu %></td>
+        <td><%= link_to 'Edit', edit_normal_menu_path(normal_menu) %></td>
+        <td><%= link_to 'Destroy', normal_menu, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Normal Menu', new_normal_menu_path %>

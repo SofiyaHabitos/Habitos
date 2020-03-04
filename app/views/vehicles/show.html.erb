@@ -1,0 +1,115 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Vehicle Management/ Show Vehicle Management</p>
+    <h2 class="header_title">Show Vehicle <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, vehicles_path, title:"Back", :class=>"btn btn_back"%></h2>
+
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+
+          
+          <div class="col-md-3">
+            <label class="control-label">Vehicle Type:</label>
+            <h3><%= @vehicle.vehicle_type.vehicle_type_name %></h3>
+          </div>
+
+          <div class="col-md-3">
+            <label class="control-label">Vehicle name:</label>
+            <h3><%= @vehicle.vehicle_name %></h3>
+          </div>
+
+          <div class="col-md-3">
+            <label class="control-label">Registration Number:</label>
+            <h3><%= @vehicle.reg_no %></h3>
+          </div>
+
+          
+
+          <div class="col-md-3">
+            <label class="control-label">Vehicle owner:</label>
+            <h3><%= @vehicle.vehicle_owner %></h3>
+          </div>
+
+          <div class="col-md-3">
+            <label class="control-label">Vehicle contact no:</label>
+            <h3><%= @vehicle.vehicle_contact_no %></h3>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <p id="notice"><%#= notice %></p>
+
+<p>
+  <strong>Reg no:</strong>
+  <%#= @vehicle.reg_no %>
+</p>
+
+<p>
+  <strong>Vehicle type:</strong>
+  <%#= @vehicle.vehicle_type %>
+</p>
+
+<p>
+  <strong>Vehicle name:</strong>
+  <%#= @vehicle.vehicle_name %>
+</p>
+
+<p>
+  <strong>Vehicle owner:</strong>
+  <%#= @vehicle.vehicle_owner %>
+</p>
+
+<p>
+  <strong>Vehicle contact no:</strong>
+  <%#= @vehicle.vehicle_contact_no %>
+</p>
+
+<p>
+  <strong>Gps status:</strong>
+  <%#= @vehicle.gps_status %>
+</p>
+
+<p>
+  <strong>Gps:</strong>
+  <%#= @vehicle.gps_id %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%#= @vehicle.status %>
+</p>
+
+<%#= link_to 'Edit', edit_vehicle_path(@vehicle) %> |
+<%#= link_to 'Back', vehicles_path %> -->

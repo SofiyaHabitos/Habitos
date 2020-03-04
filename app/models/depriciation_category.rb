@@ -1,0 +1,2 @@
+class DepriciationCategory < ApplicationRecord
+end

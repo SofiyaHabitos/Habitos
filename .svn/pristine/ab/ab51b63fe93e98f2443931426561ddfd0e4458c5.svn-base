@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  meal_course_name: MyString
+  description: MyString
+  created_by: MyString
+  updated_by: MyString
+
+two:
+  meal_course_name: MyString
+  description: MyString
+  created_by: MyString
+  updated_by: MyString

@@ -1,0 +1,72 @@
+<!-- <Second page for wastage> -->
+<div class="card border-0 table-container mb-2">
+       <% if vessel_wastage.present? %>
+      
+          <div class="card-body">
+          	<%= form_for :dispatch, url: {action: "wasted"} do |f|%>
+          	    <table class="table table-striped display vesseldispatch" id="quantity">
+          	    	<% if vessel_wastage.first.class.name != "Vesselplanner"%>
+<%# byebug %>
+          	    	    <thead>
+
+                          <th colspan="4"><b>Date:</b>&nbsp;<span><%= vessel_wastage.first.date.to_date.strftime("%d-%m-%Y")%><%= hidden_field_tag "date", vessel_wastage.first.date.to_date.strftime("%Y-%m-%d")%></span></th>
+ 
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                              <td><b><%= vessel_wastage.first.tenant_detail.meal_time %></b></td>
+                              <td><b><%= vessel_wastage.first.tenant_detail.tenant.name %></b></td>
+                              <td><b>Client Category</b></td>
+                              <td><b>Utensil Name</b></td>
+                              <td class="text-center"><b>Count</td>
+                              <td>Wastage</td>
+
+                            </tr>
+
+                             <% vessel_wastage.each do |i| %>
+
+                                <% if i.menuitem["name"].present?%>
+                                      
+                                 <tr>
+
+                                    <td><%= text_field_tag "item[]",i.menuitem["name"],class: 'form-control item',readonly: true %></td>
+
+                                    <td><%= text_field_tag "qty[]",i.menuitem["qty"].to_f.round(4).to_s + " "+ i.menuitem["UOM"],class: 'form-control addqty',readonly: true%></td>
+
+                                    <td><%= ClientCategory.find(i.tenant_detail.stud_type.to_i).name %><%=hidden_field_tag "tenantdetail[]",i.tenant_detail_id%></td>
+
+                                    <%=hidden_field_tag "utensil_id[]",i.utensil.utensilname_id%> 
+                                    <%=hidden_field_tag "tag_id[]",i.tag_id%>
+
+                                    <td class="p-0"><%= select_tag 'utensil_id[]', options_for_select(@utensilname,selected: i.utensil.present? ? i.utensil.utensilname_id : " "),{class: " form-control utensil",required: true, disabled: true } %>
+                                   	  <%= select_tag 'tag_id[]', options_for_select(@tags.where(utensil_id: i.utensil_id).pluck(:auto_id,:id), selected: i.tag_id),{ class: "form-control tags",required: true,prompt: "Please Select", disabled: true}%>
+                                    </td>
+
+                                    <td class="text-center">1</td>
+
+                                    <td><%= text_field_tag 'wastage[]', i.wastage, class: "form-control", placeholder:"0.0"%></td> 
+
+                                 </tr>
+                                <% end %>
+
+                             <% end %>
+
+                        </tbody>
+
+          	    	<% end %>
+          	    </table>
+
+          	    <%= f.submit "submit", class: "btn btn_submit float-right" %>
+
+          	<% end %>
+          </div>
+
+          <%else%>
+
+       <h3>No Data Found</h3> 
+
+       <% end %>
+</div>

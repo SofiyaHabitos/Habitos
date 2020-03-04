@@ -1,0 +1,225 @@
+<section class="page-content">
+    <div class="container-fluid">
+       <div id="snackbar"></div>
+
+
+        <p class="page_path">CRM / Assigned Menu</p>
+          <h5 class="header_title d-flex align-items-center justify-content-between">Assigned Menu
+            <span class="float-right d-flex align-items-center send_mail_to">
+              <label class="mb-0 mr-2">To:</label>
+              <%= email_field_tag "receiver_email", "", class: "invisible_input_box", id: "mailable_email_id", required: "true", placeholder: "Enter Client Mail ID" %>
+                <button type="button" title="Send" class="btn" id="send_email_btn" onclick= "email_menu_details()"><i class="fas fa-paper-plane"></i></button> 
+              </span>
+          </h5>
+        <br>
+
+        <div class="filter_by">
+          
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="control floating_label">
+                            <%= text_field_tag :date_range , "", class: "input-text float-input boxed", id: "date_range", autofocus: true, required: true, placeholder: "dd-mm-yyyy" %>
+                            <label class="input-text-placeholder" for="date">Date</label>
+                        </div>
+                    </div>
+
+                   
+                    
+                    <div class="col-md-3">
+                      <div class="control floating_label">
+                         <%= select_tag "client_name" , options_for_select(tenant_list), {class: "input-text float-input boxed", id: "client_name", required: true , prompt: ""} %>
+                        <label class="input-text-placeholder" for="clientname">Client Name</label>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                      <div class="control floating_label">
+                        <%= select_tag "meal_course" , options_for_select(meal_course_list), {class: "input-text", id: "meal_course", required: true} %>
+                        <label class="input-text-placeholder" for="mealcourse">Meal Course</label>
+                      </div>
+                    </div>
+
+                 </div>
+
+          
+            <div id="assigned_menu">
+
+            </div>
+          
+
+        </div>
+
+   
+         
+    </div>
+</section>
+
+<style>
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>  
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+<script type="text/javascript">
+
+    function email_menu_details(){
+      var email_id = $("#mailable_email_id").val();
+      if (email_id != "") {
+          if( isEmail(email_id)) { 
+              before_email_response();
+              var date_range = $("#date_range").val();
+              var input_dates = date_range.split("to");
+              var client_id = $("#client_name").val();
+              var meal_course_id = $("#meal_course").val();
+              if ((input_dates.length == 2) && (client_id != "")) {
+                  $.ajax({
+                      type: "GET",
+                      url: "/mail_assigned_menu?start_date="+input_dates[0]+"&&end_date="+input_dates[1]+"&&client_id="+client_id+"&&meal_course_id="+meal_course_id+"&&mailable_id="+email_id+"&&format=pdf",
+                      success: function(data) {
+                         after_email_response();
+                      },
+                  })
+              } else {
+                  Swal.fire({
+                    title: "<i>Sorry!</i>", 
+                    html: "<b>Mail can't be sent without data</b>",  
+                    confirmButtonText: "<u>Ok</u>", 
+                  });  
+              }
+          } else {
+              Swal.fire({
+                title: "<i>Oops!</i>", 
+                html: "<b>Please type an valid Email Id</b>",  
+                confirmButtonText: "<u>Ok</u>", 
+              });  
+          }    
+      } else {
+          Swal.fire({
+            title: "<i>Oops!</i>", 
+            html: "<b>Please type an Email Id</b>",  
+            confirmButtonText: "<u>Ok</u>", 
+          });
+      }
+    }
+
+
+    function isEmail(email) {
+      var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email);
+    }
+
+
+  function before_email_response() {
+      var x = document.getElementById("snackbar");
+      //x.innerHTML = ' ';
+      x.innerHTML = 'Sending ....';
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+
+
+  function after_email_response(){
+      var x = document.getElementById("snackbar");
+      //x.innerHTML = ' ';
+      x.innerHTML = 'Mail sent successfully';
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+
+
+$(document).ready(function(){
+  $("#client_name").select2();
+    $('#date_range, #client_name, #meal_course').on('change', function () {
+        filter_assigned_menu();
+    });
+
+    function filter_assigned_menu() {
+        var date_range = $("#date_range").val();
+        var input_dates = date_range.split("to");
+        var client_id = $("#client_name").val();
+        var meal_course_id = $("#meal_course").val();
+        if ((input_dates.length == 2) && (client_id != "")) {
+            $.ajax({
+                type: "GET",
+                url: "/dynamic_client_menu?start_date="+input_dates[0]+"&&end_date="+input_dates[1]+"&&client_id="+client_id+"&&meal_course_id="+meal_course_id,
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "/assigned_menu?start_date="+input_dates[0]+"&&end_date="+input_dates[1],
+            })
+        }
+    }
+
+    $('#date_range').flatpickr({
+        dateFormat: "d-m-Y",
+        mode: "range"
+    });
+});
+</script>
+
+
+<script type="text/javascript">
+  function download_pdf(){
+      
+              var date_range = $("#date_range").val();
+              var input_dates = date_range.split("to");
+              var client_id = $("#client_name").val();
+              var meal_course_id = $("#meal_course").val();
+              if ((input_dates.length == 2) && (client_id != "")) {
+                  $.ajax({
+                      type: "GET",
+                      url: "/mail_assigned_menu?start_date="+input_dates[0]+"&&end_date="+input_dates[1]+"&&client_id="+client_id+"&&meal_course_id="+meal_course_id+"&&email="+false,
+                  })
+              } else {
+                  Swal.fire({
+                    title: "<i>Sorry!</i>", 
+                    html: "<b>PDF Cant be downloaded without data</b>",  
+                    confirmButtonText: "<u>Ok</u>", 
+                  });  
+              }
+    }
+</script>
+
+

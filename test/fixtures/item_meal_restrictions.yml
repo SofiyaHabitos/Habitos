@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  production_item: one
+  meal_restriction: one
+  created_by: MyString
+  updated_by: MyString
+
+two:
+  production_item: two
+  meal_restriction: two
+  created_by: MyString
+  updated_by: MyString

@@ -1,0 +1,186 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">SCM / Trip Management / Show Trip Management</p>
+    <h2 class="header_title">Show Trip Management <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, trip_details_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-2">
+            <label class="control-label">Plan Name</label>
+              <h3><%=@trip_details.first.trip.trip_name %></h3>
+          </div>
+          <div class="col-md-2">
+             <label class="control-label">Trip Cost</label>
+              <h3><%=@trip_details.first.trip.trip_cost %></h3>
+          </div>
+
+        </div>
+        <div class="row">
+
+          
+          <div class="col-md-2">
+            <label class="control-label">Source</label>
+          </div>
+
+          <div class="col-md-2">
+            <label class="control-label">Destination</label>
+          </div>
+
+          <div class="col-md-1">
+            <label class="control-label">Vehicle type</label>
+          </div>
+
+          <div class="col-md-1">
+            <label class="control-label">Distance</label>
+          </div>
+
+          <div class="col-md-1">
+            <label class="control-label">Rate</label>
+          </div>
+
+          <div class="col-md-1">
+            <label class="control-label">Waiting Time</label>
+          </div>
+
+          <div class="col-md-1">
+            <label class="control-label">Waiting charge</label>
+          </div>
+
+          <div class="col-md-1">
+            <label class="control-label">Serving charge</label>
+          </div>
+
+
+          </div><!-- closing the label row -->
+
+
+
+
+    <% @trip_details.map do |trip| %>
+    
+      <div class="row">
+          
+
+          
+          <div class="col-md-2">
+            <h3><%= Tenant.find(trip.source.to_i).name %></h3>
+          </div>
+
+          <div class="col-md-2">
+            <h3><%= Tenant.find(trip.destination.to_i).name %></h3>
+          </div>
+
+          <div class="col-md-1">
+            <h3><%= trip.vehicle_type %></h3>
+          </div>
+
+          <div class="col-md-1">
+            <h3><%= trip.distance %></h3>
+          </div>
+
+          <div class="col-md-1">
+            <h3><%= trip.rate %></h3>
+          </div>
+
+          <div class="col-md-1">
+            <h3><%= trip.waiting_time %></h3>
+          </div>
+
+          <div class="col-md-1">
+            <h3><%=trip.waiting_charge %></h3>
+          </div>
+
+          <div class="col-md-1">
+            <h3><%=  trip.serving_charging %></h3>
+          </div>
+
+        </div> <!-- closing the data row -->
+      <%end%>
+
+
+
+
+     
+    </div> <!-- jhf -->
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <p id="notice"><%#= notice %></p>
+
+<p>
+  <strong>Source:</strong>
+  <%#= @trip_detail.source %>
+</p>
+
+<p>
+  <strong>Destination:</strong>
+  <%#= @trip_detail.destination %>
+</p>
+
+<p>
+  <strong>Vehicle type:</strong>
+  <%#= @trip_detail.vehicle_type %>
+</p>
+
+<p>
+  <strong>Distance:</strong>
+  <%#= @trip_detail.distance %>
+</p>
+
+<p>
+  <strong>Rate:</strong>
+  <%#= @trip_detail.rate %>
+</p>
+
+<p>
+  <strong>Waiting time:</strong>
+  <%#= @trip_detail.waiting_time %>
+</p>
+
+<p>
+  <strong>Waiting charge:</strong>
+  <%#= @trip_detail.waiting_charge %>
+</p>
+
+<p>
+  <strong>Serving charging:</strong>
+  <%#= @trip_detail.serving_charging %>
+</p>
+
+<p>
+  <strong>Trip:</strong>
+  <%#= @trip_detail.trip %>
+</p>
+
+<%#= link_to 'Edit', edit_trip_detail_path(@trip_detail) %> |
+<%#= link_to 'Back', trip_details_path %>
+ -->

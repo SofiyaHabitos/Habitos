@@ -1,0 +1,152 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - AllMenuItems</h3></center>
+
+   </div>    
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Meal group name</span></label>
+                
+                    <div class="form-group"><%= @menu_master.menu_master_name %></div>
+                
+                  </div>
+            
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Quantity</span></label>
+      
+                    <div class="form-group"><!%= @nutrition.quantity %></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal time</span></label>
+      
+                    <div class="form-group"><%= @menu_master.category.category_name %></div>
+                
+                  </div>
+<!-- 
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Cost</span></label>
+      
+                    <div class="form-group"><%#= @menu_master.cost %></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Food category</span></label>
+      
+                    <div class="form-group"><%= @menu_master.food_category.id? ? @menu_master.food_category.name : nil %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal restriction</span></label>
+      
+                    <div class="form-group"><%= @menu_master.meal_restriction_id.present? ? @menu_master.meal_restriction.meal_restriction_name : nil %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Allergy</span></label>
+      
+                    <div class="form-group"><%=  @menu_master.allery_id.present? ? @menu_master.allery.name : nil %></div>
+                
+                  </div>
+
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">UOM</span></label>
+      
+                    <div class="form-group"><!%= @nutrition.unit_of_measurement.name%></div>
+                
+                  </div> -->
+
+      
+
+
+                   <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Created_by</span></label> 
+                  <div class="form-group">
+                    <%= @menu_master.created_by %>
+                  </div>
+                </div>
+                 
+
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                 <!-- <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  <div class="form-group">
+                    <%#= @menu_master.updated_by %>
+                  </div>
+                </div> -->
+                
+
+                 <div class="col-xs-4">
+                  <!-- <label class="control-label"><span style="font-weight:bold">Items</span></label>  -->
+                  
+
+                  <div class="row">
+                     <div class="col-md-6"><span style="font-weight:bold">Items</span></div>
+                     <div class="col-md-6"><span style="font-weight:bold">Qty</span></div>
+                  </div>
+                                    
+                  <%  @menu_master.menu_production_items.each do |item|  %>
+                  <div class="row">
+                     <div class="col-md-6"><%= item.production_item.name%></div>
+                     <div class="col-md-6"><%= item.quantity%></div>
+                  </div>
+                  <%end%>
+
+                  </div>
+
+                  
+                </div>
+
+
+                
+
+
+
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+  
+         
+    <div class="footer">
+  
+     <%= link_to 'Back', menu_masters_path, :class=>"btn btn-default"%>  
+     <%= link_to 'Edit', edit_menu_master_path(@menu_master), :class=>"btn btn-primary" %>
+      <!--%= link_to 'Edit', edit_nutrition_path(@nutrition), :class=>"btn btn-primary"%-->
+  
+   
+    </div>
+  
+  </div>
+
+</div>
+
+
+

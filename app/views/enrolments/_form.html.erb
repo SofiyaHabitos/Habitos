@@ -1,0 +1,168 @@
+<%= form_for(enrolment) do |f| %>
+  
+  <% if enrolment.errors.any? %>
+  
+    <div id="error_explanation">
+  
+      <h2><%= pluralize(enrolment.errors.count, "error") %> prohibited this enrolment from being saved:</h2>
+
+      <ul>
+  
+      <% enrolment.errors.full_messages.each do |message| %>
+  
+        <li><%= message %></li>
+  
+      <% end %>
+  
+      </ul>
+  
+    </div>
+  
+  <% end %>
+
+  <article class="content item-editor-page">
+  
+    <div class="title-block">
+    
+      <h3 class="title">New Enrolment<span class="sparkline bar" data-type="bar"></span> </h3>
+    
+    </div>
+    
+    <form name="item">
+    
+      <div class="card card-block">
+    
+        <div class="row">
+    
+          <div class="form-group">
+    
+            <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :name %></label>
+
+              <div class="form-group"><%= f.text_field :name,:class=>"form-control" %></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :age_type %></label>
+
+              <div class="form-group"><%= f.select :age_type, options_for_select([["Child", "Child"], ["Teens", "Teens"],["Adult", "Adult"]]),{prompt: "Please Select" },{class: "form-control boxed single"}  %></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :date_of_birth %></label>
+
+              <div class="form-group"><%= f.date_select :date_of_birth,:class=>"form-control" %></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :height %></label>
+
+              <div class="form-group"><%= f.number_field :height,:class=>"form-control" %></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :weight %></label>
+
+              <div class="form-group"><%= f.number_field :weight,:class=>"form-control" %></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :bmi %></label>
+
+              <div class="form-group"><%= f.text_field :bmi,:class=>"form-control" %></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :standard %></label>
+
+              <div class="form-group"><%= f.select :standard, options_for_select([["Pre KG", "Pre KG"], ["LKG", "LKG"],["1st", "1st"],["2nd", "2nd"],["3rd", "3rd"],["4th", "4th"],["5th", "5th"],["6th", "6th"],["7th", "7th"],["8th", "8th"],["9th", "9th"],["10th", "10th"],["11th", "11th"],["12th", "12th"]]),{prompt: "Please Select" },{class: "form-control boxed single"}  %></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :id_number %></label>
+
+              <div class="form-group"><%= f.text_field :id_number,:class=>"form-control" %></div>
+
+            </div> 
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :order_source %></label>
+
+              <div class="form-group"><%= f.select :order_source, options_for_select([["Institution", "Institution"], ["Individual", "Individual"]]),{prompt: "Please Select" },{class: "form-control boxed single"}%></div>
+
+            </div>   
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :meal_time %></label>
+
+              <div class="form-group"><%= f.select :meal_time, options_for_select([["Breakfast", "Breakfast"], ["Lunch", "Lunch"],["Dinner", "Dinner"],["Morning snacks", "Morning snacks"],["Evening snacks", "Evening snacks"]]),{prompt: "Please Select" },{class: "form-control boxed single"}%></div>
+
+            </div>  
+
+             <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :food_category_id %></label>
+
+              <div class="form-group"><%= f.collection_select :food_category_id, FoodCategory.all, :id, :name, {:prompt=>true},{class: "dropdown form-control boxed"}%></div>
+
+            </div>  
+
+
+            <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :enrolment_type %></label>
+
+              <div class="form-group"><%= f.select :enrolment_type, options_for_select([["One Week", "One Week"], ["One Month", "One Month"],["Six Month", "Six Month"],["One Year", "One Year"]]),{prompt: "Please Select" },{class: "form-control boxed single"}  %></div>
+
+            </div>  
+
+            <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :tenant_id %></label>
+
+              <div class="form-group"><%= f.collection_select :tenant_id, Tenant.all,:id,:name, {:prompt=>true},{class: "dropdown form-control boxed"}%></div>
+
+            </div>  
+
+            <div class="col-xs-4">
+    
+              <label class="control-label"><%= f.label :user_id %></label>
+
+              <div class="form-group"><%= f.collection_select :user_id, User.all,:id,:name, {:prompt=>true},{class: "dropdown form-control boxed"}%></div>
+
+            </div>  
+ 
+            <div class="form-group row mrgn-top">
+            
+              <div class="col-sm-10 col-sm-offset-2"> <%= f.submit :class=>"btn btn-primary"%></div>
+       
+            </div>
+      
+          </div>
+      
+        </div>
+      
+      </div>
+
+    </form>
+
+  </article>
+
+<% end %>

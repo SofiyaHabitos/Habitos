@@ -1,0 +1,5 @@
+$("#newcustomer-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newcustomer-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+

@@ -1,0 +1,81 @@
+<p id="notice"><%= notice %></p>
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - View Control</h3></center>
+   </div>
+
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+    
+              <div class="row">
+        
+                <div class="form-group">
+            
+                  <div class="col-xs-4">
+                
+                    <label class="control-label"><span style="font-weight:bold">Customer</span></label>
+                  
+                    <div class="form-group"><%= @customer_view_control.tenant.name%></div>
+                
+                  </div>
+       
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Title</span></label>
+      
+                    <div class="form-group"><%= @customer_view_control.title%></div>
+                
+                  </div>
+       
+                 <div class="col-xs-2">
+                    <label class="control-label"><span style="font-weight:bold">Billing Upload</span></label>
+      
+                    <div class="form-group"><%=image_tag @customer_view_control.billing_upload ,:style=>"width:150px; height:150px" %></div>
+                
+                  </div>
+
+                  <div class="col-xs-2">
+  
+                    <label class="control-label"><span style="font-weight:bold">Newsletter Upload</span></label>
+      
+                    <div class="form-group"><%=image_tag @customer_view_control.nutrition_upload ,:style=>"width:150px; height:150px"%></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+                
+                    <label class="control-label"><span style="font-weight:bold">Created_by</span></label>
+                  
+                    <div class="form-group"><%= create(@customer_view_control) %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+                
+                    <label class="control-label"><span style="font-weight:bold">Updated_by</span></label>
+                  
+                    <div class="form-group"><%= update(@customer_view_control) %></div>
+                
+                  </div>
+
+
+                </div>
+          
+              </div>  
+        
+            </div>
+      
+          </article>
+    <div class="footer">
+    
+      <%= link_to 'Back', customer_view_controls_path, :class=>"btn btn-default"%>
+      <!--%= link_to 'Edit', edit_customer_view_control_path(@customer_view_control), :class=>"btn btn-primary"%-->
+
+    </div> 
+ 
+  </div>
+
+</div>

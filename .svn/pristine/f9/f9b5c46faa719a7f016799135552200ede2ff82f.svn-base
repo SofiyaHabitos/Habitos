@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  menu_master: one
+  production_item: one
+  quantity: MyString
+  meal_course: one
+
+two:
+  menu_master: two
+  production_item: two
+  quantity: MyString
+  meal_course: two

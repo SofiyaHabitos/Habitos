@@ -1,0 +1,61 @@
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body ng-app="vessel_delivery" ng-controller="vessel_deliveryConroller">
+	<div  style="margin-left: 10px; margin-top: 60px;padding: 0px 20px">
+		<h1>Vessel Delivery</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Client Name</th>
+					<th>Date</th>
+					<th>Vessel Name</th>
+					<th>Quantity</th>
+					<th>Driver Name</th>
+					<th>Status</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="data in datas">
+					<td>{{data.client_name}}</td>
+					<td>{{data.date}}</td>
+					<td>{{data.utensil_name}}</td>
+					<td>{{data.quantity}}</td>
+					<td>{{data.driver_name}}</td>
+					<td>{{data.status}}</td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+
+var app = angular.module('vessel_delivery', []);
+app.controller('vessel_deliveryConroller', function($scope,$http) {
+  console.log("working")
+    $http({
+        method: 'GET',
+        url: "http://habitos.insightmailer.com/api/v1/users/delivery_status"
+      }).then(function successCallback(response) {
+      	$scope.datas = response.data
+      });
+  })
+  </script>
+
+  <style type="text/css">
+  	
+  	table{
+  		width: 100%;
+  	}
+
+  	tr th{
+  		border: 1px solid #ddd;
+  		padding: 5px 10px;
+  	}
+
+  	tr td{
+  		border: 1px solid #ddd;
+  		padding: 5px 10px;
+  	}
+  </style>
+</body>

@@ -1,0 +1,2 @@
+$('.utensil').html("<%= escape_javascript select("utensils_category_id","id",@utensil_category.collect {|p| [  p["utensils_category_name"], p["id"]]},{:include_blank => "Please select",selected: @utensil.present? ? @utensil.utensils_category_id: nil}, {class: "utensil "})%>");
+

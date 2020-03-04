@@ -1,0 +1,1 @@
+$("#ten_detail").html("<%= escape_javascript(render 'pos_partial') %>");

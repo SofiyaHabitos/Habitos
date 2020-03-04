@@ -1,0 +1,495 @@
+<head>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+   <style>
+     form.edit-details label {
+          width: 29%;
+}
+.edit-details input {
+width: 66%;
+}
+.edit-details select {
+width: 66%;
+}
+   </style>
+</head>
+
+<body ng-app="tripShowModule" ng-controller="tripShow">
+ <div id="client_totalqty" class="modal-dialogs modal fade"></div>
+  <div id="cooksheet_item_edit" class="modal-dialogs modal fade"></div>
+    <section class="page-content" ng-init="getTrip()">
+     <div class="container-fluid">
+      <p class="page_path">SCM / Trip Plan</p>
+      <h2 class="header_title border-bottom">Trip Details
+        <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, tripplans_new_path, title:"Back", :class=>"btn btn_back"%>
+        <%#= button_to 'Back',tripplans_new_path,:style=>"float: right",:class=>"btn receive_btn"%>
+      </h2>
+
+      <div class="row">
+
+        <!-- <div class="col-md-1 d-flex align-items-center">
+           <label>Date&nbsp;Filter:</label>
+        </div> -->
+
+        <!-- <div class="col-md-2">
+
+          <div class="control floating_label">
+            <input type="text" ng-model="getDate" ng-change="getTrip()" name="" class="input-text date_picker">
+            <label class="input-text-placeholder" for="date">Choose Date</label>
+          </div>
+
+       </div> -->
+
+       <div class="col-md-2">
+       <div class="control floating_label">
+         <select class="input-text" ng-model="date" ng-change="getdates(date)">
+         <option>All</option>
+           <option ng-repeat="x in dates">{{x | date:'dd-MMM-yyyy'}}</option>
+         </select>
+         <label class="input-text-placeholder" for="date">Date</label>
+       </div>
+     </div>
+     
+     <div class="col-md-2">
+     <div class="control floating_label">
+       <select class="input-text" ng-model="time" ng-change="gettimes(time)">
+       <option>All</option>
+         <option ng-repeat="x in times">{{x}}</option>
+       </select>
+       <label class="input-text-placeholder" for="date">Time</label>
+     </div>
+   </div>
+
+      </div>
+      <div class="without_dt mb-3">
+        <table class="table table-container table-bordered table-striped mb-0 no_wrap_td">
+          <thead>
+            <tr>
+              <th>
+                <label class="checkbox-label">
+                  <input type="checkbox" class="custom_checkbox" ng-model='checkedAll' name="acs" ng-disabled="date =='All'" value="Mobile" ng-change='selectAll(checkedAll)'>
+                </label>
+              </th>
+              <th>Date</th>
+              <th>Meal Time</th>
+              <th>Trip Name</th>
+              <th>Driver Name</th>
+              <th>Reporting Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="data in datas">
+              <td>
+                <label class="checkbox-label">
+                  <input type="checkbox" class="custom_checkbox" name="acs" ng-model='checked' ng-disabled="date =='All'" ng-checked="data.checked == true" ng-change='select(checked,data,$index)'>
+                </label>
+              </td>
+              <td>{{data.data[0] | date:'dd-MMM-yyyy'}}</td>
+              <td>{{data.data[1] || '---'}}</td>
+              <td>{{data.data[2]}}</td>
+              <td>{{data.data[3]}}</td>
+              <td>{{data.data[4]}}</td>
+              <td><button class="btn btn-link" data-toggle="modal" data-target="#myModal1" ng-click='edit(data,$index)'>Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn btn_submit mt-3 mb-3 float-right" ng-disabled='result.length==0 || tripDuplicate.length !=0' ng-click="submit()">Send to Tookan</button>  <!-- ng-disabled='result.length==0 || tripDuplicate.length==0' -->
+     </div>
+
+     <div id="myModal1" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+  
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Edit Details</h4><span class="ti-close" data-dismiss="modal"></span>
+  
+              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+            </div>
+            <div class="modal-body modal-scroll">
+              <form class='edit-details'>
+                <div>
+              <label>Date</label>
+              <input value="{{selectedData.data[0] | date:'dd-MMM-yyyy' }}" disabled>
+            </div>
+            <div>
+              <label>Trip Name</label>
+              <input value='{{selectedData.data[2]}}' disabled>
+            </div>
+            <div>
+              <label>Driver Name</label>
+                    <select ng-model='selectedDriver'>
+                        <option ng-hide='selectedDriver==selectedData.data[3]'>{{selectedData.data[3]}}</option>
+                        <option ng-repeat='x in driverName' ng-click='selectDriverName(x)' >
+                          {{x}}
+                        </option>
+                    </select> 
+              <!-- <input ng-model='selectedDriver' value='{{selectedData.data[3]}}'>
+              <ul class="list-unstyled" ng-if='driverName.length'>
+                   <li ng-repeat='x in driverName | filter:selectedDriver' ng-click='selectDriverName(x)' ng-hide='x==selectedDriver'>{{x}}</li>
+              </ul> -->
+            </div>
+            <div>
+              <label>Reporting Time</label>
+                  <!-- <select>
+                  <option>{{selectedData.data[4]}}</option>
+                  <option ng-repeat="y in times">{{y}}</option>
+                  </select> -->
+              <input ng-model='selectedTime' value='{{selectedData.data[4]}}'>
+              <ul class="list-unstyled" ng-if='times.length'>
+                <li ng-repeat='x in times | filter:selectedTime' ng-click='selectedReportingTime(x)' ng-hide='x==selectedTime'>{{x}}</li>
+              </ul>
+            </div>
+              </form>
+            
+              <!-- <table class="table table_modal table-striped">
+                <thead class="edit-details">
+                  <tr>
+                      <th>Date</th>
+                      <th>Trip Name</th>
+                      <th>Driver Name</th>
+                      <th>Reporting Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{selectedData.data[0] | date:'dd-MMM-yyyy' }}</td>
+                    <td >{{selectedData.data[2] }} -->
+                      <!-- <input ng-model='selectedTrip' value='{{selectedData.data[2]}}'>
+                      <ul class="list-unstyled" ng-if='tripName.length'>
+                        <li ng-repeat='x in tripName | filter:selectedTrip' ng-click='selectDriverTrip(x)' ng-hide='x==selectedTrip'>{{x}}</li>
+                      </ul> -->
+                      <!-- <select>
+                        <option>{{selectedData.data[1]}}</option>
+                        <option ng-repeat='x in tripName.trip'>{{x}}</option>
+                      </select> -->
+                    <!-- </td>
+                    <td class="input">
+                      <input ng-model='selectedDriver' value='{{selectedData.data[3]}}'>
+                      <ul class="list-unstyled" ng-if='driverName.length'>
+                           <li ng-repeat='x in driverName | filter:selectedDriver' ng-click='selectDriverName(x)' ng-hide='x==selectedDriver'>{{x}}</li>
+                      </ul> -->
+                      <!-- <select>
+                        <option>{{selectedData.data[2]}}</option>
+                        <option ng-repeat='x in driverName'>
+                          {{x}}
+                        </option>
+                      </select> -->
+                      <!-- <input ng-model='selectedDriver' value='{{selectedData.data[2]}}'> -->
+                    <!-- </td>
+                    <td class="input">
+                    <input ng-model='selectedTime' value='{{selectedData.data[4]}}'>
+                    <ul class="list-unstyled" ng-if='times.length'>
+                      <li ng-repeat='x in times | filter:selectedTime' ng-click='selectedReportingTime(x)' ng-hide='x==selectedTime'>{{x}}</li>
+                    </ul> -->
+                    <!-- <td><select>
+                        <option>{{selectedData.data[3]}}</option>
+                        <option ng-repeat="x in times">{{x}}</option>
+                        </select> -->
+                      <!-- </td>
+                  </tr>
+                </tbody>
+              </table> -->
+             
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn_cancel" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn_cancel" data-dismiss="modal" ng-click='confirm(selectedTrip,selectedDriver,selectedTime)'>Save</button>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+
+    </section>
+  
+</body>
+
+<script type="text/javascript">
+var app = angular.module('tripShowModule', []);
+app.controller('tripShow', function($scope,$http,$filter) {
+  
+    var plannerURL="<%= $api_service%>";
+    var newDate=new Date();
+  $scope.date=$filter('date')(newDate, "dd-MMM-yyyy")
+  $scope.getDate=$scope.date;
+  $scope.date = "All"
+  $scope.time = "All"
+  $scope.checked= false;
+  $scope.result=[];
+  $scope.resultval = []
+  $scope.datas = []
+   $http({
+    method: 'GET',
+    url: plannerURL+'/api/v1/drivers/schedule_date',
+    }).then(function successCallback(response) {
+      $scope.dates= response.data
+  });
+
+
+
+  $http({
+    method: 'GET',
+    url: plannerURL+'/api/v1/drivers/schedule_time?date='+$scope.date,
+    }).then(function successCallback(response) {
+      $scope.times= response.data
+      // $scope.time= response.data
+  });
+
+  $http({
+        method: 'POST',
+        url: plannerURL+'/api/v1/drivers/assign_table',
+        data: {'date':$scope.date, 'time':$scope.time}
+        }).then(function successCallback(response) {
+         $scope.datas = []
+         for(var i = 0; i<response.data.length; i++){
+          $scope.datas.push({'id':i,'data':response.data[i], 'checked': false})
+        
+         }
+         
+        
+      });
+      
+     
+  $scope.getdates = function(date){
+     $scope.date = date
+     $http({
+        method: 'POST',
+        url: plannerURL+'/api/v1/drivers/assign_table',
+        data: {'date':$scope.date, 'time':$scope.time}
+        }).then(function successCallback(response) {
+          $scope.datas = []
+          $scope.checkedAll = false;
+          for(var i = 0; i<response.data.length; i++){
+          $scope.datas.push({'id':i,'data':response.data[i], 'checked': false})
+         }
+        
+      });
+      $http({
+    method: 'GET',
+    url: plannerURL+'/api/v1/drivers/schedule_time?date='+$scope.date,
+    }).then(function successCallback(response) {
+      $scope.times= response.data
+  });
+  $http({
+    method: 'GET',
+    url: plannerURL+'/api/v1/drivers/trip_duplicate?date='+$scope.date,
+    }).then(function successCallback(response) {
+      $scope.tripDuplicate= response.data.duplicates  
+      if ($scope.tripDuplicate.length!=0){
+
+        var test= $scope.tripDuplicate.toString();  
+        alert('Multiple drivers assigned for a same plan. Check before "Send to Tookan"')
+
+      }
+      
+      // console.log($scope.tripDuplicate)
+  });
+  }
+ 
+  $scope.edit = function(selectedData,index)
+  {
+    // console.log(selectedData.data[3])
+  $scope.selectedData=selectedData;
+  $scope.editIndex= index;
+  $scope.selectedTrip = selectedData.data[2]
+  $scope.selectedDriver=selectedData.data[3] 
+  $scope.selectedTime=selectedData.data[4]
+  // console.log($scope.selectedData)
+
+  $http({
+    method: 'GET',
+    url: plannerURL+'/api/v1/drivers/driver_name',
+    }).then(function successCallback(response) {
+      $scope.driverName= response.data
+      // console.log($scope.driverName)
+      // console.log($scope.driverName.filter(val=> !selectedData.data[3].includes(val)))
+      $scope.driverName=$scope.driverName.filter(val=> !selectedData.data[3].includes(val))
+
+      
+      //   }
+      // }
+  });
+  $http({
+    method: 'GET',
+    url: plannerURL+'/api/v1/drivers/trip_name',
+    }).then(function successCallback(response) {
+      $scope.tripName= response.data.trip
+      // console.log($scope.tripName)
+  });
+  }
+
+  $scope.confirm = function(selectedTrip,selectedDriver,selectedTime){
+    console.log(selectedDriver.trim())
+    selectedDriver=selectedDriver.trim()
+    if(2 > -1){
+      $scope.selectedData.data.splice(2,2,selectedTrip,selectedDriver,selectedTime)
+    }
+  console.log($scope.selectedData)
+    $http({
+      method: 'POST',
+      url: plannerURL+'/api/v1/drivers/trip_detail_edit',
+      data: {'data':$scope.selectedData}
+    }).then(function successCallback(response) {
+      if(response.data.key==true){
+        alert('saved successfully')
+        
+        $http({
+          method: 'POST',
+          url: plannerURL+'/api/v1/drivers/assign_table',
+          data: {'date':$scope.date, 'time':$scope.time}
+        }).then(function successCallback(response) {
+          $scope.datas = []
+          for(var i = 0; i<response.data.length; i++){
+            $scope.datas.push({'id':i,'data':response.data[i], 'checked': false})
+          }
+        
+          $http({
+            method: 'GET',
+            url: plannerURL+'/api/v1/drivers/trip_duplicate?date='+$scope.date,
+          }).then(function successCallback(response) {
+            $scope.tripDuplicate= response.data.duplicates  
+            if ($scope.tripDuplicate.length!=0){
+              var test= $scope.tripDuplicate.toString();  
+              alert('Multiple drivers assigned for a same plan. Check before "Send to Tookan"')
+            }
+          });
+        });
+      }
+    });
+  }
+
+  $scope.gettimes = function(time){ 
+    console.log(time)
+    console.log($scope.date)
+    $scope.time = time
+    $http({
+        method: 'POST',
+        url: plannerURL+'/api/v1/drivers/assign_table',
+        data: {'date':$scope.date, 'time':$scope.time}
+        }).then(function successCallback(response) {
+         $scope.datas = []
+         for(var i = 0; i<response.data.length; i++){
+          $scope.datas.push({'id':i,'data':response.data[i], 'checked': false})
+        
+         }
+        });
+  }
+  //  $scope.getTrip = function(){
+  //   $http({
+  //       method: 'GET',
+  //       url: plannerURL+'/api/v1/drivers/trip_assignment_table?date='+$scope.getDate,
+  //       }).then(function successCallback(response) {
+  //        $scope.datas = response.data
+        
+  //     });
+  //   }
+
+    $scope.selectAll = function(event){
+    // console.log(event);
+    if(event == true){
+
+      for(var i=0; i<$scope.datas.length; i++){
+        $scope.datas[i].checked = true;
+        $scope.result.push($scope.datas[i])
+      }
+    }else{
+      for(var i=0; i<$scope.datas.length; i++){
+        $scope.datas[i].checked = false;
+        $scope.result=[]
+      }
+    }
+    // console.log($scope.result)
+    }
+    $scope.select = function(event,data,index){
+      
+      // console.log('test',event,data)
+      $scope.selectedValue= data;
+      if(event==true){
+        var test = $scope.datas.findIndex(res=> res.id==data.id)
+        $scope.datas[test].checked = true
+        $scope.result.push($scope.datas[test])
+        console.log($scope.result)
+      }
+      else{
+        var test = $scope.result.findIndex(res=> res.id==index)
+        if(test > -1)
+        {
+          $scope.datas[test].checked = false
+          $scope.result.splice(test,1)
+        }
+        // console.log($scope.result)
+      }
+      }
+
+      $scope.selectDriverName =  function(name){
+        // console.log(name)
+        $scope.selectedDriver= name;
+      }
+      $scope.selectDriverTrip = function(trip){
+        // console.log(trip)
+        $scope.selectedTrip= trip;
+      }
+      $scope.selectedReportingTime = function(time){
+        $scope.selectedTime = time;
+      }
+    $scope.submit = function(){
+       $http({
+    method: 'GET',
+    url: plannerURL+'/api/v1/drivers/trip_duplicate?date='+$scope.date,
+    }).then(function successCallback(response) {
+      $scope.tripDuplicate= response.data.duplicates  
+
+      if ($scope.tripDuplicate.length!=0){
+
+        var test= $scope.tripDuplicate.toString(); 
+        alert('Multiple drivers assigned for a same plan. Check before "Send to Tookan"')
+        
+      }
+      else{
+        console.log($scope.result)
+        $http({
+        method: 'POST',
+        url: plannerURL+'/api/v1/drivers/trip_assignment',
+        data: {'data':$scope.result}
+        }).then(function successCallback(response) {
+          if(response.data.key==true){
+            alert('submitted successfully')
+            $http({
+              method: 'POST',
+              url: plannerURL+'/api/v1/drivers/assign_table',
+              data: {'date':$scope.date, 'time':$scope.time}
+            }).then(function successCallback(response) {
+              $scope.datas = []
+              for(var i = 0; i<response.data.length; i++){
+                $scope.datas.push({'id':i,'data':response.data[i], 'checked': false})
+              }
+            });
+          }
+        
+      });
+      }
+      // console.log($scope.tripDuplicate)
+  });
+     
+    }
+
+    // $scope.selectAll = function(){
+    //   var items = document.getElementsByName('acs');
+    //     for (var i = 0; i < items.length; i++) {
+    //         if (items[i].type == 'checkbox')
+    //             items[i].checked = true;
+    //     }
+    // }
+    })
+        
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".date_picker").flatpickr({
+      dateFormat: "d-m-Y"
+    });
+  });
+</script>

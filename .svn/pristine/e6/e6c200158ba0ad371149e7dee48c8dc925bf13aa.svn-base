@@ -1,0 +1,158 @@
+class TenantsController < ApplicationController
+  before_action :set_tenant, only: [:show, :edit, :update, :destroy]
+  before_action :check_meal_info, only: [:create]
+
+  # GET /tenants
+  # GET /tenants.json
+  def index
+    @tenants = Tenant.where.not(:name=>"Idlidabba")
+   # @tenants = Tenant.paginate(:page => params[:page], :per_page => 10)
+  end
+
+  # GET /tenants/1
+  # GET /tenants/1.json
+  def show
+  end
+
+  # GET /tenants/new
+  def new
+    @tenant = Tenant.new
+    @tenant.build_image
+    @tenant.tenant_details.build
+  end
+  # GET /tenants/1/edit
+  def edit
+    #@tenant_details = @tenant.tenant_details.build    
+    #@image = @tenant.build_image    
+  end
+
+  # POST /tenants
+  # POST /tenants.json
+  def create  
+
+   if params[:tenant][:meal] == "true"    
+      #fd = tenant_params[:tenant_details_attributes].map{|i|  i.last[:food_category_id] = FoodCategory.find_by(:name=>i.last[:food_category_id]).id }
+      @tenant =Tenant.new(tenant_params)
+      #g = 0
+      #@tenant.tenant_details.map do |e|
+      #  e.food_category_id = fd[g]
+      #  g = g + 1
+      #end
+    else 
+      @tenant =Tenant.new(tenant_data_params)
+    end
+    respond_to do |format|
+      if @tenant.save
+        @tenant.update(:created_by=>session[:kitchen_user_id],feedback_code: "HU00"+''+@tenant.id.to_s)       
+        TenantNotifierMailer.send_cnfrmtn_email(@tenant).deliver 
+        format.html { redirect_to tenants_url, notice: 'Tenant was successfully created.' }  
+        format.json { render :show, status: :created, location: @tenant }  
+      else  
+        format.html { redirect_to tenants_url }  
+        format.json { render json: @tenant.errors, status: :unprocessable_entity }  
+      end  
+    end    
+  end
+
+  # PATCH/PUT /tenants/1
+  # PATCH/PUT /tenants/1.json
+
+
+def update
+
+=begin  
+    tenant_update_params[:tenant_details_attributes].each do |k, v|
+      if v[:food_category_id].present?
+        if v[:food_category_id].to_i != 0
+          v[:food_category_id] = FoodCategory.find(v[:food_category_id].to_i).id
+        else
+          v[:food_category_id] = FoodCategory.find_by(:name=>v[:food_category_id]).id
+        end
+      end
+    end
+=end
+    respond_to do |format|
+      if @tenant.update(tenant_update_params)
+        if @tenant.active == true
+          is_active = (@tenant.to_date < Date.today ? false : true )
+          @tenant.update(active: is_active)
+        end
+        @tenant.update(:updated_by=>session[:kitchen_user_id])
+        #send_notification_email    
+        format.html { redirect_to tenants_url, notice: 'Tenant was successfully updated.' }
+        format.json { render :show, status: :ok, location: @tenant }
+      else
+        format.html { redirect_to tenants_url, notice: 'Tenant was not updated.' }
+        format.json { render json: @tenant.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /tenants/1
+  # DELETE /tenants/1.json
+  def destroy
+ 
+    @tenant.destroy
+    respond_to do |format|
+      format.html { redirect_to tenants_url, notice: 'Tenant was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def check_mg_present      
+    #@array = FoodGroup.where(:meal_time=>params[:select]).map{|d|d.food_category.name} 
+    @array = FoodGroup.where(:meal_time=>params[:select]).map{|d|d.food_category.name} 
+  end
+
+
+  def customer_report
+    file_path = Tenant.customer_report(params)
+    send_file file_path  
+    #redirect_to summaries_path
+  end
+
+
+  def check_meal_info
+      if params[:tenant][:meal] == "true" && (tenant_params[:tenant_details_attributes]["0"][:meal_time] == "" || tenant_params[:tenant_details_attributes]["0"][:meal_plan] == "" || tenant_params[:tenant_details_attributes]["0"][:order] == "" || tenant_params[:tenant_details_attributes]["0"][:quantity] == "" || tenant_params[:tenant_details_attributes]["0"][:food_category_id] == "") 
+          redirect_to :action => "new", notice: 'Tenant was not created. Please fill the meal_info'
+      end
+  end
+
+  def user_feedback
+    @feedback=[]
+    tenant=UserFeedback.all.pluck(:tenant_id).uniq
+    tenant.map do |tenant|
+      @feedback << {:tenant_name => Tenant.find(tenant).name,:rat1 => UserFeedback.where(tenant_id: tenant, rating: "1").count,:rat2 => UserFeedback.where(tenant_id: tenant, rating: "2").count,:rat3 => UserFeedback.where(tenant_id: tenant, rating: "3").count,:rat4 => UserFeedback.where(tenant_id: tenant, rating: "4").count, :rat5 => UserFeedback.where(tenant_id: tenant, rating: "5").count}
+    end
+    
+  end
+
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_tenant
+      unless params[:id] == "undefined"
+      @tenant = Tenant.find(params[:id])
+    else
+      redirect_to tenants_url
+    end
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def tenant_params
+       params.require(:tenant).permit(:name, :description, :site_category_id, :latitude, :longitude,:sex, :from_date, :to_date,:email, :contact_person1, :contact_person2, :phone1, :phone2, :address, :exclude, :created_by, :updated_by, :active,:kitchen_id, :meal,image_attributes: [:id ,:image_path], tenant_details_attributes: [:id ,:tenant_id,:meal_time, :meal_restriction_id, :meal_plan, :age_type, :order, :quantity, :food_category_id, :cost, :stud_type, :_destroy,:feedback_code])
+    end
+
+    def tenant_update_params
+      params.require(:tenant).permit!
+    end
+
+   def tenant_data_params
+       params.require(:tenant).permit(:name, :description, :site_category_id, :latitude, :longitude,:sex, :from_date, :to_date,:email, :contact_person1, :contact_person2, :phone1, :phone2, :address, :exclude, :created_by, :updated_by, :active,:kitchen_id, :meal, image_attributes: [:id ,:image_path])
+    end
+    
+    def send_notification_email
+        TenantUpdationMailer.send_updation_email(@tenant).deliver     
+    end
+
+end

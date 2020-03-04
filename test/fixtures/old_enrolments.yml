@@ -1,0 +1,61 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  string: MyString
+  age_type: MyString
+  string: MyString
+  date_of_birth: MyString
+  date: MyString
+  height: MyString
+  float: MyString
+  weight: MyString
+  float: MyString
+  bmi: 1.5
+  standard: MyString
+  id_number: MyString
+  food_category: one
+  enrolment_type: MyString
+  tenant: one
+  order_source: MyString
+  email: MyString
+  sex: MyString
+  parent_name: MyString
+  meal_time: MyString
+  from_date: 2018-06-05
+  to_date: 2018-06-05
+  meal_restriction: one
+  comment: MyText
+  is_active: false
+  status: MyString
+  stud_type: MyString
+
+two:
+  name: MyString
+  string: MyString
+  age_type: MyString
+  string: MyString
+  date_of_birth: MyString
+  date: MyString
+  height: MyString
+  float: MyString
+  weight: MyString
+  float: MyString
+  bmi: 1.5
+  standard: MyString
+  id_number: MyString
+  food_category: two
+  enrolment_type: MyString
+  tenant: two
+  order_source: MyString
+  email: MyString
+  sex: MyString
+  parent_name: MyString
+  meal_time: MyString
+  from_date: 2018-06-05
+  to_date: 2018-06-05
+  meal_restriction: two
+  comment: MyText
+  is_active: false
+  status: MyString
+  stud_type: MyString

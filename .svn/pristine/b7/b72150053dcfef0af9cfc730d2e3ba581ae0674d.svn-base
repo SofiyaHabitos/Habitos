@@ -1,0 +1,129 @@
+<% if @food_returns.present? %>
+  <div class="row">
+    <% if @food_returns.where(:date=>Date.today).pluck(:meal_time).uniq.include?"Breakfast" %>
+      <div class="col-md-3">
+        <div class="flex-item">
+          <div class="flex-sub-item">
+            <h2>Breakfast-Return</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>              
+              </tr>
+            </thead>
+            <tbody>
+              <% waste = [] %>
+              <% total_packs_consumed = 0 %>
+              <% @food_returns.where(:date => Date.today).where(:meal_time => "Breakfast").map do |e| %>
+                <tr>
+                  <td><%= e.menu_production_item.production_item.name %></td>
+                  <td><%= e.quantity %></td>
+                </tr>
+                <% waste= Wastage.where(:date=>Date.today).where(:tenant_id=>e.tenant_id).pluck(:total_qty,:wastage_quantity) %>
+                <% actual_enrol_packs = Attendance.where(:tenant_id=>e.tenant_id,:date=>Date.today,:meal_time=>"Breakfast",attendance_log: true).count %>
+                <% actual_not_enrol_packs = Tenant.find(e.tenant_id).point_of_sales.where(:date=>Date.today,:meal_time=>"Breakfast").pluck(:actual_qty).map{|v| v.to_i}.sum %>
+                <% total_packs_consumed = actual_enrol_packs + actual_not_enrol_packs %>
+              <% end %>
+              <% waste.each do |i| %>
+                <tr bgcolor=#2ce077>
+                  <td>Dustbin weight </td>
+                  <td><%= i[1] %></td>
+                </tr>
+              <% end %>
+              <tr bgcolor=#47f7df>
+                <td>No of packs Consumed : </td>
+                <td><%= total_packs_consumed %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @food_returns.where(:date=>Date.today).pluck(:meal_time).uniq.include?"Lunch" %>
+      <div class="col-md-3">
+        <div class="flex-item">
+          <div class="flex-sub-item">
+            <h2>Lunch-Return</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% waste = [] %>
+              <% total_packs_consumed = 0 %>
+              <% @food_returns.where(:date=>Date.today).where(:meal_time => "Lunch").map do |e| %>
+                <tr>
+                  <td><%= e.menu_production_item.production_item.name %></td>
+                  <td><%= e.quantity %></td>
+                </tr>
+                <% waste = Wastage.where(:date=>Date.today).where(:tenant_id=>e.tenant_id).pluck(:total_qty,:wastage_quantity) %>
+                <% actual_enrol_packs = Attendance.where(:tenant_id=>e.tenant_id,:date=>Date.today,:meal_time=>"Lunch",attendance_log: true).count %>
+                <% actual_not_enrol_packs = Tenant.find(e.tenant_id).point_of_sales.where(:date=>Date.today,:meal_time=>"Lunch").pluck(:actual_qty).map{|v| v.to_i}.sum %>
+                <% total_packs_consumed = actual_enrol_packs + actual_not_enrol_packs %>
+              <% end %>
+              <% waste.each do |i| %>
+                <tr bgcolor=#2ce077>
+                  <td>Dustbin weight </td>
+                  <td><%= i[1] %></td>
+                </tr>
+              <% end %>
+              <tr bgcolor=#47f7df>
+                <td>No of packs Consumed : </td>
+                <td><%= total_packs_consumed %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @food_returns.where(:date=>Date.today).pluck(:meal_time).uniq.include?"Dinner" %>
+      <div class="col-md-3">
+        <div class="flex-item">
+          <div class="flex-sub-item">
+            <h2>Dinner-Return</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% waste = [] %>
+              <% total_packs_consumed = 0 %>
+              <% @food_returns.where(:date=>Date.today).where(:meal_time => "Dinner").map do |e| %>
+                <tr>
+                  <td><%= e.menu_production_item.production_item.name %></td>
+                  <td><%= e.quantity %></td>
+                </tr>
+                <% waste = Wastage.where(:date=>Date.today).where(:tenant_id=>e.tenant_id).pluck(:total_qty,:wastage_quantity) %>
+                <% actual_enrol_packs = Attendance.where(:tenant_id=>e.tenant_id,:date=>Date.today,:meal_time=>"Dinner",attendance_log: true).count %>
+                <% actual_not_enrol_packs = Tenant.find(e.tenant_id).point_of_sales.where(:date=>Date.today,:meal_time=>"Dinner").pluck(:actual_qty).map{|v| v.to_i}.sum %>
+                <% total_packs_consumed = actual_enrol_packs + actual_not_enrol_packs %>
+              <% end %>
+              <% waste.each do |i| %>
+                <tr bgcolor=#2ce077>
+                  <td>Dustbin weight </td>
+                  <td><%= i[1] %></td>
+                </tr>
+              <% end %>
+              <tr bgcolor=#47f7df>
+                <td>No of packs Consumed : </td>
+                <td><%= total_packs_consumed %></td>
+              </tr>
+            </tbo dy>
+          </table>        
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

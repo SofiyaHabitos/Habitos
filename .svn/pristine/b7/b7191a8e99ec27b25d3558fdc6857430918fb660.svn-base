@@ -1,0 +1,7 @@
+$("#editasset-modal").html("<%= escape_javascript(render 'edit') %>")
+$("#editasset-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+
+

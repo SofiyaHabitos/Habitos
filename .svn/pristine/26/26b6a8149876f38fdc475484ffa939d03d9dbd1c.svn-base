@@ -1,0 +1,3 @@
+
+$("#delivery-modal").html("<%= escape_javascript(render 'delivery_status') %>")
+$("#delivery-modal").modal("show")

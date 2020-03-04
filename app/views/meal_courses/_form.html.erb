@@ -1,0 +1,261 @@
+<%= form_for(meal_course,validate: true) do |f| %>
+ 
+<article class="content item-editor-page wrap-center">
+    <div class="title-block">
+        <h3 class="title"><span class="sparkline bar" data-type="bar"></span> </h3>
+    </div>
+    <form name="item">
+            <div class="row new_row">
+                <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                 <%= f.label :meal_course_name ,"Meal Course Name"%>
+                 </label><div class="form-group"> 
+                 <%= f.text_field :meal_course_name,required:true,class: "form-control boxed" %>
+                 </div>
+                 </div>
+                 </div>
+              </div>
+              
+            <% position = MealCourse.last.present? ? MealCourse.pluck(:position).map { |e| e.to_i }.max.to_i + 1 : 1 %>
+            <div class="row new_row">
+              <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                  <%= f.label :position,"Meal course position"%>
+                </label><div class="form-group">
+                  <% if params[:id].present? %> 
+                  <%= f.text_field :position,required:true,class: "form-control boxed position_field" %>
+                  <% else %>
+                  <%= f.text_field :position,required:true,class: "form-control boxed position_field",:value=>position %>
+                  <%end%>
+                 </div>
+                 </div>
+                 </div>
+            </div>  
+
+            <div class="row new_row">
+            <div class="form-group">
+              <div class="col-xs-4">
+                <label class="control-label">
+                 <%= f.label :description %>
+                 </label><div class="form-group"> 
+                 <%= f.text_area :description,class: "form-control boxed" %>
+                 </div>
+              </div>
+            </div>
+            </div>
+        
+        <div class="row new_row">
+            <div class="col col-md-3"><%= link_to "Back", meal_courses_path ,:class=>"btn btn-primary"%></div>
+            <div class="col col-md-3"><%= f.submit "Submit",:class=>"btn btn-primary"%></div>
+        </div>
+        
+      </form>
+  </article>
+
+<% end %>
+
+
+
+
+<script type="text/javascript">
+   
+  $(document).ready(function(){
+
+    $(".position_field").on("change", function () {
+    
+      var pos_no = $(this).val();
+     
+      $.ajax({
+
+        type: "GET",
+        url: "/meal_courses/check_position?position=" + pos_no,
+        success: function nt(data) {
+               alert(data.message);
+              }
+      });
+    });
+  });
+</script>
+
+
+
+<!-- 
+<script type="text/javascript">
+   
+  $(document).ready(function(){
+
+    $(".position_field").on("change", function () {
+    
+      var pos_no = $(this).val();
+      
+       $.ajax({
+
+        type: "GET",
+        url: "/meal_courses/check_position?position=" + pos_no,
+        success: function nt(data) {
+                 var r = data.message
+              var r = confirm(r);
+                if (r == true) {
+                  alert("ggg");
+                    url: "/meal_courses/create";
+                }
+                else
+                {
+                 url: "<%=normalmenu_sites_dashboard_path%>";
+                }
+              }
+      });
+    });
+  });
+</script>
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<script >
+$(document).ready(function(){
+    $(".meal_info_test").click(function(){
+        var test = $(this).val();
+        alert("You picked meal yes. please fill meal info to proceed further.");
+    });
+});
+</script> -->
+
+
+
+<!--
+<script>
+  $(document).ready(function(){
+    $(".buttonToClick").click(function () {
+      alert("wowwiiieeeeee");
+      var pos_no = $(".fieldWithDesc").val();
+      var m_name = $(".fieldWithName").val();
+      $.ajax({
+
+        type: "GET",
+        url: "/meal_courses/check_position?position="+pos_no+"meal_name="+m_name,
+        success: function nt(data) {
+               alert(data.message);
+              }
+      });
+  });
+  });
+</script>
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% if false %>
+
+<%= form_for(meal_course) do |f| %>
+  <% if meal_course.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(meal_course.errors.count, "error") %> prohibited this meal_course from being saved:</h2>
+
+      <ul>
+      <% meal_course.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :meal_course_name %>
+    <%= f.text_field :meal_course_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :created_by %>
+    <%= f.text_field :created_by %>
+  </div>
+
+  <div class="field">
+    <%= f.label :updated_by %>
+    <%= f.text_field :updated_by %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<% end %>

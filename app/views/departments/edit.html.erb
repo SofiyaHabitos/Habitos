@@ -1,0 +1,20 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Department/ Edit Department</p>
+    <h2 class="header_title">Edit Department  <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, departments_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <%= render 'form', department: @department %>
+    
+  </div>
+</section>
+
+<!-- 
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container"> 
+  <div class="body-header">  
+<h3 class="modal-title">EDIT-DEPARTMENT</h3>
+</div>
+<%#= render 'form', department: @department %>
+</div>
+</div> -->
+<%#= link_to 'Show', @department %> |
+<%#= link_to 'Back', departments_path %>

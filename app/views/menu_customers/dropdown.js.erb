@@ -1,0 +1,5 @@
+
+$('.clientname').html("<%= escape_javascript select('tenant', 'tenant_id', @Client[:Tenant].collect {|p|  p },{:include_blank => ''}, {class: 'form-control'})%>");
+$('.studenttype').html("<%= escape_javascript select('tenant', 'stud_type', @Client[:client_categories].pluck(:name, :id), {:include_blank => ''}, {class: 'studenttype'})%>");
+$('.spreadtype').html("<%= escape_javascript select('tenant', 'spread_type', @Client[:Spread].pluck('spreadtype','spreadid'),{:include_blank => ''}, {class: 'spreadtype'})%>");
+

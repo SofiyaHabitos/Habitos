@@ -1,0 +1,17 @@
+<%= form_for(utensils_count_mapping) do |f| %>
+  <% if utensils_count_mapping.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(utensils_count_mapping.errors.count, "error") %> prohibited this utensils_count_mapping from being saved:</h2>
+
+      <ul>
+      <% utensils_count_mapping.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

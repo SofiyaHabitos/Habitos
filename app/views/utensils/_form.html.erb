@@ -1,0 +1,260 @@
+<div ng-app="">
+
+<% if utensil.present? %>
+  <%= nested_form_for(utensil) do |f| %>
+   <form name="item">
+      <div class="card card_form mb-5">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.collection_select :kitchen_id, Kitchen.all.order('name'), :id, :name,{:prompt=>""} ,{class: "input-text boxed e1",required: "true",autofocus: true}%>
+                 <%= f.label :kitchen_id,"Map to facility", :class=> "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+               <%= f.select :department_id ,  options_from_collection_for_select(Department.all.order('name'), :id, :name, selected: f.object.department_id),{:prompt=>""}, {class: " input-text boxed e1",required: "true", id: "type1" , prompt: "Select"}   %>
+                <%= f.label :department_id, "Department", :class=> "input-text-placeholder"%>
+              </div>
+            </div>
+   
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%=f.select :depriciation_category, options_for_select( DepriciationCategory.pluck(:name,:id), selected: f.object.depriciation_category),{prompt: ""},{class: "input-text boxed e1 ", id: "dep_cat", required: true}%> 
+                <%= f.label :depriciation_category,"Depreciation Category", :class=> "input-text-placeholder"%>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+               <%= f.date_field :purchase_date ,{class: "input-text boxed e1"}%>
+                <%= f.label :purchasedate,"Purchase Date (optional)", :class=> "input-text-placeholder"%> 
+              </div>
+            </div>
+
+            <div class="col-md-3">
+               <div class="form_radio d-block">
+                <%= f.label :asset_type, "Select:",:class => "mb-0 mr-2 d-block" %>
+                <label class="radio-label d-inline-flex mr-2"><%= f.radio_button :asset_type, "Internal",
+                   checked: true, class: "custom_radio boxed radio_custom" %><span>Internal</span></label>
+                <label class="radio-label d-inline-flex mr-2"><%= f.radio_button :asset_type, "External", class: "custom_radio boxed" %><span>External</span></label>
+                <label class="radio-label d-inline-flex"><%= f.radio_button :asset_type, "Transit", class: "custom_radio boxed" %><span>Transit</span></label>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+               <%= f.text_field :vendor ,{class: "input-text boxed e1", required: true}%>
+                 <%= f.label :vendor,"Vendor", :class=> "input-text-placeholder"%>  
+              </div>
+            </div>
+    
+            <div class="col-md-3">
+              <div class="control floating_label">
+              <%= f.select "utensilname_id" , options_for_select(Utensilname.pluck(:name,:id),selected: f.object.utensilname_id),{prompt: ""}, {class: "input-text boxed e1 utensilname", required: true} %>
+                <%= f.label :utensil_name, "Utensil Name",:class=> "input-text-placeholder" %> 
+                              <div class="msg" style="color: red"></div>
+
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+               <%= f.text_area :description, class: "input-text float_input boxed e1 " %>
+                 <%= f.label :description,"Description (optional)",:class=> "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+               <%= f.date_field :amc , class: "input-text boxed e1"%>
+                  <%= f.label :amc,"AMC till (optional)", :class=> "input-text-placeholder"%> 
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :tare_weight, class: "input-text float_input boxed e1 " %>
+                  <%= f.label :tare_weight,"Body Weight (optional)",:class=> "input-text-placeholder" %> 
+              </div>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+               <%= f.date_field :warranty , class: "input-text boxed e1"%>
+                <%= f.label :warranty,"Warranty (optional)",:class=> "input-text-placeholder"%>    
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :lid_weight, class: "input-text float_input boxed e1" %>
+               <%= f.label :lid_weight,"Lid Weight (optional)", :class=> "input-text-placeholder" %>   
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                 <%= f.text_field :price, {class: "input-text boxed e1", required: true} %>
+               <%= f.label :price,"Price",:class=> "input-text-placeholder" %>  
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                 <%= f.text_field :volume ,{class: "input-text float_input boxed e1"}%>
+              <%= f.label :vol,"Volume (optional)", :class=> "input-text-placeholder"%> 
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                 <%= f.text_field :count, class: "input-text boxed e1 ", required: "true" %>
+              <%= f.label :count,"Count", :class=> "input-text-placeholder"%>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                  <%= f.select :tracking, options_for_select(status_list, selected: default_status(utensil)),{:include_blank=> ""}, {class: "input-text boxed e1" ,required: "true", id: "type2" }%>
+             <%= f.label :status, :class=> "input-text-placeholder"%>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                 <%#=f.select :depriciation_percentage,options_for_select(@cat,selected: utensil.depriciation_percentage),{include_blank: ""},{class: "input-text boxed e1 ",required: "true", id: "dep_per"}  %>
+                 <%= f.text_field :depriciation_percentage, class: "input-text boxed e1 ",required: "true", id: "dep_per" %>
+                 <%=f.label :depreciation_percentage, :class=> "input-text-placeholder"%>
+              </div>
+           </div>
+
+        </div>
+        <% if params["id"].present?%>
+            <div class="asset_ID" id="tasks">
+                <label>Asset ID </label>
+                <div class="vessel_id_chip">
+                  <%@tags.map do |tag|%> 
+                  <!-- <div class="col-md-6">
+                    <div class="control floating_label">
+                      <input type="text" name="auto_id" class="input-text boxed e1 "   value="<%#= tag.auto_id%>" disabled="true">
+                      <%#= f.label :count,"Asset ID", :class=> "input-text-placeholder"%>
+                    </div>
+                  </div> -->
+                  <span><%= tag.auto_id%></span>
+                  <%end%>
+                </div>
+            </div>
+        <%end%>
+        <hr>
+        <%= f.submit "Submit",:class=>"btn btn_submit button float-right enable"%>
+       <%end%>
+       <%end%>
+    
+  </div>
+</div>
+</form>
+</div>
+
+
+
+
+
+
+
+
+     
+<script type="text/javascript">
+  $(document).ready(function() { 
+    // $(".e1").select2();
+    var type = $('#type').val();
+    var type1= $('#type1').val();
+    var id = $('.utensilid').val();
+      $.ajax({
+      url: '/utensils/fetch_utensil_category',
+        data: {upload_status : type, id: id, asset_status : type1},
+        dataType: 'script',
+         
+        });
+        if(type =="Single")
+        {
+          $('.count').hide();
+
+        }
+        else
+        {
+         
+          $('.count').show();
+        }
+
+  });
+</script>
+
+<script>
+  $("#type,#type1").change(function(){
+      var type = $('#type').val();
+      var type1= $('#type1').val();
+      $.ajax({
+      url: '/utensils/fetch_utensil_category',
+        data: {upload_status : type, asset_status : type1},
+        dataType: 'script',
+         
+        });
+        if(type =="Single")
+        {
+          $('.count').hide();
+        }
+        else
+        {
+          $('.count').show();
+
+        }
+}); 
+</script>
+
+<script type="text/javascript">
+ $(document).ready(function() { 
+  $("#dep_cat").change(function(){
+   var cat = $('#dep_cat').val();
+   //alert(cat);
+   $.ajax({
+    url: '/utensils/category',
+    data: {category: cat} 
+
+   });
+ });
+});
+</script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+    $(".utensilname").on("change", function () {
+
+      var utensilname_id = $(this).val();
+      $.ajax({
+        type: "GET",
+        url: "/utensilnames/check_utensil_present?utensilname_id="+utensilname_id,
+        success: function nt(msg) { 
+
+           $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+
+            if (msg.message != "") {
+            $('.enable').attr('disabled',true);
+            }
+             if (msg.message == "") {
+            $('.enable').attr('disabled',false);
+            }
+            $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+        }
+
+      });
+    });
+  });
+</script>

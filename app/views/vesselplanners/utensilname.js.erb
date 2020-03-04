@@ -1,0 +1,2 @@
+
+$('.utensils_name').html("<%= escape_javascript select("planner", "utensil_id", @utensilname.collect {|p| p },{include_blank: 'Select'},{class: 'utensils_name form-control'})%>");

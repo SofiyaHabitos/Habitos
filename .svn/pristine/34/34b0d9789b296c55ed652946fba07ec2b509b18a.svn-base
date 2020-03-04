@@ -1,0 +1,169 @@
+
+@media screen and (max-width:1200px){
+	.navbar-nav > li > a{font-size:14px;}
+	}
+	
+@media screen and (max-width:1024px){
+	.navbar-nav > li > a{font-size:14px;}
+.icon-content .content{ width:80%;}
+	}	
+	
+
+@media screen and (max-width:992px){
+	.navbar-nav > li > a{font-size:14px;}
+	.navbar-nav{ margin-top:2px; margin-bottom:15px;}
+	.top-contact{ margin-top:21px;}
+	.carousel-caption h4{font-size:42px;}
+	.carousel-caption .black-box h3{font-size:22px;}
+	.carousel-caption .black-box p{font-size:16px;}
+	.carousel-caption a{ width:170px;}
+	#field-container .fields{margin-top:120px;}
+	#field-container{padding-top:50px;}
+	#thealtius .award{ min-height:400px;}
+	#benefits h1, #whoweserve h1, #thealtius h1, #testimonial h1{ font-size:30px;}
+	#benefits .content ul li{ font-size:17px; line-height:30px;}
+	#benefits .content ul li .fa{ font-size:20px;}
+	#benefits .image{ width:80%; margin:auto; margin-top:5%;}
+	#whoweserve .service h2{ font-size:17px; line-height:21px;}
+	#whoweserve .service p{ font-size:15px; line-height:18px;}
+	#thealtius .award h3{ font-size:21px;}
+	#testimonial .testi .content p{ font-size:18px; line-height:23px;}
+	#testimonial .testi .content{ background-size:60px; }
+	#testimonial .testi h3{ font-size:20px;}
+	#footer-top .contact-form h2{ font-size:18px;}
+	#footer-top .content form{ width:48%;}
+	#footer-bottom .left{ text-align:center;}
+	#footer-bottom .right{ text-align:center;}
+	# .modal-dialog{ margin-top:25%;}
+	.testimonial .content{ font-size:15px; line-height:18px; padding-top:15px;}
+	.testimonial .content strong{ font-size:17px;}
+	.testimonial .content span{ font-size:13px;}
+	.icon-content .content{ width:75%;}
+	.contact-section .address p{ font-size:17px; line-height:21px;}
+	.orange-content img{margin-bottom:25px;}
+	}		
+	
+@media screen and (max-width:768px){	
+.top-contact{ margin-top:0;}
+.navbar-toggle{ margin-top:35px; margin-bottom:0;}
+.navbar-toggle .icon-bar{ background-color:#fff;}
+.navbar-nav{ padding-left:15px; width:100%; margin:0; background-color:#333; padding-top:10px; padding-bottom:10px;}
+.navbar-nav li{ width:97%;}
+
+	.carousel-caption h4{font-size:35px; margin-bottom:10px;}
+	.carousel-caption .black-box h3{font-size:20px; margin-bottom:5px;}
+	.carousel-caption .black-box p{font-size:15px;}
+	.carousel-caption a{ width:170px; font-size:16px;}
+		#field-container .fields{width:60%; margin:auto; margin-top:120px;}
+#field-container{padding-top:50px;}
+#whoweserve .service{ width:60%; margin:auto; margin-bottom:50px;}
+#thealtius .award{ width:80%; margin:auto; margin-bottom:50px;}
+# .modal-dialog{margin:auto; margin-top:25%; }
+.navbar-nav > li{margin-bottom:4px;}
+#benefits .content ul li span{ float:right;}
+.invisible{display:none;}
+.testimonial .client{ float:none;  width:250px; margin:auto;}
+.testimonial .content{ width:100%; text-align:center; padding-bottom:50px;}
+.icon-content .icon{ float:none; margin:auto; }
+.icon-content .icon img{padding-top:35px; margin-top:0;}
+	.icon-content .content{ width:100%; text-align:center;}
+	.icon-content .content p{ text-align:center;}
+		.contact-section .address p{ font-size:20px; line-height:25px;}
+		#page-header .content h1{ font-size:38px;}
+		#page-header .content p{ font-size:16px; line-height:21px;}
+		.whatwedo-section h1{ font-size:28px;}
+		.whatwedo-section .points h3{ font-size:20px;}
+		.whatwedo-section .points{ font-size:14px; line-height:18px;}
+		.whatwedo-section .bullets ul li{ font-size:18px; line-height:25px;}
+		.whatwedo-section .quote{ font-size:18px;}
+		.contact-strip img{ width:200px; margin:auto; float:none; display:block;}
+		.contact-strip .content{ text-align:center;}
+		.contact-strip{ padding-top:20px; padding-bottom:20px;}
+		.orange-content h3{ text-align:center;}
+		.orange-content ul li{ font-size:18px; line-height:22px; background-size: 25px auto;}
+		.orange-content{font-size:18px; line-height:25px;}
+}
+@media screen and (max-width:630px){	
+.top-contact{ position:static; margin:auto; float:none;}
+.navbar-brand{ margin:auto!important; float:none; width:150px; display:block;}
+.navbar-brand img{width:100%;}
+.navbar{ background-color:#222222;}
+#slider-container{ margin-top:122px;}
+.navbar-header{margin-left:0!important;}
+	.navbar-toggle{ margin-top:27px;}
+	#slider-container{ margin-top:121px;}
+	.carousel-caption{ top:0;}
+	.carousel-caption h4{font-size:30px; margin-bottom:10px;}
+	.carousel-caption .black-box h3{font-size:18px; margin-bottom:5px;}
+	.carousel-caption .black-box p{font-size:13px;}
+	.carousel-caption a{ width:130px; line-height:20px; font-size:14px;}
+			#field-container .fields{width:100%; margin:auto; margin-top:120px;}
+#field-container{padding-top:50px;}
+
+#whoweserve .service{ width:100%; margin:auto; margin-bottom:50px;}
+#thealtius .award{ width:100%; margin:auto; margin-bottom:50px;}
+
+#testimonial .testi{width:100%;}
+.modal-dialog{margin:auto; margin-top:40%; }
+.icon-content .icon{ float:none; margin:auto; }
+.icon-content .icon img{padding-top:35px; margin-top:0;}
+.icon-content .content{ width:100%; text-align:center;}
+.contact-section .address p{ font-size:19px; line-height:25px;}
+
+}
+
+@media screen and (max-width:480px){
+	.top-contact{width:100%; padding-left:10px;}
+	.top-contact .phone{ width:100%; display:block; text-align:center; margin:0;}
+	.top-contact .mail{ margin-left:3%;}
+	.top-contact .social{ float:right; margin-right:3%;}
+		#slider-container{ margin-top:151px;}
+		.carousel-caption .black-box{ display:none;}
+		.carousel-caption h4{font-size:33px; margin-bottom:10px;}
+		.carousel-caption a{ width:110px; line-height:20px; font-size:13px; margin-top:5px;}
+					#field-container .fields{width:100%; margin:auto; margin-top:120px;}
+#field-container{padding-top:50px;}
+#whoweserve .service{ width:100%; margin:auto; margin-bottom:50px;}
+#thealtius .award{ width:100%; margin:auto; margin-bottom:50px;}
+#footer-top .contact-form .form-group{ width:100%; margin-right:0;}
+#footer-top .contact-form .form-group .form-control{ width:100%;}
+#footer-top .contact-form .form-group .btn{ width:100%;}
+#footer-top .content form{ width:100%;}
+#footer-top .content ul li{ width:100%;}
+#testimonial .testi .content p{ font-size:16px; line-height:20px;}
+#testimonial .testi .content{ background-size: 40px auto;}
+
+.testimonial .client{ float:none; width:70%; max-width:80%; margin:auto;}
+.testimonial .content{ width:100%; text-align:center; padding-bottom:50px; font-size:15px; line-height:18px;}
+.contact-section .address p{ font-size:15px; line-height:20px; text-align:center;}
+.contact-section .address{ min-height:170px;}
+.contact-section h1{ font-size:21px; text-align:center;}
+.india{ background:none;}
+.usa{ background:none;}
+.contact-map{ min-height:300px;}
+#page-header .content{margin-top:180px;}
+#page-header .content h1{ font-size:32px; line-height:38px;}
+		#page-header .content p{ font-size:14px; line-height:18px;}
+		.whatwedo-section h1{ font-size:26px; line-height:31px;}
+		.whatwedo-section .points h3{ font-size:18px; line-height:21px;}
+		.whatwedo-section .points{ font-size:13px; line-height:18px;}
+		.whatwedo-section .bullets ul li{ font-size:17px; line-height:25px;}
+		.whatwedo-section .quote{ font-size:16px;}
+		.whatwedo-section .bullets ul li{background-size:25px;}
+		#accordion .panel-title > a{ font-size:15px; line-height:22px;}
+		.panel-body{ font-size:13px;}
+		#page-header .content h2{ font-size:22px; line-height:29px;}
+				.orange-content h3{ font-size:22px; margin-top:10px;}
+				.orange-content ul li{ font-size:16px; line-height:20px; background-size: 20px auto;}
+				.contact-strip{ font-size:17px;}
+				.contact-strip .content strong{font-size:28px;}
+		.orange-content{font-size:16px; line-height:22px;}
+	}
+@media screen and (max-width:400px){
+	.top-contact .mail{ width:100%; margin:0; text-align:center; line-height:20px;}
+	.top-contact .social{ width:121px; margin:auto; float:none; text-align:center;line-height:30px;}
+	.top-contact{display:none;}
+	.navbar-toggle{ margin-top:27ppx;}
+		#slider-container{ margin-top:86px;}
+	}	
+	

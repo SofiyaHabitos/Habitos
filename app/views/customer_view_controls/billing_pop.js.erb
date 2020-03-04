@@ -1,0 +1,4 @@
+$("#billing-modal").html("<%= escape_javascript(render 'billing_pop') %>")
+$("#billing-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show")

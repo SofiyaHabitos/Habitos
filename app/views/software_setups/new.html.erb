@@ -1,0 +1,18 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">CRM / Software Setup / Add Software Setup</p>
+    <h2 class="header_title">Add Software Setup <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, software_setups_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <%= render 'form', software_setup: @software_setup %>
+  </div>
+</section>
+
+<!-- <section class="page-content">
+ <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+    	<div class="body-header">
+      <h3 class="new_title"> Add - Software Setup</span></h3>
+    </div>  
+	  <%#= render 'form', software_setup: @software_setup %>
+</div>
+</div>
+</section> -->

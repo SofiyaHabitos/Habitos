@@ -1,0 +1,895 @@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script type="text/javascript" src="/assets/Chart.bundle.min.js"></script>
+<link href="/assets/medias.css" rel="stylesheet">
+<link href="/assets/new_menu.css" rel="stylesheet">
+<link href="/assets/old_menu.css" rel="stylesheet">
+<link href="/assets/menuplaner.css" rel="stylesheet">
+
+<body>
+  <div class="row container_pad" ng-app="dragDrop" ng-controller="DragDropCtrl">
+    <div class="col-md-12 loading" ng-show="spinner">
+      <img src="/assets/green_spinner.gif" height="70">
+    </div>
+    <div class="col-md-3 card_bg">
+      <div class="inner-addon right-addon search_width">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control search" ng-model="name" placeholder="Search Menu Items">
+      </div>
+      <div class="menu_card">
+        <div class="row menu_btns2">
+          <h1>Menu List</h1>        
+        </div>
+        <div class="item_list scroll">
+          <div class="row row_pad" id="production_items" droppable>
+            <h1 class="Category_head">All Items: {{mealtime_name}}
+            <span ng-show="mealtime_name">,</span>{{mealstype_name}}</h1>
+            <div class="col-md-4 item_hg" id="{{item.id}}" ng-repeat="item in data.production_items | filter: restrict_name | filter: name | filter: alergy_name | filter: mealstype_name:'name' | filter: mealtime_name |  filter: meals_name:'meal_course_name'" draggable>
+              <div class="img_bg">
+                <img class="item_img" ng-src="/assets/item-1.png">
+                <p>{{item.name}}</p>
+              </div>
+              <div class="view_item">
+                <img class="item_img3" ng-src="/assets/item-1.png">
+                <p>{{item.name}}</p>
+              </div>
+            </div>          
+          </div>
+        </div>  
+      </div>
+    </div>
+
+
+    <div class="col-md-9 menu_body">
+      <div class="title_head">
+        <h1 class="planner-title">MENU PLANNER</h1>
+      </div>
+      <div class="field_division">
+        <h2 class="field_name">Enter Meal Name:</h2>
+        <input type="text" class="menu_field" ng-model="meal_name">
+      </div>
+      <div class="row">
+        <div class="col-md-4 dropdown_btn">
+          <div class="dropdown">
+            <button class="btn btn-info btn-sm btn_check dropdown-toggle" type="button" data-toggle="dropdown">
+              <img src="/assets/meal-time.png" class="checkbox_img1">
+              <h5 class="checkbox_name" ng-show="!mealtime_name">Meal</h5>
+              <h5 class="checkbox_name" ng-show="mealtime_name">{{mealtime_name}}</h5>
+              <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </button>
+
+            <ul class="dropdown-menu">
+              <li ng-click="mealstime(x)" ng-model="meals" ng-repeat="x in mealtime">
+                <a href="">
+                  <input type="checkbox" class="css-checkbox" id="{{x.id}}">
+                  <label for="{{x.id}}" class="css-label"></label>{{x.category_name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-4 dropdown_btn">
+          <div class="dropdown">
+            <button class="btn btn-info btn-sm btn_check dropdown-toggle" type="button" data-toggle="dropdown">
+              <img src="/assets/mealtype.png" class="checkbox_img">
+              <h5 class="checkbox_name" ng-show="!mealstype_name">Meal Type</h5>
+              <h5 class="checkbox_name" ng-show="mealstype_name">{{mealstype_name}}</h5>
+              <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li ng-click="mealstype(x)" ng-model="meal_type" ng-repeat="x in mealtype">
+                <a href="">
+                  <input type="checkbox" name="checkboxG1" class="css-checkbox" id="{{x.id}}">
+                  <label for="{{x.id}}" class="css-label"></label>{{x.name}}
+                </a>
+              </li>
+            </ul>          
+          </div>
+        </div>
+
+        <div class="col-md-4 dropdown_btn">
+          <div class="dropdown">
+            <button class="btn btn-info btn-sm btn_check dropdown-toggle" type="button" data-toggle="dropdown">
+              <img src="/assets/restriction.png" class="checkbox_img">
+              <h5 class="checkbox_name" ng-show="!restrict_name">Restriction</h5>
+              <h5 class="checkbox_name" ng-show="restrict_name">{{restrict_name}}</h5>
+              <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li ng-click="restricters(x)" ng-model="rest" ng-repeat=" x in restriction">
+                <a href="">
+                  <input type="checkbox" name="x.id" ng-model="name" class="css-checkbox" id="x.id">
+                  <label for="x.id" class="css-label"></label>{{x.meal_restriction_name}}
+                </a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="col-md-4 dropdown_btn">
+          <div class="dropdown">
+            <button class="btn btn-info btn-sm btn_check dropdown-toggle" type="button" data-toggle="dropdown">
+              <img src="/assets/Alergy.png" class="checkbox_img">
+              <h5 class="checkbox_name" ng-show="!alergy_name">Alergy</h5>
+              <h5 class="checkbox_name" ng-show="alergy_name">{{alergy_name}}</h5>
+              <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li ng-click="alergvals(x)" ng-model="alers" ng-repeat="x in alergies">
+                <a>
+                  <input type="checkbox" ng-model="name" value="{{x.name}}" id={{x.id}} class="css-checkbox">
+                  <label for="{{name}}"  class="css-label"></label>{{x.name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+<!-- <div class="container">
+  <div class="scroller scroller-left"><i class="fa fa-chevron-left"></i></div>
+  <div class="scroller scroller-right"><i class="fa fa-chevron-right"></i></div>
+  <div class="wrapper1">
+    <ul class="nav nav-tabs list">
+      <li class="active"><a href="#home">Home</a></li>
+      <li><a href="#profile">Profile</a></li>
+      <li><a href="#messages">Messages</a></li>
+      <li><a href="#settings">Settings</a></li>
+      <li><a href="#">Tab4</a></li>
+      <li><a href="#">Tab5</a></li>
+      <li><a href="#">Tab6</a></li>
+      <li><a href="#">Tab7</a></li>
+      <li><a href="#">Tab8</a></li>
+      <li><a href="#">Tab9</a></li>
+      <li><a href="#">Tab10</a></li>
+      <li><a href="#">Tab11</a></li>
+      <li><a href="#">Tab12</a></li>
+      <li><a href="#">Tab13</a></li>
+      <li><a href="#">Tab14</a></li>
+      <li><a href="#">Tab15</a></li>
+      <li><a href="#">Tab16</a></li>
+      <li><a href="#">Tab17</a></li>
+  </ul>
+  </div>
+</div> -->
+
+<!--     <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="js_image_selection" class="horizontal-scrollable-tabs">
+            <div class="scroller arrow-left nav_btn1"><i class="fa fa-chevron-left"></i></div>
+            <div class="scroller arrow-right nav_btn2"><i class="fa fa-chevron-right"></i></div>
+            <div class="horizontal-tabs">
+              <ul role="tablist" class="nav nav-tabs nav-tabs-horizontal">
+                <li class="col-md-7 col_pad2 nav-item" ng-repeat="course in meal_course">
+                  <a class="nav-link" href="#{{meals_name}}" data-toggle="tab" ng-click="courseval(course)" role="tab">{{course.meal_course_name}}</a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  -->     
+      
+      <div class="row" ng-disabled="!mealtime_name || !mealstype_name">
+        <section id="UPC" class="first">
+          <div class="row row_pad">         
+          <div class="col-md-12"> 
+            <div id="tab_scrolls" class="horizontal-scrollable-tabs">
+            <div class="scroller arrow-left nav_btn1"><i class="fa fa-chevron-left"></i></div>
+            <div class="scroller arrow-right nav_btn2"><i class="fa fa-chevron-right"></i></div>
+            <div class="horizontal-tabs">
+              <ul role="tablist" class="nav nav-tabs nav-tabs-horizontal">
+                <li class="col-md-3 col_pad2 nav-item" ng-repeat="course in meal_course">
+                  <a ng-class="{'nav-link active': Editselect == course.meal_course_name}" class="nav-link" href="#{{meals_name}}" data-toggle="tab" ng-click="courseval(course)" role="tab">{{course.meal_course_name}}</a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+<!--             <ul class="nav nav-tabs" role="tablist">
+              <li class="col-md-1 nav-item scroller scroller-left">
+                <a class="nav_btn1 nav-link" data-toggle="tab" href="" role="tab">
+                  <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="col-md-3 nav-item" ng-repeat="course in meal_course">
+                <a class="nav-link" href="#{{meals_name}}" data-toggle="tab" ng-click="courseval(course)" role="tab">{{course.meal_course_name}}</a>
+              </li>
+
+              <li class="col-md-1 nav-item scroller scroller-right">
+                <a class="nav_btn2 nav-link" data-toggle="tab" href="" role="tab">
+                  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul> --> 
+           </div>
+
+            <form class="col-md-12 tab-content" name="form" id="{{meals_name}}">
+              <div class="row" class="tab-pane active" role="tabpanel">
+                <div class="col-md-12 col_pad">
+                  <div class="drag_bg" id="sub_production_items" droppable >
+                    
+                    <div class="col-md-7 scrollbar" id="style-2">
+                      <div  id="{{ item.id }}"  ng-repeat="item in data.sub_production_items | filter: meals_name:'meal_course_name'" draggable>
+                        <div class="row row_pad item_display">
+                          <div class="row row_pad drag_item_brd">
+                            <div class="col-md-2 col_pad2">
+                              <img class="item_img2" src="/assets/item-1.png" />
+                            </div>
+                            <div class="col-md-4 col_pad">
+                              <h1>{{item.name}}</h1>
+                              <h2>Ingredients</h2>
+                            </div>
+                            <div class="col-md-3 col_pad">
+                              <p>Qty</p>
+                              <input type="number" ng-model="item.quantity"  class="form-control" ng-required="true" required>
+                            </div>
+
+                             <div class="col-md-3 col_pad">
+                              <p>UOM</p>
+                              <input type="text" ng-model="item.uom_name"  class="form-control" ng-required="true" required>
+                            </div>
+
+                          </div>
+                          <div class="col-md-1 remove">
+                            <i class="fa fa-minus-circle" aria-hidden="true" ng-click="removeitem($index,item)"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-5 col_pad3" ng-show="data.sub_production_items.length > 0 || item.item_meal_course[0].meal_course_name == meals_name">
+                        <canvas id="myChart" ></canvas>                      
+                    </div>
+                
+                      <div class="" ng-show="data.sub_production_items.length > 0" >
+                        <button class="btn btn-warning  btn_drag_right " ng-click="checkout()" ng-disabled="form.$invalid" id="right_btn">Check Out</button>
+                      </div>                                        
+                    </div>
+                  </div>
+                </div>                
+            </form>
+
+          </div>
+
+
+      </section>
+
+    </div>
+
+    </div>
+
+  <div class="right_bar" id="rightbar">
+
+    <div class="right_sidebar_nav">
+      <i class="fa fa-chevron-left" aria-hidden="true"></i>
+      <div class="items_selected" id="selected_items">
+        <div class="list_bg">
+          <h1 class="selected_list">Selected Items</h1>
+          <div class="selected_category">
+            <div class="category_list" >
+             <div ng-repeat="product3 in predata">
+              <div class="category_card"  ng-repeat="(key,product1) in product3">
+                <h3 class="card_name">{{key}}<a href=""><i class="fa fa-close" aria-hidden="true"></i></a></h3>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Items</th>
+                      <th>Quantity</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="product in product1">
+                      <th>{{product.production_item_name}}</th>
+                      <td>{{product.quantity}}</td>
+                      <td><i class="fa fa-minus-circle" ng-click="removedata($index)"></i></td>
+                    </tr>
+                                                          
+                  </tbody>
+                </table>
+              </div>
+              </div>
+                                          
+            </div>
+            <button ng-disabled="production_dataval.length < 1 || !meal_name || !mealtime_name || !mealstype_name " class="btn btn-warning btn_right" ng-click="overall()">Save</button>
+          </div>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>
+<script src="/assets/nicescroll.js"></script>
+</body>
+
+<script type="text/javascript">
+var app = angular.module('dragDrop', []);
+
+
+
+app.controller('DragDropCtrl', function($scope,$http,$rootScope) {
+
+$scope.spinner=true;
+$http.get("http://192.168.1.59:3005/api/v1/all_production_items")
+    .then(function(response) {
+        $rootScope.data = response.data;
+        $scope.spinner=false;
+    },function(error){
+        $scope.spinner=false;
+    })
+
+
+$http.get("http://192.168.1.59:3005/api/v1/categories")
+    .then(function(response) {
+        $scope.mealtime = response.data;
+})
+
+$http.get("http://192.168.1.59:3005/api/v1/meal_restrictions")
+    .then(function(response) {
+        $scope.restriction = response.data;
+})
+
+$http.get("http://192.168.1.59:3005/api/v1/all_food_categories")
+    .then(function(response) {
+        $scope.mealtype = response.data;
+})
+
+$http.get("http://192.168.1.59:3005/api/v1/meal_courses")
+    .then(function(response) {
+        $scope.meal_course = response.data;
+})
+
+$http.get("http://192.168.1.59:3005/api/v1/all_allergies")
+    .then(function(response) {
+        $scope.alergies = response.data;
+})
+
+$scope.alergvals=function(aler){
+  if(aler == "" || aler == null){
+    $scope.alergy_name ='';
+  }
+  else{
+    $scope.alergy_name=aler.name;
+    $scope.alergy_id=aler.id;  
+  }
+  
+};  
+
+$scope.mealstime=function(meal){
+  if(meal == "" || meal == null){
+    $scope.mealtime_name ='';
+  }
+  else{
+    $scope.mealtime_name=meal.category_name;
+    $scope.mealtime_id=meal.id;
+  }
+};
+
+$scope.mealstype=function(mealtype){
+  if(mealtype == "" || mealtype == null){
+    $scope.mealstype_name ='';
+  }
+  else{
+   $scope.mealstype_name=mealtype.name;
+   $scope.mealstype_id=mealtype.id
+ }
+};
+
+$scope.restricters=function(restrict){
+  if(restrict == "" || restrict == null){
+    $scope.restrict_name ='';
+  }
+  else{
+   $scope.restrict_name=restrict.meal_restriction_name;
+   $scope.restrict_id=restrict.id;
+  }
+
+};
+
+$scope.courseval=function(cour){
+  if(cour == "" || cour == null){
+     $scope.meals_name ='';
+  }
+  else{
+
+    $scope.meals_name=cour.meal_course_name;
+    $scope.meals_id=cour.id;
+  }
+};
+
+$scope.removeitem=function(index,item){
+  /*alert(index)*/
+  $rootScope.data.sub_production_items.splice(index, 1);
+  $scope.production_data.splice(index, 1);
+  $scope.production_dataval.splice(index, 1);
+  $rootScope.data.production_items.push(item)
+}
+
+$scope.removedata=function(index){
+  $scope.production_dataval.splice(index, 1);
+}
+
+
+$scope.production_data=[];
+$scope.production_dataval=[];
+$rootScope.CourseData=[];
+$scope.checkout=function(){
+
+  if($scope.mealstype_name == null ||  $scope.mealstype_name == ""){
+      alert("please Select MealType");
+    }
+
+  else if( $scope.mealtime_id == null ||  $scope.mealtime_id == ""){
+    alert("please Select MealTime");
+  }
+
+  else{
+
+  var Checkdata=false;
+  for(m in $scope.production_data){
+    //console.log($scope.production_data[m].production_item_name)
+    var Checkdata=false;
+    if($scope.production_dataval.length > 0){
+      for(n in $scope.production_dataval){
+        if($scope.production_dataval[n].production_item_name == $scope.production_data[m].production_item_name){
+          Checkdata=true;
+        }
+      }
+    }
+    if(Checkdata != true){
+
+      $scope.production_dataval.push({
+        "production_item_id":$scope.production_data[m].production_item_id,
+        "production_item_name":$scope.production_data[m].production_item_name,
+        "quantity":$scope.production_data[m].quantity,
+        "meal_course_id":$scope.production_data[m].meal_course_id,
+        "meal_course_name":$scope.production_data[m].meal_course_name,
+      })
+    }
+  }
+
+
+  for(var i in $scope.production_dataval){
+    if($rootScope.data.sub_production_items[i].quantity == "" || $rootScope.data.sub_production_items[i].quantity == null){
+      console.log(i)
+     $scope.production_dataval.splice(i, 1);
+    }
+  }
+  for(var i in $scope.production_data){
+    if ($scope.production_dataval[i].production_item_id == $scope.production_dataval[i].production_item_id) {
+      var checkqty=true;
+      $scope.production_dataval[i].quantity=$rootScope.data.sub_production_items[i].quantity;
+    }
+  }
+
+ //console.log($scope.production_dataval,checkqty)
+if(checkqty == true){
+for(x in $scope.production_dataval){
+var Course = $scope.production_dataval[x].meal_course_name  
+  var obj = { [Course]: {
+        "production_item_id":$scope.production_data[x].production_item_id,
+        "production_item_name":$scope.production_data[x].production_item_name,
+        "quantity":$scope.production_dataval[x].quantity,
+        "meal_course_id":$scope.production_data[x].meal_course_id,
+        "meal_course_name":$scope.production_data[x].meal_course_name
+      }}
+    $rootScope.CourseData.push(obj)
+  }
+
+var pdata={
+  "data":
+     $rootScope.CourseData
+};
+
+$http({
+          method: 'post',
+          url:"http://192.168.1.59:3005/api/v1/menu_courses",
+          data: pdata    
+        }).then(function(response) {
+          $scope.prviewdata=[];
+          $scope.predata=response.data;
+          $rootScope.CourseData=[];
+          for(var i in response.data){
+            for(var x in response.data[i]){
+              $scope.prviewdata.push(x,response.data[i][x])
+            }
+          }
+        })
+
+  //$rootScope.data.sub_production_items=[];
+  }
+  }
+}
+
+
+$scope.overall=function(){
+  var data=
+
+    {
+    "menu_master" :
+    {
+        "menu_master_name": $scope.meal_name,
+        "category_id": $scope.mealtime_id,
+        "cost": null,
+        "food_category_id" : $scope.mealstype_id,
+        "meal_restriction_id" : $scope.restrict_id,
+        "allery_id": $scope.alergy_id,
+        "production_items" :
+          $scope.production_dataval
+    }
+};
+
+$http({
+          method: 'post',
+          url:"http://192.168.1.59:3005/api/v1/menu_masters",
+          data: data    
+        }).then(function(response) {
+          $scope.production_dataval=[]
+          location.href="/menu_masters";
+        })
+
+
+     
+  
+}
+
+   
+
+    $scope.MoveItem = function(origin, dest, item_id) {
+      $scope.chart_id=item_id
+      if( $scope.meals_id == null ||  $scope.meals_id == ""){
+        alert("please Select Course");
+      }
+
+     /* if( $scope.mealstype_id == null ||  mealstype_id == ""){
+        alert("please Select MealType");
+      }
+
+      if( $scope.mealtime_id == null ||  mealtime_id == ""){
+        alert("please Select MealTime");
+      }
+*/
+
+      else{
+
+    if (origin == dest) return;
+
+    for (var i = 0; i < $scope.data[origin].length; i++) {
+      if ($scope.data[origin][i].id == item_id) {
+        var item = $scope.data[origin].splice(i, 1);
+        $scope.data[dest].push(item[0]);
+        break;
+      }
+    }
+    
+   
+    for(var i in $rootScope.data.sub_production_items){
+       var checkdata=false;
+       for(var l in $scope.production_data){
+          if($scope.production_data[l].production_item_name == $rootScope.data.sub_production_items[i].name){
+            checkdata=true;
+          }
+       }
+      if(checkdata !=true){  
+          $scope.production_data.push({
+            "production_item_id":$rootScope.data.sub_production_items[i].id,
+            "production_item_name":$rootScope.data.sub_production_items[i].name,
+            "quantity":$rootScope.data.sub_production_items[i].quantity,
+            "meal_course_id":$scope.meals_id,
+            "meal_course_name":$scope.meals_name,
+          })
+      }
+    }    
+
+
+    $scope.chartvalue=[];
+    for(var l in $scope.data[dest]){
+      if($scope.chartvalue.length < 1 ){
+        $scope.chartvalue.push(
+          $scope.data[dest][l].nutrition.protein,
+          $scope.data[dest][l].nutrition.fat,
+          $scope.data[dest][l].nutrition.carbohydrates,
+          $scope.data[dest][l].nutrition.fibre,
+          $scope.data[dest][l].nutrition.minerals.Calcium,
+        )
+      }
+    }
+
+
+    $scope.$apply();
+    /*  $http.get("http://192.168.1.59:3005/api/v1/get_nutrition."+$scope.chart_id)
+    .then(function(response) {
+      $rootScope.chartvalue=[];
+
+        $rootScope.chartvalue.push(
+          response.data.protein,
+          response.data.fat,
+          response.data.carbohydrates,
+          response.data.fibre,
+          response.data.minerals.Calcium,
+
+          );
+        console.log($rootScope.chartvalue);
+    })*/
+     var ctx = document.getElementById("myChart").getContext('2d');
+     
+     var chartdatas=$scope.chartvalue;
+     console.log($scope.chartvalue)
+      var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ["protein", "fat", "carbohydrates", "fibre", "minerals"],
+          datasets: [{
+            backgroundColor: [
+              "#2ecc71",
+              "#3498db",
+              "#95a5a6",
+              "#9b59b6",
+              "#f1c40f"
+            ],
+            data:chartdatas
+          }]
+        }
+      });
+  }
+}
+});
+
+app.directive('draggable', function() {
+  return function(scope, element, attrs) {
+    var el = element[0];
+    el.draggable = true; // Make dragable
+
+    // Add event listeners
+    el.addEventListener(
+      'dragstart',
+      function(e) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('item_id', this.id);
+        e.dataTransfer.setData('origin_id', el.parentElement.id);
+        this.classList.add('dragging');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragend',
+      function(e) {
+        this.classList.remove('dragging');
+        return false;
+      },
+      false
+    );
+  }
+});
+
+app.directive('droppable', function() {
+  return function(scope, element, attrs) {
+    // Get the native element
+    var el = element[0];
+
+    // Add event listeners
+    el.addEventListener(
+      'dragover',
+      function(e) {
+        e.preventDefault(); // Allow the drop
+
+        // Set effects
+        e.dataTransfer.dropEffect = 'move';
+        this.classList.add('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragenter',
+      function(e) {
+        this.classList.add('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragleave',
+      function(e) {
+        this.classList.remove('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'drop',
+      function(e) {
+        this.classList.remove('dragover');
+
+        // Get the data
+        var destination = this.id;
+        var item_to_move = e.dataTransfer.getData('item_id');
+        var origin = e.dataTransfer.getData('origin_id');
+
+        // Call the scope move function
+        scope.MoveItem(origin, destination, item_to_move);
+
+        return false;
+      }, false
+    );
+  }
+});
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.scroll').slimScroll({});
+    $(".right_sidebar_nav").click(function(){
+            $("#rightbar").toggleClass("open_right");
+    });
+
+    $("#right_btn").click(function(){
+            $("#rightbar").toggleClass("open_right");
+    });
+
+    $("#tab_scrolls").horizontalTabs();
+  });
+
+</script>
+
+<!-- <script type="text/javascript">
+var hidWidth;
+var scrollBarWidths = 40;
+
+var widthOfList = function(){
+  var itemsWidth = 0;
+  $('.list li').each(function(){
+    var itemWidth = $(this).outerWidth();
+    itemsWidth+=itemWidth;
+  });
+  return itemsWidth;
+};
+
+var widthOfHidden = function(){
+  return (($('.wrapper1').outerWidth())-widthOfList()-getLeftPosi())-scrollBarWidths;
+};
+
+var getLeftPosi = function(){
+  return $('.list').position().left;
+};
+
+var reAdjust = function(){
+  if (($('.wrapper1').outerWidth()) < widthOfList()) {
+    $('.scroller-right').show();
+  }
+  else {
+    $('.scroller-right').hide();
+  }
+  
+  if (getLeftPosi()<0) {
+    $('.scroller-left').show();
+  }
+  else {
+    $('.item').animate({left:"-="+getLeftPosi()+"px"},'slow');
+    $('.scroller-left').hide();
+  }
+}
+
+reAdjust();
+
+$(window).on('resize',function(e){  
+    reAdjust();
+});
+
+$('.scroller-right').click(function() {
+  
+
+  
+  $('.list').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){
+
+  });
+});
+
+$('.scroller-left').click(function() {
+
+    $('.list').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){
+    
+    });
+});      
+</script> -->
+
+    <script type="text/JavaScript">
+// Add Horizontal Tabs to jquery
+(function ($){
+
+  $.fn.horizontalTabs = function() {
+    // Variable creation
+    var $elem = $(this),
+    widthOfReducedList = $elem.find('.nav-tabs-horizontal').width(),
+    widthOfList = 0,
+    currentPos = 0,
+    adjustScroll = function () {
+      widthOfList = 0;
+      $elem.find('.nav-tabs-horizontal li').each(function(index, item) {
+        widthOfList += $(item).width();
+      });
+
+      widthAvailale = $elem.width();
+
+      if (widthOfList > widthAvailale) {
+        $elem.find('.scroller').show();
+        updateArrowStyle(currentPos);
+        widthOfReducedList = $elem.find('.nav-tabs-horizontal').width();
+      } else {
+        $elem.find('.scroller').hide();
+      }
+    },
+    scrollLeft = function () {
+      $elem.find('.nav-tabs-horizontal').animate({
+          scrollLeft: currentPos - widthOfReducedList
+      }, 500);
+
+      if (currentPos - widthOfReducedList > 0) {
+        currentPos -= widthOfReducedList;
+      } else {
+        currentPos = 0;
+      }
+    },
+    scrollRight = function () {
+      $elem.find('.nav-tabs-horizontal').animate({
+        scrollLeft: currentPos + widthOfReducedList
+      }, 500);
+
+      if ( (currentPos + widthOfReducedList) < (widthOfList - widthOfReducedList)) {
+        currentPos += widthOfReducedList;
+      } else {
+        currentPos = (widthOfList - widthOfReducedList);
+      }
+    },
+    manualScroll = function () {
+      currentPos = $elem.find('.nav-tabs-horizontal').scrollLeft();
+
+      updateArrowStyle(currentPos);
+    },
+    updateArrowStyle = function (position) {
+      if (position >= (widthOfList - widthOfReducedList)) {
+        $elem.find('.arrow-right').addClass('disabled');
+      } else {
+        $elem.find('.arrow-right').removeClass('disabled');
+      };
+
+      if (position <= 0) {
+        $elem.find('.arrow-left').addClass('disabled');
+      } else {
+        $elem.find('.arrow-left').removeClass('disabled');
+      };
+    };
+
+    // Event binding
+    $(window).resize( function () {
+      adjustScroll();
+    });
+
+    $elem.find('.arrow-left').on('click.horizontalTabs', function (){
+      scrollLeft();
+    });
+
+    $elem.find('.arrow-right').on('click.horizontalTabs', function (){
+      scrollRight();
+    });
+
+    $elem.find('.nav-tabs-horizontal').scroll( function (){
+      manualScroll();
+
+    });
+
+    // Initial Call
+    adjustScroll();
+
+    return this;
+  }
+
+}(window.jQuery));
+
+    </script>

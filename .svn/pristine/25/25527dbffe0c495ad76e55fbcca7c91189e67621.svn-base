@@ -1,0 +1,146 @@
+
+
+
+<%= form_for "feedback", :url => {:controller => 'feedbacks',:action => 'feedback_update' } do |f| %> 
+<div class="col-md-12 col-sm-8 body-wrap">
+	<div class="body-container">
+		<div ng-app="">
+		  	<div class="body-content">
+		  		<div class="body-header">
+				  <h3 class="modal-title">Editing - Feedback</h3>  
+				</div>
+	
+  				<div id="dashboard-container">
+  
+  				<form name="item">
+  					<div class="card card-block">
+  					
+  					<%= f.hidden_field :tenant_id,:value=>@feedback["tenant_id"]%>
+					<%= f.hidden_field :id,:value=>@feedback["id"]%>
+
+  						<div class="row">
+
+    						<div class="form-group">
+						      	<div class="col-xs-4">
+        							<label class="control-label">
+          								<%= f.label :name,"User Name"%>
+        							</label>
+        							<div class="form-group">
+          								<%= f.text_field :username,:value=>@feedback["username"], class: "form-control",name: "username",placeholder: "UserName"%>
+        							</div>
+      						  	</div>
+      						
+      						
+						    <div class="col-xs-4">
+        						<label class="control-label">
+          							<%= f.label :name,"Age Type"%>
+        						</label>
+        						<div class="form-group">
+          							<%= f.text_field :email,:value=>@feedback["age_type"], class: "form-control", name: "age_type", placeholder: "Age Type"%>
+        						</div>
+   							</div>
+
+   							<div class="col-xs-4">
+        						<label class="control-label">
+          							<%= f.label :name,"Rating"%>
+        						</label>
+        						<div class="form-group">
+          							<%= f.text_field :rating,:value=>@feedback["rating"], class: "form-control", name: "rating", placeholder: "Rating"%>
+        						</div>
+   							</div>
+   							</div>
+   						</div>
+
+   						<div class="row">
+    						<div class="form-group">
+						      	<div class="col-xs-4">
+        							<label class="control-label">
+          								<%= f.label :name,"Favourite"%>
+        							</label>
+        							<div class="form-group">
+          								<%= f.text_field :favourite,:value=>@feedback["favourite_dish"], class: "form-control",name: "favourite_dish", placeholder: "Favourite Dish"%>
+        							</div>
+      						  	</div>
+      						
+      						
+						    <div class="col-xs-4">
+        						<label class="control-label">
+          							<%= f.label :name,"Least Dish"%>
+        						</label>
+        						<div class="form-group">
+          							<%= f.text_field :least_dish,:value=>@feedback["least_dish"], class: "form-control", name: "least_dish",Placeholder: "Least Dish"%>
+        						</div>
+   							</div>
+
+   							<div class="col-xs-4">
+        						<label class="control-label">
+          							<%= f.label :name,"Comment"%>
+        						</label>
+        						<div class="form-group">
+          							<%= f.text_field :rating,:value=>@feedback["comment"], class: "form-control", name: "comment", placeholder: "Comment"%>
+        						</div>
+   							</div>
+   						</div>
+   					</div>
+
+   					<div class="row">
+    						<div class="form-group">
+						      	<div class="col-xs-4">
+        							<label class="control-label">
+          								<%= f.label :name,"Date"%>
+        							</label>
+        							<div class="form-group">
+          								<%= f.date_field :date,:value=>@feedback["date"], class: "form-control",name: "date", placeholder: "Favourite Dish"%>
+        							</div>
+      						  	</div>
+      						
+      						
+						    <div class="col-xs-4">
+        						<label class="control-label">
+          							<%= f.label :name,"Reason"%>
+        						</label>
+        						<div class="form-group">
+          							<%= f.text_field :reason,:value=>@feedback["reason"], class: "form-control", name: "reason",Placeholder: "Reason"%>
+        						</div>
+   							</div>
+
+   							
+   						</div>
+   					</div>
+    			<div class="form-group row mrgn-top">
+  	                <div class="col-sm-10 col-sm-offset-4">
+	                    <%=f.submit "Save" , class: "btn btn-primary button", id: "user1"%>
+    	                <%=link_to "Cancel",feedbacks_path(@feedback["id"]) , class: "btn btn-primary button", id: "user2"%>
+                    </div>
+                </div>
+                      				      					<%end%>
+
+  
+      					
+		
+  
+
+      					</div>
+      				</div>
+      			</form>
+      			</div>
+      		</div>
+      	</div>
+
+    </div>
+</div>
+
+
+
+ 				<!-- <div class="form-group row mrgn-top">
+  
+                    <div class="col-sm-10 col-sm-offset-4">
+	                    <!%=f.submit "Save" , class: "btn btn-primary button", id: "user1"%>
+    	                <!%=link_to "Cancel",users_path , class: "btn btn-primary button", id: "user2"%>
+                    </div>
+                </div>
+  
+                    
+
+ -->
+

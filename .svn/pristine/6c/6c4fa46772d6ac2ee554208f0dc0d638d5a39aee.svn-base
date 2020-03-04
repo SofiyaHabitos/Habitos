@@ -1,0 +1,1064 @@
+
+<%#= nested_form_for(tenant) do |f| %>
+<%= nested_form_for(production_item) do |f| %>
+
+    <!--% if production_item.errors.any? %>
+    
+        <div id="error_explanation">
+      
+            <h2><!%= pluralize(production_item.errors.count, "error") %> prohibited this production_item from being saved:</h2>
+
+            <ul>
+      
+                <!% production_item.errors.full_messages.each do |message| %>
+        
+                    <li><!%= message %></li>
+      
+                <!% end %>
+      
+            </ul>
+    
+        </div>
+  
+    <!% end %-->
+
+    <article class="content item-editor-page">
+    
+        <div class="title-block">
+        
+            <h3 class="title"> <span class="sparkline bar" data-type="bar"></span> </h3>
+    
+        </div>
+    
+        <form name="item">
+        
+            <div class="card card-block">
+            
+                <div class="row">
+                <div class="form-group">
+                
+                      <!--  <div class="col-xs-4">
+                
+                            <label class="control-label"><%#= f.label :Name,"Item code"%></label>
+
+                            <div class="form-group">
+                     
+                                <%#= f.text_field :item_code,:class=>"form-control boxed", :required=>"true" %>
+                     
+                            </div>
+
+                        </div>
+                        </div>  -->
+                
+                    <div class="form-group">
+                
+                        <div class="col-xs-5">
+                
+                            <label class="control-label"><%= f.label :Name,"Item Name"%></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.text_field :name,:class=>"form-control boxed", required: "true" %>
+                     
+                            </div>
+
+                        </div>
+                        </div>
+                         <div class="form-group">
+                        <div class="col-xs-5">
+                
+                            <label class="control-label"><%= f.label :quantity,"Quantity(* Quantity Per Head)" %></label>
+
+                                <div class="form-group">
+                 
+                                <%= f.text_field :quantity,min:1,:class=>"form-control boxed", :required=>"true" %>
+                 
+                            </div>
+
+                        </div>
+                        </div>
+                        
+                         <div class="form-group">
+                         <div class="col-xs-5">
+                
+                            <label class="control-label"><%= f.label :category,"Meal Group"%></label>
+
+                                <div class="form-group">
+                 
+                               <!--%= f.collection_select :category_id, Category.all, :id, :category_name,{:prompt=>true} ,{class: "dropdown form-control boxed single1" ,:required=>"true"}  %-->
+                           <%= f.collection_select :category,Category.all.order('category_name'),:id,:category_name,{placeholder:"Please Select" },{:class=>"form-control boxed select", :required=>"true",:multiple=>"true"} %>
+                            </div>
+
+                        </div>
+                         </div>
+
+
+                       <div class="form-group">
+                        <div class="col-xs-5">
+                          <label class="control-label"><%= f.label :food_category,"Meal Type"%></label>
+
+                           <div class="form-group">
+                             <%= f.collection_select :food_category_id,FoodCategory.all.order('name'),:id,:name,{placeholder:"Please Select" },{:class=>"form-control boxed select", :required=>"true"} %>
+                            </div>
+
+                        </div>
+                         </div>
+
+
+                          
+                          <div class="form-group">
+                        <div class="col-xs-5">
+                
+                            <label class="control-label"><%= f.label :Uom ,"Uom (* Uom Per Head)"%></label>
+
+                            <div class="form-group">
+
+                                <%= f.collection_select :unit_of_measurement_id, UnitOfMeasurement.all.order('name'),:id,:name, {:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                
+                            </div>
+
+                        </div>
+                        </div>
+                </div>
+                        
+        
+                        <div class="row">
+                            
+                            <div class="form-group">
+                        <div class="col-xs-5">
+        
+                            <label class="control-label"><%= f.label :ProductionCategory,"Item Category" %></label>
+
+                            <div class="form-group">
+
+                                <%= f.collection_select :production_category_id, ProductionCategory.all.order('name'),:id,:name,{:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                        
+                            </div>
+
+                        </div>
+                         </div>
+
+                         <div class="form-group">
+                        <div class="col-xs-5">
+        
+                            <label class="control-label"><%= f.label :item_subcategory,"Item Subcategory" %></label>
+
+                            <div class="form-group">
+
+                                <%= f.collection_select :item_subcategory_id, ItemSubcategory.all.order('name'),:id,:name,{:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                        
+                            </div>
+
+                        </div>
+                         </div>
+                        <!-- <div class="col-xs-4">
+                
+                            <label class="control-label"><!%= f.label :OperationName %></label>
+
+                            <div class="form-group">
+
+                                <!%= f.collection_select :operation_id, Operation.order(:name),:id,:name, include_blank: true, :required=>"true",{prompt:true},{class: "form-control boxed select"} %>
+                            </div>
+
+                        </div> -->
+                         <!-- <div class="form-group">
+                         <div class="col-xs-5">
+                
+                            <label class="control-label"><!%= f.label :Allergy %></label>
+
+                            <div class="form-group">
+
+                                 <!%= f.collection_select :allergy, Allery.all.order('name'),:id,:name,{placeholder: "Please Select" },{class: "form-control boxed select",validate: false,:multiple=>"true"} %>
+        
+                            </div>
+
+                        </div> 
+                         </div>
+                          --> 
+                        <div class="form-group">
+                          <div class="col-xs-5">
+                            <label class="control-label"><%= f.label :Cost,"Production Cost (* Per Item)" %></label>
+                              <div class="form-group">
+                                <%= f.text_field :cost,:class=>"form-control boxed",min:0,:step=>"any",:required=>"true" %>
+                              </div>
+                          </div>        
+                        </div>
+
+
+                        <%= f.fields_for :item_meal_courses, @item_meal_courses do |a| %>
+
+                        <div class="form-group">       
+                        <div class="col-xs-5">                
+                            <label class="control-label"><%= a.label :item_meal_course, "Meal Course" %></label>
+                            <div class="form-group">                                      
+                                <%= a.collection_select :meal_course_id, MealCourse.all.order('meal_course_name'),:id,:meal_course_name,{:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                            </div>
+                        </div>
+                        </div>
+                        <% end %>
+
+                         
+                        <%= f.fields_for :item_meal_restriction do |b| %>
+
+                        <div class="form-group">       
+                        <div class="col-xs-5">                
+                            <label class="control-label"><%= b.label :item_meal_restriction, "Meal Restriction" %></label>
+                            <div class="form-group">                    
+                                <%= b.collection_select :meal_restriction_id, MealRestriction.all.order('meal_restriction_name'),:id,:meal_restriction_name,{:prompt=>true} ,{class: "dropdown form-control boxed single1"}%>
+                            </div>
+                        </div>
+                        </div>
+                        <% end %>
+                </div>
+            
+            </div>
+
+
+
+
+
+
+            <div class="row" style="border: 1px solid grey; margin: 5px;"> 
+
+            <div class="body-header"><h3>Add - Nutrition </span></h3></div>
+
+            <%= f.fields_for :nutrition, wrapper:false,validate: true do |ff| %>
+            
+                    <div class="form-group">       
+
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :caloire, "Calorie(kcal)" %></label>
+
+                            <div class="form-group">  
+
+                        <%#= ff.text_field :caloire,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? && production_item.nutrition.caloire.nil? ? nil : (production_item.nutrition) %>
+                        <%= ff.text_field :caloire,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.caloire) %>
+
+                            </div>
+
+                        </div>
+                            
+                    </div>
+                        
+                    <div class="form-group">
+                                
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :protein, "Protein(gms)" %></label>
+
+                            <div class="form-group">
+                    
+                                <%= ff.text_field :protein,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.protein) %>
+            
+                            </div>
+
+                        </div>
+
+                    </div>        
+
+                    <div class="form-group">                        
+                    
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :fat, "Fat(gms)" %></label>
+
+                            <div class="form-group">
+
+                                <%= ff.text_field :fat,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.fat) %>
+                        
+                            </div>
+
+                        </div>
+                
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :carbohydrates, "Carbohydrates(gms)" %></label>
+
+                            <div class="form-group">
+                    
+                                <%= ff.text_field :carbohydrates,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.carbohydrates) %>
+                 
+                            </div>                    
+                    
+                        </div>
+
+                    </div>        
+
+                    <div class="form-group">
+
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :fibre, "Fibre(gms)" %></label>
+
+                            <div class="form-group">
+
+                                <%= ff.text_field :fibre,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.fibre) %>
+                 
+                           </div>
+
+                        </div>    
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-4">
+                            
+                            <label class="control-label"><%= ff.label :Allergy %></label>
+
+                            <div class="form-group">
+
+                                 <%=ff.collection_select :allergy, Allery.all.order('name'),:id,:name,{placeholder: "Please Select" },{class: "form-control boxed select",validate: false,:multiple=>"true"} %>
+        
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label class="control-label"><%= ff.label :minerals, "minerals(milli.gms)" %></label>
+
+                            <div class="form-group">
+
+                                <table style="width:40%;" class="table table-hover small-text" id="tb">
+
+                                    <tr class="tr-header">
+  
+                                        <th>Mineral List</th>
+
+                                        <th>Qty</th>
+
+                                        <th><a href="javascript:void(0);" style="font-size:20px;" id="addMore" title="Add More Person"><span class="fa fa-plus"></span></a></th>
+
+                                    </tr>    
+
+                                    <% if production_item.nutrition.nil?%>
+                                    <tr>
+
+                                        <!-- <td><input type="text" name="nutrition[minerals][]" id="nutrition_minerals" class="form-control boxed" style="width: 100px;" required></td> -->
+                                        
+                                        <td> <!--%= ff.select :mineral, ['Potassium','Chlorine','Sodium','Calcium','Phosphorus','Magnesium','Iron','Zinc','Manganese','Copper','Iodine','Chromium','Molybdenum','Selenium','Cobalt'],{prompt: true, class: "form-control boxed e1 a2" , id: "mineral"}%></td> -->
+                                        <%= select_tag 'nutrition[minerals][]', options_for_select(['Potassium','Chlorine','Sodium','Calcium','Phosphorus','Magnesium','Iron','Zinc','Manganese','Copper','Iodine','Chromium','Molybdenum','Selenium','Cobalt'],{prompt: true, class: "form-control boxed e1 a2" , id: "mineral"}) %></td>
+                                        <td><input type="number" name="nutrition[minerals][]" id="nutrition_minerals ss" class="form-control boxed" min="1"  pattern='[-+]?[0-9]*[0-9]+' required style="width: 100px;"></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove'><span class='fa fa-times'></span></a></td>
+                                    </tr>  
+                                  <%else%>
+                                    <%production_item.nutrition.minerals.map do |i|%>
+                                    <tr>
+                                    <td><input type="text" name="nutrition[minerals][]" id="nutrition_minerals" class="form-control boxed" style="width: 100px;" required value=<%=i[0]%>></td>
+                               
+                                        <td><input type="number" name="nutrition[minerals][]" id="nutrition_minerals ss" class="form-control boxed" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required value=<%=i[1]%>></td> 
+
+                                        <td><a href='javascript:void(0);'  class='remove'><span class='fa fa-times'></span></a></td></tr> 
+                                    <%end%>
+                                    <%end%>
+
+                                </table>
+
+                 
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                   <div class="form-group">
+                    
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= ff.label :vitamins, "vitamins(micro.gm)" %></label>
+
+                            <div class="form-group">
+                    
+                                <table style="width:40%;" class="table table-hover small-text" id="tb1">
+
+                                    <tr class="tr-header">
+  
+                                        <th>Vitamin List</th>
+
+                                        <th>Qty</th>
+
+                                        <th><a href="javascript:void(0);" style="font-size:20px;" id="addMore1" title="Add More Person"><span class="fa fa-plus"></span></a></th>
+
+                                    </tr>   
+                              <% if production_item.nutrition.nil? %>
+
+                                <tr>
+<!-- 
+                                        <td><input type="text" name="nutrition[vitamins][]" id="nutrition_vitamins" class="form-control" style="width: 100px;" required>
+                                           
+                                        </td>
+ -->                                            <td>
+                                        <%= select_tag 'nutrition[vitamins][]', options_for_select(['Vitamin A','Vitamin B1','Vitamin B2','Vitamin B3','Vitamin B5','Vitamin B6','Vitamin B7','Vitamin B9','Vitamin B12','Vitamin C','Vitamin D','Vitamin E','Vitamin K'],{prompt: true, class: " form-control vitamins" , id: "nutrition_vitamins"}) %></td>
+                                        
+                                         <!-- <td> <!%= ff.select :nutrition, ['Vitamin A','Vitamin B1','Vitamin B2','Vitamin B3','Vitamin B5','Vitamin B6','Vitamin B7','Vitamin B9','Vitamin B12','Vitamin C','Vitamin D','Vitamin E','Vitamin K'],{prompt: true, class: " form-control vitamins" , id: "nutrition_vitamins"}%></td> -->
+                               
+                                        <td><input type="number" name="nutrition[vitamins][]" id="nutrition_vitamins kk" class="form-control" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove1'><span class='fa fa-times'></span></a></td>
+                                    
+                                    </tr> 
+                                         
+                               <%else%>
+
+                                    <% production_item.nutrition.vitamins.map do |i|%>
+                                    <tr>
+                                    <td><input type="text" name="nutrition[vitamins][]" id="nutrition_vitamins" class="form-control" style="width: 100px;" required value=<%=i[0]%>></td>
+                               
+                                        <td><input type="number" name="nutrition[vitamins][]" id="nutrition_vitamins kk" class="form-control" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required value=<%=i[1]%>></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove1'><span class='fa fa-times'></span></a></td>
+                                     </tr> 
+                                   
+                                    <%end%>
+                                    <%end%> 
+
+                                </table>
+
+
+                            </div>
+                 
+                        </div>   
+        
+                    </div>
+
+                
+
+            <% end %>
+
+            </div>
+
+
+        </form>    
+
+        <div class="form-group row mrgn-top">
+            
+            <div class="col-sm-10 col-sm-offset-4"><%= link_to "Back",production_items_path,:class=>"btn btn-primary"%> <%= f.submit "submit",:class=>"btn btn-primary"%></div>
+       
+       </div>
+
+
+  
+    </article>
+
+<% end %>
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".single1").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+ 
+}); 
+$(document).ready(function() {
+   $(".select").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+}); 
+</script>
+
+
+
+<script>
+$(function(){
+    $('#addMore').on('click', function() {
+              var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
+              data.find("select").val('');
+     });
+     $(document).on('click', '.remove', function() {
+         var trIndex = $(this).closest("tr").index();
+            if(trIndex>1) {
+             $(this).closest("tr").remove();
+           } else {
+             alert("Sorry!! Can't remove first row!");
+           }
+      });
+});      
+</script>
+
+<script>
+$(function(){
+    $('#addMore1').on('click', function() {
+              var data = $("#tb1 tr:eq(1)").clone(true).appendTo("#tb1");
+              data.find("input").val('');
+     });
+     $(document).on('click', '.remove1', function() {
+         var trIndex = $(this).closest("tr").index();
+            if(trIndex>1) {
+             $(this).closest("tr").remove();
+           } else {
+             alert("Sorry!! Can't remove first row!");
+           }
+      });
+});      
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".single1").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+ 
+}); 
+$(document).ready(function() {
+   $(".select").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+}); 
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% if false %>
+<%#= nested_form_for(tenant) do |f| %>
+<%= nested_form_for(production_item,validate: true) do |f| %>
+
+    <!--% if production_item.errors.any? %>
+    
+        <div id="error_explanation">
+      
+            <h2><!%= pluralize(production_item.errors.count, "error") %> prohibited this production_item from being saved:</h2>
+
+            <ul>
+      
+                <!% production_item.errors.full_messages.each do |message| %>
+        
+                    <li><!%= message %></li>
+      
+                <!% end %>
+      
+            </ul>
+    
+        </div>
+  
+    <!% end %-->
+
+    <article class="content item-editor-page">
+    
+        <div class="title-block">
+        
+            <h3 class="title"> <span class="sparkline bar" data-type="bar"></span> </h3>
+    
+        </div>
+    
+        <form name="item">
+        
+            <div class="card card-block">
+            
+                <div class="row">
+                <div class="form-group">
+                
+                      <!--  <div class="col-xs-4">
+                
+                            <label class="control-label"><%#= f.label :Name,"Item code"%></label>
+
+                            <div class="form-group">
+                     
+                                <%#= f.text_field :item_code,:class=>"form-control boxed", :required=>"true" %>
+                     
+                            </div>
+
+                        </div>
+                        </div>  -->
+                
+                    <div class="form-group">
+                
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= f.label :Name,"Item Name"%></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.text_field :name,:class=>"form-control boxed", :required=>"true" %>
+                     
+                            </div>
+
+                        </div>
+                        </div>
+                         <div class="form-group">
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= f.label :quantity,"Quantity(* Quantity Per Head)" %></label>
+
+                                <div class="form-group">
+                 
+                                <%= f.text_field :quantity,min:1,:class=>"form-control boxed", :required=>"true" %>
+                 
+                            </div>
+
+                        </div>
+                        </div>
+                         <div class="form-group">
+                         <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :category,"Meal Group"%></label>
+
+                                <div class="form-group">
+                 
+                               <!--%= f.collection_select :category_id, Category.all, :id, :category_name,{:prompt=>true} ,{class: "dropdown form-control boxed single1" ,:required=>"true"}  %-->
+                           <%= f.collection_select :category,Category.all.order('category_name'),:id,:category_name,{placeholder:"Please Select" },{:class=>"form-control boxed select", :required=>"true",:multiple=>"true"} %>
+                            </div>
+
+                        </div>
+                         </div>
+                          <div class="form-group">
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :Uom ,"Uom (* Uom Per Head)"%></label>
+
+                            <div class="form-group">
+
+                                <%= f.collection_select :unit_of_measurement_id, UnitOfMeasurement.all.order('name'),:id,:name, {:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                
+                            </div>
+
+                        </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                             <div class="form-group">
+                        <div class="col-xs-6">
+        
+                            <label class="control-label"><%= f.label :ProductionCategory,"Item Category" %></label>
+
+                            <div class="form-group">
+
+                                <%= f.collection_select :production_category_id, ProductionCategory.all.order('name'),:id,:name,{:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                        
+                            </div>
+
+                        </div>
+                         </div>
+
+                         <div class="form-group">
+                        <div class="col-xs-6">
+        
+                            <label class="control-label"><%= f.label :item_subcategory,"Item Subcategory" %></label>
+
+                            <div class="form-group">
+
+                                <%= f.collection_select :item_subcategory_id, ItemSubcategory.all.order('name'),:id,:name,{:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                        
+                            </div>
+
+                        </div>
+                         </div>
+                        <!-- <div class="col-xs-4">
+                
+                            <label class="control-label"><!%= f.label :OperationName %></label>
+
+                            <div class="form-group">
+
+                                <!%= f.collection_select :operation_id, Operation.order(:name),:id,:name, include_blank: true, :required=>"true",{prompt:true},{class: "form-control boxed select"} %>
+                            </div>
+
+                        </div> -->
+                         <div class="form-group">
+                         <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :Allergy %></label>
+
+                            <div class="form-group">
+
+                                 <%= f.collection_select :allergy, Allery.all.order('name'),:id,:name,{placeholder: "Please Select" },{class: "form-control boxed select",validate: false,:multiple=>"true"} %>
+        
+                            </div>
+
+                        </div> 
+                         </div>
+                          
+                          <div class="form-group">
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :Cost,"Production Cost (* Per Item)" %></label>
+
+                            <div class="form-group">
+
+                                <%= f.text_field :cost,:class=>"form-control boxed",min:0,:step=>"any",:required=>"true" %>
+                        
+                            </div>
+
+                        </div>
+                                 
+                    </div>
+            
+                </div>
+            
+            </div>
+
+
+            <div class="row" style="border: 1px solid grey; margin: 5px;"> 
+
+            <div class="body-header"><h3>Add - Nutrition </span></h3></div>
+
+            <%= f.fields_for :nutrition, wrapper:false,validate: true do |ff| %>
+            
+                    <div class="form-group">       
+
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :caloire, "Calorie(kcal)" %></label>
+
+                            <div class="form-group">  
+
+                        <%= ff.text_field :caloire,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : production_item.nutrition.caloire%>
+                            </div>
+
+                        </div>
+                            
+                    </div>
+                        
+                    <div class="form-group">
+                                
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :protein, "Protein(gms)" %></label>
+
+                            <div class="form-group">
+                    
+                                <%= ff.text_field :protein,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.protein) %>
+            
+                            </div>
+
+                        </div>
+
+                    </div>        
+
+                    <div class="form-group">                        
+                    
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :fat, "Fat(gms)" %></label>
+
+                            <div class="form-group">
+
+                                <%= ff.text_field :fat,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.fat) %>
+                        
+                            </div>
+
+                        </div>
+                
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :carbohydrates, "Carbohydrates(gms)" %></label>
+
+                            <div class="form-group">
+                    
+                                <%= ff.text_field :carbohydrates,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.carbohydrates) %>
+                 
+                            </div>                    
+                    
+                        </div>
+
+                    </div>        
+
+                    <div class="form-group">
+
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= ff.label :fibre, "Fibre(gms)" %></label>
+
+                            <div class="form-group">
+
+                                <%= ff.text_field :fibre,:class=>"form-control boxed",min:1, :required=>"true", :value =>production_item.id.nil? ? nil : (production_item.nutrition.nil? ? nil : production_item.nutrition.fibre) %>
+                 
+                           </div>
+
+                        </div>    
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label class="control-label"><%= ff.label :minerals, "minerals(milli.gms)" %></label>
+
+                            <div class="form-group">
+
+                                <table style="width:40%;" class="table table-hover small-text" id="tb">
+
+                                    <tr class="tr-header">
+  
+                                        <th>Mineral List</th>
+
+                                        <th>Qty</th>
+
+                                        <th><a href="javascript:void(0);" style="font-size:20px;" id="addMore" title="Add More Person"><span class="fa fa-plus"></span></a></th>
+
+                                    </tr>    
+
+                                    <% if production_item.nutrition.nil?%>
+                                    <tr>
+
+                                        <td><input type="text" name="nutrition[minerals][]" id="nutrition_minerals" class="form-control boxed" style="width: 100px;" required></td>
+                               
+                                        <td><input type="number" name="nutrition[minerals][]" id="nutrition_minerals ss" class="form-control boxed" min="1"  pattern='[-+]?[0-9]*[0-9]+' required style="width: 100px;"></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove'><span class='fa fa-times'></span></a></td>
+                                    </tr>  
+                                  <%else%>
+                                    <%production_item.nutrition.minerals.map do |i|%>
+                                    <tr>
+                                    <td><input type="text" name="nutrition[minerals][]" id="nutrition_minerals" class="form-control boxed" style="width: 100px;" required value=<%=i[0]%>></td>
+                               
+                                        <td><input type="number" name="nutrition[minerals][]" id="nutrition_minerals ss" class="form-control boxed" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required value=<%=i[1]%>></td> 
+
+                                        <td><a href='javascript:void(0);'  class='remove'><span class='fa fa-times'></span></a></td></tr> 
+                                    <%end%>
+                                    <%end%>
+
+                                </table>
+
+                 
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                   <div class="form-group">
+                    
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= ff.label :vitamins, "vitamins(micro.gm)" %></label>
+
+                            <div class="form-group">
+                    
+                                <table style="width:40%;" class="table table-hover small-text" id="tb1">
+
+                                    <tr class="tr-header">
+  
+                                        <th>Vitamin List</th>
+
+                                        <th>Qty</th>
+
+                                        <th><a href="javascript:void(0);" style="font-size:20px;" id="addMore1" title="Add More Person"><span class="fa fa-plus"></span></a></th>
+
+                                    </tr>   
+                              <% if production_item.nutrition.nil? %>
+
+                                <tr>
+
+                                        <td><input type="text" name="nutrition[vitamins][]" id="nutrition_vitamins" class="form-control" style="width: 100px;" required></td>
+                               
+                                        <td><input type="number" name="nutrition[vitamins][]" id="nutrition_vitamins kk" class="form-control" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove1'><span class='fa fa-times'></span></a></td>
+                                    
+                                    </tr> 
+                                         
+                               <%else%>
+
+                                    <% production_item.nutrition.vitamins.map do |i|%>
+                                    <tr>
+                                    <td><input type="text" name="nutrition[vitamins][]" id="nutrition_vitamins" class="form-control" style="width: 100px;" required value=<%=i[0]%>></td>
+                               
+                                        <td><input type="number" name="nutrition[vitamins][]" id="nutrition_vitamins kk" class="form-control" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required value=<%=i[1]%>></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove1'><span class='fa fa-times'></span></a></td>
+                                     </tr> 
+                                   
+                                    <%end%>
+                                    <%end%> 
+
+                                </table>
+
+
+                            </div>
+                 
+                        </div>   
+        
+                    </div>
+
+                
+
+            <% end %>
+
+            </div>
+
+        </form>    
+
+        <div class="form-group row mrgn-top">
+            
+            <div class="col-sm-10 col-sm-offset-4"><%= link_to "Back",production_items_path,:class=>"btn btn-primary"%> <%= f.submit "submit",:class=>"btn btn-primary"%></div>
+       
+       </div>
+  
+    </article>
+
+<% end %>
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".single1").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+ 
+}); 
+$(document).ready(function() {
+   $(".select").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+}); 
+</script>
+
+
+
+<script>
+$(function(){
+    $('#addMore').on('click', function() {
+              var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
+              data.find("input").val('');
+     });
+     $(document).on('click', '.remove', function() {
+         var trIndex = $(this).closest("tr").index();
+            if(trIndex>1) {
+             $(this).closest("tr").remove();
+           } else {
+             alert("Sorry!! Can't remove first row!");
+           }
+      });
+});      
+</script>
+
+<script>
+$(function(){
+    $('#addMore1').on('click', function() {
+              var data = $("#tb1 tr:eq(1)").clone(true).appendTo("#tb1");
+              data.find("input").val('');
+     });
+     $(document).on('click', '.remove1', function() {
+         var trIndex = $(this).closest("tr").index();
+            if(trIndex>1) {
+             $(this).closest("tr").remove();
+           } else {
+             alert("Sorry!! Can't remove first row!");
+           }
+      });
+});      
+</script>
+
+<!--<script type="text/javascript">
+$(document).ready(function() {
+  $(".single1").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+ 
+}); 
+$(document).ready(function() {
+   $(".select").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+}); 
+</script> -->
+
+
+<% end %>
+<style type="text/css">
+    select 
+    {
+        padding: 5px;
+    }
+
+</style>

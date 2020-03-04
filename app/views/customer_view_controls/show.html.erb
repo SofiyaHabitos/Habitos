@@ -1,0 +1,63 @@
+<p id="notice"><%= notice %></p>
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">CRM / Data Upload /  Data Upload </p>
+    <h2 class="header_title">Show  Data Upload  <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, customer_view_controls_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <label class="control-label">Customer</label>
+            <h3><%= @customer_view_control.tenant.name%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Title</label>
+            <h3><%= @customer_view_control.title%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Billing Upload</label>
+            <%=image_tag @customer_view_control.billing_upload ,:class=>"pdf_file", :alt=>"" %>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Newsletter Upload</label>
+            <%=image_tag @customer_view_control.nutrition_upload ,:class=>"pdf_file", :alt=>""%>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Created_by</label>
+            <h3><%= create(@customer_view_control) %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Updated_by</label>
+            <h3><%= update(@customer_view_control) %></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <p id="notice"><%= notice %></p>
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - View Control</h3></center>
+   </div>
+
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+    
+
+        
+            </div>
+      
+          </article>
+    <div class="footer">
+    
+      <%#= link_to 'Back', customer_view_controls_path, :class=>"btn btn-default"%>
+
+    </div> 
+ 
+  </div>
+
+</div> -->

@@ -1,0 +1,3 @@
+$("#assigned_menu").html("<%= escape_javascript(render 'tenants/dynamic_client_menu') %>")
+$("#mailable_email_id").val("<%= @client.email %>")
+$('.download_div').html("<%= escape_javascript(link_to 'Download', mail_assigned_menu_path(email: false, client_id: @client.id, meal_course_id: @meal_course_id, start_date: @start_date, end_date: @end_date), data: {turbolinks: false}) %>")

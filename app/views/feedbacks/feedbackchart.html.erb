@@ -1,0 +1,311 @@
+<head>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<!-- <style type="text/css">
+
+    
+table{
+  width: 100%;
+}
+
+tr th{
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  font-size: 14px;
+  
+}
+.datestyle:focus {
+  outline: none;
+  border-bottom: 2px solid;
+  border-color: #ee5222;
+}
+button:focus, select:focus {
+  outline: none;
+  border-bottom: 2px solid;
+  border-color: #ee5222;
+}
+button, select {
+  text-transform: none;
+  width:100%;
+  display: block;
+    color: #4b4b4b;
+    font-weight: 400;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    height: 32px;
+    background-color: transparent;
+}
+
+tr td{
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  font-size:14px;
+}
+.datestyle{
+  font-size: 10px;
+    display: block;
+    color: #4b4b4b;
+    font-weight: 400;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /* width: 100%; */
+    padding-bottom: 10px;
+    height: 32px;
+    background-color: transparent;
+}
+tbody tr:nth-of-type(even) {
+  background-color: #f5f5f5;
+  }
+</style> -->
+
+</head>
+
+<section ng-app="feedbackchart" ng-controller="feedbackchartConrol" class="page-content">
+  <div class="container-fluid" ng-init="onInit()">
+    <p class="page_path">Kitchen / Menu Cycle</p>
+    <h2 class="header_title d-flex align-items-center justify-content-between">
+      Feedback
+      <button class="btn filter_btn">
+        <span class="open">Filter</span>
+        <span class="closed">Close</span>
+      </button>
+    </h2>
+    <div id="dashboard-container">
+      <div class="collapse_filter">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <input type="text" name="daterange" ng-value="dateRanges" class="input-text float-input boxed"/>
+              <label class="input-text-placeholder" for="date">Date</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select class="input-text float-input boxed" ng-model="customers" ng-change="getdetails()" >
+                <option value="All" selected>All</option>
+                <option ng-repeat="x in filters.customer">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="customer">Customer Name</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select class="input-text float-input boxed" ng-model="meal_time" ng-change="getdetails()">
+                <option value="All">All</option>
+                <option ng-repeat="x in filters.meal_time">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="meal_time">Meal Time</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select class="input-text float-input boxed" ng-model="meal_name" ng-change="getdetails()">
+                <option value="All">All</option>
+                <option ng-repeat="x in filters.meal_name">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="meal_name">Meal Name</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select  class="input-text float-input boxed" ng-model="chef" ng-change="getdetails()">
+                <option value="All">All</option>
+                <option ng-repeat="x in filters.chef">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="chef">Chef</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select class="input-text float-input boxed" ng-model="rating" ng-change="getdetails()">
+                <option value="All">All</option>
+                <option ng-repeat="x in filters.rating">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="ratting">Ratting</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select class="input-text float-input boxed" ng-model="salt" ng-change="getdetails()">
+                <option value="All">All</option>
+                <option ng-repeat="x in filters.salt">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="salt">Salt</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select class="input-text float-input boxed" ng-model="spicy" ng-change="getdetails()">
+                <option value="All">All</option>
+                <option ng-repeat="x in filters.spicy">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="spicy">Spicy</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <select class="input-text float-input boxed" ng-model="boiled" ng-change="getdetails()">
+                <option value="All">All</option>
+                <option ng-repeat="x in filters.boiled">{{x}}</option>
+              </select>
+              <label class="input-text-placeholder" for="boiled">Boiled</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card table-container mb-2">
+        <div class="card-body">
+          <table class="table table-striped table-hover display" id="feed_backs">
+            <thead>
+              <th>Date</th>
+              <th>Customer Name</th>
+
+              <th>Meal Time</th>
+
+              <th>Meal Name</th>
+
+              <th>Chef</th>
+
+              <th>Ratings</th>
+
+              <th>Salt</th>
+
+              <th>Spicy</th>
+
+              <th>Boiled</th>
+
+              <th>Shortage Count</th>
+
+              <th>Individual Comment</th>
+
+            </thead>
+
+            <tbody>
+              <tr ng-repeat="feedback in feedbacks">
+                <td class="date">{{feedback.date | date:'dd-MMM-yyyy'}}</td>
+                <td>{{feedback.cusotmer  || '---'}}</td>
+                <td>{{feedback.meal_time  || '---'}}</td>
+                <td>{{feedback.meal_name  || '---'}}</td>
+                <td>{{feedback.chef || '---'}}</td>
+                <td>{{feedback.rating}}</td>
+                <td>{{feedback.salt || '---'}}</td>
+                <td>{{feedback.spicy  || '---'}}</td>
+                <td>{{feedback.boiled || '---'}}</td>
+                <td>{{feedback.shortage_count  || '---'}}</td>
+                <td>{{feedback.ind_comment || '---'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- <div class="col-md-12 loading" ng-show="spinner">
+        <img src="/assets/green_spinner.gif" height="70">
+      </div> -->
+
+    </div>
+  </div>
+</section>
+
+
+<script type="text/javascript">
+
+var app = angular.module('feedbackchart', []);
+
+app.controller('feedbackchartConrol', function($scope,$http) {
+  var plannerURL="<%= $api_service%>"; 
+  $scope.customers = "All";
+  $scope.meal_time = "All";
+  $scope.meal_name = "All";
+  $scope.chef = "All";
+  $scope.boiled = "All";
+  $scope.salt = "All";
+  $scope.spicy = "All";
+  $scope.rating = "All";
+  $scope.meal_time = "All";
+  $scope.spinner = true;
+
+  $(function() {
+    $('input[name="daterange"]').daterangepicker({
+      opens: 'left'
+    }, function(start, end, label) {
+      $scope.startdate=start.format('DD-MMM-YYYY');
+      $scope.enddate=end.format('DD-MMM-YYYY');
+      $http({
+        method: 'POST',
+        url: plannerURL+"/api/v1/users/feedback_status",
+        params: {boiled:$scope.boile,salt:$scope.salt,spicy:$scope.spicy,start_date:$scope.startdate,end_date:$scope.enddate,meal_name:$scope.meal_name, meal_time:$scope.meal_time, chef:$scope.chef, rating:$scope.rating}
+      }).then(function successCallback(response) {
+        $scope.feedbacks = response.data;
+        $scope.spinner = false;
+      });
+    });
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: plannerURL+"/api/v1/users/feedback_status",
+    success: function(response)
+    {
+      $scope.feedbacks = response;
+      $scope.spinner = false;
+    }
+   
+  })
+
+  $.ajax({
+    type: 'POST',
+    url: plannerURL+"/api/v1/users/feedback_filter",
+    success: function(response)
+    {
+      $scope.filters = response;
+
+    }
+  })
+
+  $scope.getdetails = function () {
+    $scope.spinner = true;
+    $.ajax({
+      type: 'POST',
+      url: plannerURL+"/api/v1/users/feedback_status",
+      data: {boiled:$scope.boiled,salt:$scope.salt,spicy:$scope.spicy,start_date:$scope.startdate,end_date:$scope.enddate,meal_name:$scope.meal_name, meal_time:$scope.meal_time, chef:$scope.chef, rating:$scope.rating, customer:$scope.customers},
+      success: function(response)
+      {
+        $scope.feedbacks = response;
+        $scope.spinner = false;
+      }
+     
+    })
+    
+    $.ajax({
+      type: 'POST',
+      url: plannerURL+"/api/v1/users/feedback_filter",
+      data: {boiled:$scope.boiled,salt:$scope.salt,spicy:$scope.spicy,start_date:$scope.startdate,end_date:$scope.enddate,meal_name:$scope.meal_name, meal_time:$scope.meal_time, chef:$scope.chef, rating:$scope.rating, customer:$scope.customers},
+      success: function(response)
+      {
+        $scope.filters = response;
+
+      }
+    })
+  }
+})
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    debugger;
+    $('#feed_backs').DataTable();
+
+    $(".filter_btn").on("click", function(){
+      $(this).toggleClass("active");
+      $(".collapse_filter").toggleClass("active");
+    });
+  });
+ </script>

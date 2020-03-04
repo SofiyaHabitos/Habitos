@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Menu master:</strong>
+  <%= @menu_production_item.menu_master %>
+</p>
+
+<p>
+  <strong>Production item:</strong>
+  <%= @menu_production_item.production_item %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @menu_production_item.quantity %>
+</p>
+
+<p>
+  <strong>Meal course:</strong>
+  <%= @menu_production_item.meal_course %>
+</p>
+
+<%= link_to 'Edit', edit_menu_production_item_path(@menu_production_item) %> |
+<%= link_to 'Back', menu_production_items_path %>

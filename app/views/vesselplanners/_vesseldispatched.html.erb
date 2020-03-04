@@ -1,0 +1,163 @@
+  <div class="card border-0 table-container text-right mb-2" id="content">
+    <% if @dispatched.present? %>
+      <div class="card-body">
+      
+      <%= link_to '<i class="ti-printer"></i>Print'.html_safe, download_vessel_pdf_path(dispatched_ids: @dispatched.ids),class: "btn btn-download float-right mb-2",target: "_blank" %>
+
+      <%#= button_to 'Save', vesselplanners_save_pdf_path(dispatched_ids: @dispatched.ids) %>
+
+         <!-- <a class="btn btn-download float-right mb-2" onclick="overallpdf();"><i class="ti-printer"></i> Print</a> -->
+
+        <table class="table table-striped table-bordered display text-left" id="index">
+          <thead>   
+          <th ><%= @dispatched[0].date.strftime("%d-%m-%Y")%></th>
+          <th><%= @dispatched[0].tenant_detail.tenant.name%></th>
+          <th>Client Category</th>
+          <th>Utensil Name</th>
+          <th>Utensil ID</th>
+          <th>Count</th>
+          <!-- <th>Wastage</th> -->
+          <th class="text-center">Action</th>    
+          </thead>
+        <tbody>
+          <%cc = 1%>
+          <%@dispatched.each_with_index do |v,index|%>
+            <tr >
+              <td><%= v.menuitem["name"]%></td>
+              <td><%= v.menuitem["qty"].to_f.round(4).to_s+" "+v.menuitem["UOM"]%></td>
+              <td><%= ClientCategory.find(v.tenant_detail.stud_type.to_i).name%></td>
+              <td><%=v.utensil.present? ? v.utensil.utensilname.name : nil%></td>
+              <td><%=v.tag.auto_id%></td>
+              <td>1</td>
+              <!-- <td><%#= v.wastage%></td> -->
+              <td class="text-center"><!-- <button onclick="printFunc(<%#=v.id%>)" id="printbtn<%#=v.id%>" class="btn btn-print"><i class="ti-printer"></i></button> --> 
+              <a href = "http://localhost/habitos/dispatch/PrintPRN.php?id=<%=v.id%>&&count=<%= cc %>&&total=<%= dispatched.count%>" target="_blank"><i class="ti-printer"></i></a> 
+
+              </td>
+            </tr>
+            <%cc= cc+1%>
+            <%end%>
+        </tbody>
+        </table>
+        </div>
+       <div style="display: none;">
+         <div id="overallpdf">
+            <% num = 1 %>
+             <%@dispatched.each do |v|%>
+             <div class="sticker_print" id="row<%=v.id%>">
+               <h6 style=""><%= dispatched[0].date.to_date.strftime("%d-%m-%Y")%> <span><%= num %>/<%= dispatched.count%></span></h6>
+               <h1><%= dispatched[0].tenant_detail.tenant.name %></h1>
+               <label><%= dispatched[0].tenant_detail.meal_time %> - <%= ClientCategory.find(v.tenant_detail.stud_type).name %></label>
+               <label><%= v.menuitem["name"]%></label>
+               <p>Vessel:&nbsp;<%= v.utensil.present? ? v.utensil.utensilname.name : nil%>
+                  <span class="item-wtg"><%= v.menuitem["qty"]+" "+"nett"%></span>
+               </p>
+               <!-- <p>Vessel ID:&nbsp; <%#= v.tag.present? ? v.tag.auto_id : nil%></p> -->
+               <% num += 1 %>
+             </div>
+             <%end%>
+          </div>
+    </div>
+
+    <%end%>
+</div>
+
+
+
+
+<style type="text/css">
+  .container {
+    position: relative;
+    text-align: center;
+    color: white;
+  }
+  .images_style{
+    width: 100%!important;
+  }
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:black;
+  }
+  .table_style {
+    font-family: 'Secular One', sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+.dc_no{
+  border-top: 3px solid black; 
+  border-bottom: 3px solid black;
+  border-right:3px solid black;
+  text-align: left; 
+  padding: 8px;
+  color:#424242;
+  font-size: 30px;
+}
+
+.meal_tyle{
+  border-top: 3px solid black; 
+  border-bottom: 3px solid black;
+  text-align: left; 
+  padding: 8px;
+  color:#424242;
+  font-size: 30px;
+}
+.client_name{
+  font-family: 'Secular One', sans-serif;
+  color:#424242;
+  text-align: left;
+  margin-left: 30px;
+  font-size: 35px;
+}
+
+ .div_test{
+  display:none;
+ }
+</style>
+<script type="text/javascript">
+
+$( document ).ready(function() {
+    // $(".client_name, .stud_type, .meal_type").hide();
+    $('#index').DataTable({
+       aaSorting: [[7, 'desc']]
+    });
+});
+
+
+
+// Jquery For Changing Table Column Order    
+
+
+function show(){
+ $(function() {
+        jQuery.each($("#index tr"), function() { 
+        // $(this).children(":eq(0)").before($(this).children(":eq(3)"));
+
+      });
+  });
+}
+
+function printFunc(name) {
+  
+ show();
+ 
+    var divToPrint = document.getElementById("row"+name);
+    var printto = divToPrint.outerHTML;
+    var printButton=document.getElementById("printbtn"+name);
+
+    let newWin = window.open();
+    printButton.style.visibility = 'hidden';
+
+
+    newWin.document.write("<head><meta name='viewport' content='width=device-width, initial-scale=1.0'></head><style type='text/css'>body {margin: 0; font-family: sans-serif; } .sticker_print {padding: 20px; } .sticker_print h6 {font-size: 28px; font-weight: normal; border-bottom: 2px solid #ddd; padding: 15px 0; margin: 0; position: relative; } .sticker_print h6 > span {position: absolute; right: 0; bottom: -40%; background-color: #fff; font-size: 22px; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border: 2px solid #a5a5a5; border-radius: 50%; } .sticker_print h1 {font-size: 30px; font-weight: normal; padding-right: 65px; margin-bottom: 10px;} .sticker_print label{font-size: 20px; display: block; margin-bottom:10px; } span.item-wtg {padding: 8px 15px; border-radius: 25px; border: 1px solid #5f5f5f; } .sticker_print p{font-size: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 0;} .sticker_print p:last-child{padding-bottom: 15px; border-bottom:2px solid #ddd; }</style><div><table><tbody>" +printto+ "</tbody></table></div>");
+    
+    newWin.print();
+   
+    printButton.style.visibility = 'visible';
+    }
+</script>
+
+
+

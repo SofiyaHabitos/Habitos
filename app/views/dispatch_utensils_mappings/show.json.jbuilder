@@ -1,0 +1,1 @@
+json.partial! "dispatch_utensils_mappings/dispatch_utensils_mapping", dispatch_utensils_mapping: @dispatch_utensils_mapping

@@ -1,0 +1,91 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Menu Planner</h3></center>
+   </div>
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Date</span></label>
+                
+                    <div class="form-group"><%=@normalmenu_site.date %></div>
+                
+                  </div>
+            
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Tenant</span></label>
+      
+                    <div class="form-group"><%=@normalmenu_site.tenant.name %></div>
+                
+                  </div>
+
+                   <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Type</span></label>
+      <!%byebug%>
+
+                    <div class="form-group"><!%=@normalmenu_site.normal_menus.name %></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Type</span></label>
+      
+                    <div class="form-group"><%=@normalmenu_site.meal_type %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Status</span></label>
+      
+                    <div class="form-group"><%=@normalmenu_site.delivery_status %></div>
+                
+                  </div>
+
+
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Total Quantity</span></label>
+      
+                    <div class="form-group"><!%=@normalmenu_site.normal_menu.quantity%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">t</span></label>
+      
+                    <div class="form-group"><!%=@normalmenu_site.normal_menu.quantity %></div>
+                
+                  </div> -->
+                  
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+  
+    <div class="footer">
+  
+       <%= link_to 'Back', normalmenu_sites_path, :class=>"btn btn-default"%>  
+      <%= link_to 'Edit', edit_normalmenu_site_path(@normalmenu_site), :class=>"btn btn-primary"%>
+  
+   
+    </div>
+
+</div>
+</div>
+
+

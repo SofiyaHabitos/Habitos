@@ -1,0 +1,280 @@
+require 'rubygems'
+require 'csv'
+require 'roo'
+require 'spreadsheet'
+
+class Enrolment < ApplicationRecord
+
+  belongs_to :food_category
+  belongs_to :tenant
+  belongs_to :meal_restriction, optional: true
+  has_many :attendances, dependent: :destroy
+
+  validates_uniqueness_of :id_number
+  validates :name, :date_of_birth, :stud_type, presence: true
+  acts_as_paranoid
+  
+  def self.upload(params)
+
+    extn = File.extname(params[:enrolment][:file1].tempfile)    
+    extn = extn.downcase
+
+    case extn
+      when ".xlsx"
+        file = Roo::Spreadsheet.open(params[:enrolment][:file1].tempfile)
+        file = file.sheet(file.sheets.first)
+        file1 = file.map { |e| e }
+=begin
+        when ".xls"
+        file = Spreadsheet.open(params[:enrolment][:file1].tempfile)
+        file = file.worksheet(file.sheets.first)
+        file1 = file.map { |e| e }  
+=end
+      when ".csv"
+        file1 = CSV.read(params[:enrolment][:file1].tempfile)
+      else
+        file1 = nil
+    end
+    
+
+    if file1.present?
+
+      headers = ["Tenant","Name", "ID", "Standard", "Sex", "Age Type", "DOB", "Meal Time", "From Date", "To Date", "Height", "Weight", "BMI", "Email", "Parent Name", "Order Source", "Meal Restriction", "Student Type", "Academic Year"]
+      
+      if file1.first == headers
+        
+        file1.shift
+        enrolments, meal_time_error, meal_restriction_error, standard_error, stud_type, stud_type_error = [], [], [], [], [], []
+        not_saved = 0
+        tenant_name = file1.collect { |e| e[0] }.uniq
+               
+        if tenant_name.compact.count == 1
+          
+          if tenant_name.first.downcase.strip == Tenant.find(params[:enrolment][:tenant_id].to_i).name.downcase.strip
+
+            tname = tenant_name.first.downcase.strip
+
+            file1.map do |data|
+              tenant = Tenant.find_by('lower(name) = ?', tname)            
+
+              #tenant = Tenant.find_by_name(data[0])
+              if tenant.tenant_details.pluck(:meal_time).flatten.uniq.map { |e| e.downcase }.include?(data[7].downcase.strip)
+                food_category_id = FoodCategory.find_by('lower(name) = ?', "veg").id
+                if data[16].present?
+                  meal_restriction = MealRestriction.find_by('lower(meal_restriction_name) = ?', data[16].downcase)
+                  meal_restriction_id = meal_restriction.present? ? meal_restriction.id : data[16]
+                else
+                  meal_restriction_id = nil
+                end
+                if tenant.tenant_details.pluck(:stud_type).include?data[17]
+                   stud_type = data[17]
+                
+                  if tenant.tenant_details.pluck(:meal_restriction_id).flatten.uniq.include?(meal_restriction_id) or Standard.where(tenant_id:tenant.id).pluck(:standard).include?data[3]
+                  
+                    enrolment = Enrolment.new(tenant_id: tenant.id, name: data[1], id_number: data[2], standard: data[3], sex: data[4], age_type: data[5], date_of_birth: data[6], meal_time: data[7], from_date: data[8], to_date: data[9], height: data[10], weight: data[11], bmi: data[12], email: data[13], parent_name: data[14], order_source: data[15], meal_restriction_id: meal_restriction_id, food_category_id: food_category_id, stud_type: stud_type,academic_year: data[18], is_active: true, status: "Approved")
+                    
+                  if enrolment.save
+                    enrolments << enrolment
+
+                    elsif Enrolment.find_by(id_number: data[2]).present?
+                      old_enrol = Enrolment.find_by(id_number: data[2])
+                  
+                      OldEnrolment.create(name:old_enrol.name,age_type: old_enrol.age_type, date_of_birth: old_enrol.date_of_birth, height: old_enrol.height,weight: old_enrol.weight, bmi: old_enrol.bmi, standard: old_enrol.standard , id_number: old_enrol.id_number,food_category_id: old_enrol.food_category_id,enrolment_type: old_enrol.enrolment_type, tenant_id: old_enrol.tenant_id, order_source: old_enrol.order_source, email: old_enrol.email,sex: old_enrol.sex,parent_name: old_enrol.parent_name, meal_time: old_enrol.meal_time,from_date: old_enrol.from_date ,to_date: old_enrol.to_date,meal_restriction_id: old_enrol.meal_restriction_id, comment: old_enrol.comment, is_active: old_enrol.is_active, stud_type: old_enrol.stud_type,status: old_enrol.status, academic_year: old_enrol.academic_year)
+                       new_enrol= Enrolment.find_by(id_number: data[2]).update(tenant_id: tenant.id, name: data[1], id_number: data[2], standard: data[3], sex: data[4], age_type: data[5], date_of_birth: data[6], meal_time: data[7], from_date: data[8], to_date: data[9], height: data[10], weight: data[11], bmi: data[12], email: data[13], parent_name: data[14], order_source: data[15], meal_restriction_id: meal_restriction_id, food_category_id: food_category_id, stud_type: data[17], academic_year: data[18],is_active: true, status: "Approved")
+                       if new_enrol == true
+                        enrolments << new_enrol
+                      end
+
+                    else
+                    #if tenant.enrolments.present?                      
+                      #Enrolment.where(tenant_id:tenant.id).destroy_all
+                      #enrolment.save
+                    #end
+
+                    not_saved = not_saved +1
+                  end
+                else
+                  meal_restriction_error << data[16]
+                  standard_error << data[3]
+                  not_saved = not_saved +1
+                end
+              else
+                    stud_type_error << data[17]
+                    not_saved = not_saved +1
+
+              end
+                
+=begin
+                if Standard.where(tenant_id:tenant.id).pluck(:standard).include?data[3]
+                  standard << data[3]
+                else
+                  standard_error << data[3]
+                  not_saved = not_saved +1
+                end
+
+                if tenant.tenant_details.pluck(:stud_type).include?data[17]
+                    enrolment.update(stud_type: data[17])
+                else
+                    stud_type_error << data[17]
+                    not_saved = not_saved +1
+
+                end 
+=end
+
+              else
+                meal_time_error << data[7]
+                not_saved = not_saved +1
+              end
+            end
+            return_data = [enrolments.count, not_saved, standard_error.flatten.uniq.join(", "), meal_time_error.flatten.uniq.join(", "), meal_restriction_error.flatten.uniq.join(", ") ,stud_type_error.flatten.uniq.join(", ")]
+          else
+            return_data = "Please check the tenant name!!"
+          end
+        else
+          return_data = "Cannot upload more than one tenant !!"
+        end      
+      else
+        return_data = "Headers doesn't match!!"
+      end
+
+    else
+      return_data = "Invalid file!!"
+    end
+    
+    return return_data
+  end
+
+
+
+  def self.Tenant_update_details(params)
+    enrolment = Enrolment.where(id: params[:approval_id],status: "Approved", is_active: true)
+    saved ,meal_time_error, meal_restriction_error, stud_type_error , invalid_date = [], [], [],[], []
+
+      enrolment.map do |enrol|
+        tenant = Tenant.find_by("from_date <= ? AND to_date >= ? AND id =?" ,enrol.from_date, enrol.to_date, enrol.tenant_id)
+        if tenant.present?
+            tenant_meal_time = tenant.tenant_details.where(meal_time: enrol.meal_time)
+            if tenant_meal_time.present?
+                meal_restriction = tenant_meal_time.where(meal_restriction: enrol.meal_restriction_id)
+                if meal_restriction.present?
+                     final_data = meal_restriction.where(stud_type: enrol.stud_type)
+
+                    if final_data.present?
+                     if final_data.update(quantity: final_data.first.quantity+1)
+                     saved << final_data.count 
+                     return_data ="#{saved.first} values Saved Successfully!!" 
+                     end
+
+                    else
+                      return_data = "Student Type is Not in Contract!!"     
+                    end
+                else
+                return_data = "MealRestriction  is Not in Contract!!"     
+                end
+                
+            else
+             return_data = "MealTime is Not in Contract!!"
+            end
+
+        else
+          return_data = "Contract Date Is Exceed!!"
+        end
+      end
+
+
+  end
+end
+
+
+
+
+
+
+
+=begin
+def self.upload(file)
+
+@data=[];@not_saved=[]
+extn = File.extname(file.tempfile) 
+unless extn == ".csv" || extn == ".CSV" || extn == ".txt" || extn == ".TXT" || extn == ".xlsx" || extn == ".XLSX"
+return "File Invalid"
+else     
+case File.extname(file.original_filename)
+when ".csv" 
+#@file = File.open(file.tempfile,"r").collect{|i| i.chomp.split("\t")}
+@file = File.open(file.tempfile,"r").collect{|i| i.chomp.split(",")}
+when ".txt"
+@ff = File.open(file.tempfile, "r",:headers=>true)
+@ss = @ff.collect{|i| i.encode!('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')}
+@file = @ss.collect{|a|a.chomp.split(",").collect{|a| a.split("\t")}}
+when ".xlsx"
+#@file = File.open(file.tempfile,"r").collect{|i| i.chomp.split("\t")}
+@file = File.open(file.tempfile,"r").collect{|i| i.chomp.split(",")}
+end
+
+@head = ["Tenant","Parent Name","Food Category","Name","Sex","Age Type","DOB","From Date","To Date","Height","Weight","BMI","Email","Standard","ID","Order Source","Meal Time","Enrolment Type","Meal Restriction"]
+
+if @file[0] == @head
+@file[0].collect{|p| @head.include?(p)}.count(true) == @head.count
+@file.shift     
+empty = @file.select{|i| i.include?("")}
+if empty.empty?
+if @file.map{|i| i[18].present?}.count(true) == @file.map{|i| i}.count
+@file.each do |line|
+if line.count == 19 && Tenant.find_by(name: line[0]).present?
+if Tenant.find_by(name: line[0]).tenant_details.where('lower(meal_time) = ?', line[16].downcase).present?
+if line[18].downcase == "normal"
+res_id = nil
+elsif MealRestriction.find_by('lower(meal_restriction_name) = ?', line[18].downcase).nil? 
+MealRestriction.create(:meal_restriction_name=>line[18])
+res_id = MealRestriction.find_by('lower(meal_restriction_name) = ?', line[18].downcase).id
+else
+res_id = MealRestriction.find_by('lower(meal_restriction_name) = ?', line[18].downcase).id
+end                
+ten_id = Tenant.find_by('lower(name) = ?', line[0].downcase).id
+cate_id = FoodCategory.find_by('lower(name) = ?', line[2].downcase).id
+dt = Enrolment.new(name: line[3], age_type: line[5], date_of_birth: line[6], height: line[9], weight: line[10], bmi: line[11], standard: line[13], id_number: line[14], food_category_id: cate_id, enrolment_type: line[17], tenant_id: ten_id, order_source: line[15], email: line[12],sex: line[4], parent_name: line[1], meal_time: line[16], from_date: line[7], to_date: line[8], meal_restriction_id: res_id) 
+dn = dt.id_number
+dm = dt.meal_time
+if Enrolment.find_by(:id_number=>dn).present?
+mealtime = Enrolment.where(:id_number=>dn).map{|i| i.meal_time}
+if mealtime.include?(dm)
+  @not_saved << dt
+  @nt_svd = @not_saved.count
+
+else dt.save
+  @data << dt
+end
+else dt.save
+@data << dt
+end
+end
+end
+end
+else
+return "meal_restriction is nill"
+end
+else
+return "c"
+end
+else
+return "File Invalidddd"
+end
+ten = @data.pluck(:tenant_id).uniq
+ten.map do |ii|       
+data1 = @data.select{|pp|pp.tenant_id == ii}       
+meal = data1.pluck(:meal_time).uniq       
+meal.map do |jj|       
+category = {}         
+category = data1.select{|kk| kk.meal_time==jj}.pluck(:food_category_id).group_by{|e| e}.map{|k, v| [k, v.length]}.to_h         
+category.map do |s,v|
+TenantDetail.where(tenant_id: ii, meal_time: jj, food_category_id: s).update(:quantity=>v)    
+end      
+end      
+end
+return @nt_svd,@data
+end
+
+end
+
+=end

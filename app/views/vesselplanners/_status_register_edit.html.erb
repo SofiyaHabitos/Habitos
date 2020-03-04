@@ -1,0 +1,110 @@
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="container-fluid">
+      <div class="modal-header">
+          <h4 class="modal-title">Status Register</h4>
+          <span class="ti-close pt-2" aria-hidden="true" data-dismiss="modal" aria-label="Close"></span>
+      </div>
+      <%=form_for :status, url: {action: "update_status"} do |i|%>
+      <div class="row">
+        <div class="col-md-6 pt-3 border-right-1">
+          <div class="control border-less-input">
+            <label class="input-text-placeholder" for="date">Date</label>
+            <%= i.date_field :date , class: "date input-text", autofocus: true, required: true, value: @asset_status.date.to_date if @asset_status.present? %>
+          </div>
+
+          <%= i.hidden_field :asset_status_id, class: "asset_status_id", value: @asset_status.id if @asset_status.present? %>
+
+          <div class="control border-less-input">
+            <label class="input-text-placeholder" for="utensil">Utensil</label>
+           <input type="text" name="utensilname" value="<%= @asset_status.utensilname.name if @asset_status.present? %>" class= "input-text" id="utensilname" readonly=true  disabled>
+           <%= i.hidden_field :utensilname_id, class: "utensil_name_id", value: @asset_status.utensilname_id if @asset_status.present? %>
+          </div>
+
+          <div class="control border-less-input">
+            <label class="input-text-placeholder" for="status">From</label>
+            <input type="text" name="kitchen_name" value="<%= @asset_status.kitchen.name if @asset_status.present? %>" class= "input-text" id="kitchenname" readonly=true  disabled>
+            <%= i.hidden_field :kitchen_id, class: "kitchen_id", value: @asset_status.kitchen_id if @asset_status.present? %>
+          </div>
+
+          <div class="control border-less-input">
+            <label class="input-text-placeholder" for="status">Qty</label>
+              <input type="text" name="status[count]" class= "input-text qty" id="actual_qty" value="<%= @asset_status.count if @asset_status.present? %>" readonly=true>
+          </div>
+
+          <div class="control border-less-input">
+            <label class="input-text-placeholder" for="status">Status</label>
+              <input type="text" name="status_name" value="<%= @asset_status.status if @asset_status.present? %>" class= "input-text" id="asset_status_name" readonly=true  disabled>
+              <%= i.hidden_field :Status, class: "status", id: "actual_status_type", value: @asset_status.status if @asset_status.present? %>
+          </div>
+
+        </div>
+
+
+        <div class="col-md-6 pt-3">
+
+          <div class="control floating_label">
+            <input type="date" name="status[movable_date]" class= "input-text" id="movable_date" value="<%= Date.today.to_date %>">
+            <label class="input-text-placeholder" for="date">Date</label>   
+          </div>
+
+          <div class="control floating_label">
+              <input type="number" name="status[movable_count]" class= "input-text" id="movable_qty" min="0" max="<%= @asset_status.count if @asset_status.present? %>" onkeyup="calculateCount('<%= @asset_status.count %>')">
+              <label class="input-text-placeholder" for="date">Count</label>   
+          </div>
+
+          <div class="control floating_label ">
+              <%= i.select "movable_status", grouped_options_for_select(asset_status), {prompt: ""}, {class: "status input-text", id: "movable_status"} %>
+              <label class="input-text-placeholder" for="date">Status</label>
+          </div>
+          
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+         <button type="button" class="btn btn_cancel" data-dismiss="modal">Cancel</button>
+         <%= i.submit "Save", :class=>"btn btn_submit" %>
+      </div>
+      <%end%>
+    </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    function calculateCount(actualQty){
+      //alert("hi");
+        var movingQty = $('#movable_qty').val();
+        var remQty = parseInt(actualQty) - parseInt(movingQty);
+
+        if (remQty >= 0) {
+          $('#actual_qty').val(remQty);  
+          $('#movable_status').prop('required', true);
+          $('#movable_date').prop('required', true);
+        } else {
+          $('#actual_qty').val(actualQty);
+        }
+        
+
+      // if(actualQty > movingQty ){
+      //     var remQty = parseInt(actualQty) - parseInt(movingQty);
+      //     $('#actual_qty').val(remQty);
+      //     $('#movable_status').prop('required', true);
+      //     $('#movable_date').prop('required', true);
+      //   }
+      //   else
+      //   {
+      //     $('#actual_qty').val(actualQty);
+      //   }
+    }
+  
+
+    $( document ).ready(function() {
+        $('#movable_status option[value="<%= @asset_status.status if @asset_status.present? %>"]').prop('disabled', true)
+    });
+
+
+    // $('#movable_date').flatpickr();
+
+  </script>

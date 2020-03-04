@@ -1,0 +1,57 @@
+<%= form_for(menu_master) do |f| %>
+  <% if menu_master.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(menu_master.errors.count, "error") %> prohibited this menu_master from being saved:</h2>
+
+      <ul>
+      <% menu_master.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :menu_master_name %>
+    <%= f.text_field :menu_master_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :category_id %>
+    <%= f.text_field :category_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cost %>
+    <%= f.text_field :cost %>
+  </div>
+
+  <div class="field">
+    <%= f.label :food_category_id %>
+    <%= f.text_field :food_category_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :meal_restriction_id %>
+    <%= f.text_field :meal_restriction_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :allery_id %>
+    <%= f.text_field :allery_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :created_by %>
+    <%= f.text_field :created_by %>
+  </div>
+
+  <div class="field">
+    <%= f.label :updated_by %>
+    <%= f.text_field :updated_by %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

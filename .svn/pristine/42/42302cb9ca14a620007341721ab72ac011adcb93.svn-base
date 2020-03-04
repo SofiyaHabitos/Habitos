@@ -1,0 +1,5 @@
+$("#newsetup-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newsetup-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show");
+

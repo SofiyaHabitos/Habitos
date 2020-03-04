@@ -1,0 +1,39 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Production Category</p>
+    <h2 class="header_title">Production Category <%= link_to '<i class="fa fa-plus"></i>'.html_safe,new_production_category_path,:class=>"btn"%></h2>
+    <div id="dashboard-container">
+      <div class="card table-container mb-2">
+        <div class="card-body">
+          <table class="table table-striped table-datatable table-hover display" cellspacing="0" width="100%" id="production_category">
+            <thead>
+               <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Created_by</th>
+                  <th>Updated_by</th>
+                  <th>Action</th>
+                  <!-- <th>Delete</th> -->
+                </tr>
+            </thead>
+            <tbody>
+              <% @production_categories.each do |production_category| %>
+                <tr>
+                  <td><%= production_category.name%></td>
+                  <td><%= production_category.description%></td>
+                  <td><%= create(production_category) %></td>
+                  <td><%= update(production_category) %></td>
+                 <!--  <td><!%= link_to 'Show', production_category %></td> -->
+                  <td><%= link_to 'Edit', edit_production_category_path(production_category),:class=>"" %></td>
+                  <!-- <td><%#= link_to '', production_category, method: :delete, data: { confirm: 'Are you sure?' },:class=>"fa fa-trash-o" %></td> -->
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</section>
+  

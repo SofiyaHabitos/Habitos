@@ -1,0 +1,78 @@
+
+ <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Facility</h3></center>
+   </div>
+
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Facility Name</span></label>
+                
+                    <div class="form-group"><%= @kitchen.name%></div>
+                
+                  </div>
+            
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Facility Person</span></label>
+      
+                    <div class="form-group"><%= @kitchen.responsible_person %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Address</span></label>
+      
+                    <div class="form-group"><%= @kitchen.address %></div>
+                
+                  </div>
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">No of Attached Assets</span></label>
+      
+                    <div class="form-group"><%= Utensil.where(:kitchen_id=> @kitchen.id).count  %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Created_by</span></label> 
+                  <div class="form-group">
+                      <%= create(@kitchen) %>
+                  </div>
+                </div>
+
+                 <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  <div class="form-group">
+                    <%= update(@kitchen) %>
+                  </div>
+                </div>
+                
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+    <div class="footer">
+    
+      <%= link_to 'Back', kitchens_path, :class=>"btn btn-default"%>
+      <!--%= link_to 'Edit', edit_kitchen_path(@kitchen), :class=>"btn btn-primary"%-->
+    
+   
+    </div>
+  
+  </div>
+
+</div>

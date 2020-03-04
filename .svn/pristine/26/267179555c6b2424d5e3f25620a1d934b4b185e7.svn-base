@@ -1,0 +1,6 @@
+$("#newcategory-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newcategory-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show")
+
+

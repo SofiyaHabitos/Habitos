@@ -1,0 +1,132 @@
+<style type="text/css">
+  img.company_logo {
+    width: 120px;
+    display: block;
+}
+</style>
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">CRM / CRM Info / Show CRM Info</p>
+    <h2 class="header_title">Show CRM Info <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, tenants_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <label class="control-label">Company Logo</label>
+            <%=image_tag @tenant.image.image_path,:class=>"company_logo", :alt=>"" if @tenant.image.present? %>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Client Name</label>
+            <h3><%= @tenant.name %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Email</label>
+            <h3><%= @tenant.email %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label"> Client Type</label>
+            <h3><%= @tenant.site_category.name%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Facility</label>
+            <h3><%= @tenant.kitchen.name %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Primary Contact</label>
+            <h3><%= @tenant.contact_person1%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Secondary Contact</label>
+            <h3><%= @tenant.contact_person2 %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Primary Mobile Number_1</label>
+            <h3><%= @tenant.phone1 %></h3>
+          </div>
+          <div class="col-md-3">  
+            <label class="control-label">Secondary Mobile Number_1</label>
+            <h3><%= @tenant.phone2 %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Address</label>
+            <h3><%= @tenant.address %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Latitude</label>
+            <h3><%= @tenant.latitude %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Longitude</label>
+            <h3><%= @tenant.longitude %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">User Code</label>
+            <h3><%= @tenant.feedback_code %></h3>
+          </div>
+           <div class="col-md-3">
+
+            <% student_type = @tenant.tenant_details.pluck(:stud_type).uniq unless @tenant.tenant_details.nil?%>
+            <label class="control-label">Client category</label>
+            <h3><%= ClientCategory.where(id: student_type).pluck(:name).join(",")%></h3>
+          </div> 
+
+          <div class="col-md-3">
+
+            <label class="control-label">Spread Type</label>
+
+            <h3><%= @spread["Spread"].pluck("spreadtype").join(',')%></h3>
+          </div> 
+
+          <div class="col-md-3">
+            <label class="control-label">Meal Course</label>
+            <h3><%= @tenant.tenant_details.pluck(:meal_time).uniq.join(",") unless @tenant.tenant_details.nil?%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Meal Type</label>
+            <h3><%= FoodCategory.where(:id=>@tenant.tenant_details.pluck(:food_category_id)).pluck(:name).join(",") unless @tenant.tenant_details.nil?%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">GST Number</label>
+            <h3><%= @tenant.gst_number %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">IsActive</label>
+            <h3><%= (@tenant.active.to_s == "true")? "Avaliable" : "UnAvaliable" %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Created_by</label>
+            <h3><%= create(@tenant) %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Updated_by</label>
+            <h3><%= update(@tenant) %></h3>
+          </div>       
+        </div> 
+      </div>
+    </div>
+</section>
+
+<!-- <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - CRM Info</h3></center>
+   </div>
+   
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+               
+        
+            </div>
+      
+          </article>
+
+    <div class="footer">
+    
+     <%#= link_to 'Back', tenants_path, :class=>"btn btn-default"%>
+   
+    </div>  
+  </div>
+
+</div> -->

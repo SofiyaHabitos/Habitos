@@ -1,0 +1,10 @@
+$("#newitem-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newitem-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+$(document).ready(function() {
+  $(".select").select2({
+    dropdownParent: $("#newitem-modal")
+  });
+});

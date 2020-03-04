@@ -1,0 +1,373 @@
+<!-- <link  rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+
+<%= form_for(nutrition,validate: true) do |f| %>
+
+    <!--% if nutrition.errors.any? %>
+  
+        <div id="error_explanation">
+      
+            <h2><!%= pluralize(nutrition.errors.count, "error") %> prohibited this nutrition from being saved:</h2>
+
+            <ul>
+            
+                <!% nutrition.errors.full_messages.each do |message| %>
+        
+                    <li><!%= message %></li>
+        
+                <!% end %>
+        
+            </ul>
+    
+        </div>
+  
+    <!% end %-->
+    
+    <article class="content item-editor-page">
+    
+        <div class="title-block">
+        
+            <h3 class="title"> <span class="sparkline bar" data-type="bar"></span> </h3>
+    
+        </div>
+    
+        <form name="item">
+        
+            <div class="card card-block">
+            
+                <div class="row">
+                
+                    <div class="form-group">
+                
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :production_item %></label>
+                 
+                            <div class="form-group"> 
+                            
+                                <%if nutrition.production_item_id.nil?%>
+
+                                 <% pro_item = ProductionItem.all.order('name') %>
+                                <% nutrition_check = pro_item.pluck(:id,:name,:unit_of_measurement_id) %>                                
+                                <% prod_item_final, dropdown_items = [],[] %>               
+                                <% nutrition_check.each {|i| prod_item_final << i unless Nutrition.where(:production_item_id=>i[0]).present?} %>                            
+                                <% prod_item_final.each {|f| dropdown_items << f[1]} %>
+                                <%= f.select :production_item_id, options_for_select(dropdown_items.collect { |c| [ c, c ] }), {:prompt=>true}, {:class=>"form-control boxed select", :required=>"true"} %>
+                                <% prod_item_final.clear && dropdown_items.clear %>
+
+                                <%else%>
+
+                                  <%#= f.collection_select :production_item_id, ProductionItem.where.not(id: ProductionItem.joins(:nutrition).pluck(:id).uniq).order('name'),:id,:name, {placeholder:"Please Select" },{:class=>"form-control boxed select", :required=>"true"} %>
+
+                                 <%= f.collection_select :production_item_id, ProductionItem.all.order('name'),:id,:name, {placeholder:"Please Select" },{:class=>"form-control boxed select", :required=>"true"} %>
+
+                                <%end%>
+                            </div>
+
+                        </div>
+                        
+                    </div>       
+
+                    <!-- <div class="form-group">
+                
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><!%= f.label :quantity %></label>
+
+                            <div class="form-group">
+                 
+                                <!%= f.text_field :quantity,min:1,:class=>"form-control boxed", :required=>"true" %>
+                 
+                            </div>
+                            
+                        </div>
+
+                    </div> -->
+
+                    <!-- <div class="form-group">
+                
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><!%= f.label :unit_of_measurement_id %></label>
+                 
+                            <div class="form-group"> 
+                    
+                                <!%= f.collection_select :unit_of_measurement_id, UnitOfMeasurement.all,:id,:name, {:prompt=>true} ,{class: "dropdown form-control boxed single1",:required=>"true"}%>
+                        
+                            </div>
+
+                        </div>
+                        
+                    </div> -->
+                        
+                    <div class="form-group">       
+
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :caloire, "Calorie(kcal)" %></label>
+
+                            <div class="form-group">       
+                    
+                                <%= f.text_field :caloire,:class=>"form-control boxed",min:1, :required=>"true" %>
+                        
+                            </div>
+
+                        </div>
+                            
+                    </div>
+                        
+                    <div class="form-group">
+                                
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :protein, "Protein(gms)" %></label>
+
+                            <div class="form-group">
+                    
+                                <%= f.text_field :protein,:class=>"form-control boxed",min:1, :required=>"true" %>
+            
+                            </div>
+
+                        </div>
+
+                    </div>        
+
+                    <div class="form-group">                        
+                    
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :fat, "Fat(gms)" %></label>
+
+                            <div class="form-group">
+
+                                <%= f.text_field :fat,:class=>"form-control boxed",min:1, :required=>"true" %>
+                        
+                            </div>
+
+                        </div>
+                
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :carbohydrates, "Carbohydrates(gms)" %></label>
+
+                            <div class="form-group">
+                    
+                                <%= f.text_field :carbohydrates,:class=>"form-control boxed",min:1, :required=>"true" %>
+                 
+                            </div>                    
+                    
+                        </div>
+
+                    </div>        
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :fibre, "Fibre(gms)" %></label>
+
+                            <div class="form-group">
+
+                                <%= f.text_field :fibre,:class=>"form-control boxed",min:1, :required=>"true" %>
+                 
+                           </div>
+
+                        </div>    
+
+                    </div>
+                       <div class="form-group">
+                           <div class="col-xs-6">
+                                <label class="control-label">
+                                    <%= label_tag :Allergy %>
+                                </label>
+                                
+                                <%if nutrition.production_item_id.nil?%>
+                                <div class="form-group">
+                                    <%= select_tag 'allergy[]',options_from_collection_for_select(Allery.all.order('name'),:id,:name,{placeholder: "Please Select" }), {class: "form-control boxed select", validate:  false, :multiple => "true"} %>
+                                </div>
+                                <%else%>
+                                
+
+                                <div class="form-group">
+                                 <%= select_tag 'allergy[]',options_from_collection_for_select(Allery.all.order('name'),:id,:name,{placeholder: "Please Select" ,:selected => Allery.where(id:nutrition.production_item.allergy).pluck(:id)}), {class: "form-control boxed select", validate:  false, :multiple => "true"} %>
+                                
+                                </div>
+                                
+                                <%end%>
+                            </div> 
+                        </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label class="control-label"><%= f.label :minerals, "minerals(milli.gms)" %></label>
+
+                            <div class="form-group">
+
+                                <table style="width:40%;" class="table table-hover small-text" id="tb">
+
+                                    <tr class="tr-header">
+  
+                                        <th>Mineral List</th>
+
+                                        <th>Qty</th>
+
+                                        <th><a href="javascript:void(0);" style="font-size:20px;" id="addMore" title="Add More Person"><span class="fa fa-plus"></span></a></th>
+
+                                    </tr>    
+
+                                    <%if nutrition.production_item_id.nil?%>
+                                    <tr>
+
+                                        <td><%= select_tag 'nutrition[minerals][]', options_for_select(['Potassium','Chlorine','Sodium','Calcium','Phosphorus','Magnesium','Iron','Zinc','Manganese','Copper','Iodine','Chromium','Molybdenum','Selenium','Cobalt'],{prompt: true, class: "form-control boxed e1 a2" , id: "mineral"}) %></td>
+                               
+                                        <td><input type="number" name="nutrition[minerals][]" id="nutrition_minerals ss" class="form-control boxed" min="1"  pattern='[-+]?[0-9]*[0-9]+' required style="width: 100px;"></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove'><span class='fa fa-times'></span></a></td>
+                                    </tr>
+                                  <%else%>
+                                    <%nutrition.minerals.map do |i|%>
+                                    <tr>
+                                    <td><%= select_tag 'nutrition[minerals][]', options_for_select(['Potassium','Chlorine','Sodium','Calcium','Phosphorus','Magnesium','Iron','Zinc','Manganese','Copper','Iodine','Chromium','Molybdenum','Selenium','Cobalt'],{prompt: true, class: "form-control boxed e1 a2" , id: "mineral",selected: i[0]}) %></td>
+                               
+                                        <td><input type="number" name="nutrition[minerals][]" id="nutrition_minerals ss" class="form-control boxed" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required value=<%=i[1]%>></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove'><span class='fa fa-times'></span></a></td></tr>
+                                    <%end%>
+                                    <%end%>
+
+                                </table>
+
+                 
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                   <div class="form-group">
+                    
+                        <div class="col-xs-6">
+                
+                            <label class="control-label"><%= f.label :vitamins, "vitamins(micro.gm)" %></label>
+
+                            <div class="form-group">
+                    
+                                <table style="width:40%;" class="table table-hover small-text" id="tb1">
+
+                                    <tr class="tr-header">
+  
+                                        <th>Vitamin List</th>
+
+                                        <th>Qty</th>
+
+                                        <th><a href="javascript:void(0);" style="font-size:20px;" id="addMore1" title="Add More Person"><span class="fa fa-plus"></span></a></th>
+
+                                    </tr>    
+                              <%if nutrition. production_item_id.nil?%>
+
+
+                                    <tr>
+
+                                        <td><%= select_tag 'nutrition[vitamins][]', options_for_select(['Vitamin A','Vitamin B1','Vitamin B2','Vitamin B3','Vitamin B5','Vitamin B6','Vitamin B7','Vitamin B9','Vitamin B12','Vitamin C','Vitamin D','Vitamin E','Vitamin K'],{prompt: true, class: " form-control vitamins" , id: "nutrition_vitamins"}) %></td>
+                               
+                                        <td><input type="number" name="nutrition[vitamins][]" id="nutrition_vitamins kk" class="form-control" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove1'><span class='fa fa-times'></span></a></td>
+                                    
+                                    </tr>
+                                         
+                               <%else%>
+                                    <%nutrition.vitamins.map do |i|%>
+                                    <tr>
+                                    <td><%= select_tag 'nutrition[vitamins][]', options_for_select(['Vitamin A','Vitamin B1','Vitamin B2','Vitamin B3','Vitamin B5','Vitamin B6','Vitamin B7','Vitamin B9','Vitamin B12','Vitamin C','Vitamin D','Vitamin E','Vitamin K'],{prompt: true, class: " form-control vitamins" , id: "nutrition_vitamins",selected: i[0]}) %></td>
+                               
+                                        <td><input type="number" name="nutrition[vitamins][]" id="nutrition_vitamins kk" class="form-control" min="1" style="width: 100px;" pattern='[-+]?[0-9]*[0-9]+' required value=<%=i[1]%>></td>
+                               
+                                        <td><a href='javascript:void(0);'  class='remove1'><span class='fa fa-times'></span></a></td>
+                                     </tr>
+                                    <%end%>
+                                    <%end%>
+
+                                </table>
+
+
+                            </div>
+                 
+                        </div>   
+        
+                    </div>
+
+                    <div class="form-group row mrgn-top">
+            
+                        <div class="col-sm-10 col-sm-offset-4"><%= link_to "Back",nutritions_path,:class=>"btn btn-primary"%> <%= f.submit "Submit", :class=>"btn btn-primary fa-check-circle"%></div>
+       
+                    </div>
+
+                </div>
+
+            </div>    
+  
+        </form>
+  
+    </article>
+
+<% end %>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>  -->
+
+<script>
+$(function(){
+    $('#addMore').on('click', function() {
+              var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
+              data.find("input").val('');
+     });
+     $(document).on('click', '.remove', function() {
+         var trIndex = $(this).closest("tr").index();
+            if(trIndex>1) {
+             $(this).closest("tr").remove();
+           } else {
+             alert("Sorry!! Can't remove first row!");
+           }
+      });
+});      
+</script>
+
+<script>
+$(function(){
+    $('#addMore1').on('click', function() {
+              var data = $("#tb1 tr:eq(1)").clone(true).appendTo("#tb1");
+              data.find("input").val('');
+     });
+     $(document).on('click', '.remove1', function() {
+         var trIndex = $(this).closest("tr").index();
+            if(trIndex>1) {
+             $(this).closest("tr").remove();
+           } else {
+             alert("Sorry!! Can't remove first row!");
+           }
+      });
+});      
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".single1").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+ 
+}); 
+$(document).ready(function() {
+   $(".select").select2(
+    {
+          placeholder: "Please Select",
+  allowClear: true
+    });
+}); 
+</script>
+

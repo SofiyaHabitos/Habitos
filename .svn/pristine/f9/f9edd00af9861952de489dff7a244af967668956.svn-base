@@ -1,0 +1,10 @@
+$("#newnut-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newnut-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+$(document).ready(function() {
+  $(".select").select2({
+    dropdownParent: $("#newnut-modal")
+  });
+});

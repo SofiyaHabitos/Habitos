@@ -1,0 +1,435 @@
+
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<!-- <script src="/assets/javascripts/autosize_textarea.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+</head>
+<body class="ag-body" ng-app="audit_review" ng-controller="audit_qus">
+<section class="page-content" ng-init="callInit()">
+  <div class="container-fluid pt-1">
+    <h2 class="header_title filter_with border-bottom pt-3">Audit Mobile App</h2>
+    <div id="dashboard-container" ng-if="auditTablist.length>0">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+           <a ng-repeat="category in auditTablist track by $index" ng-init="dataindex = $index" ng-click="getAuditData(category,'tab',$index)" class="nav-item nav-link" ng-class="{'active':$index == 0  }" id="nav-{{category.category_name}}" data-toggle="tab" href="#{{category.category_name}}" role="tab" aria-controls="nav-home" aria-selected="true">{{category.category_name}}</a>
+         <!--  <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Serving</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Executive</a> -->
+        </div>
+      </nav>
+      
+      <div class="tab-content" id="nav-tabContent">
+        <div ng-repeat="category in auditTablist track by $index" class="tab-pane fade show" ng-class="{'active':$index == 0 }" id="{{category.category_name}}" role="tabpanel" aria-labelledby="nav-{{category.category_name}}">
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="card audit_qus">
+                <div class="card-body">
+                  <div class="control floating_label">
+                    <textarea autogrow type="text" name="question" ng-model="category.question" maxlength = "160" class="textarea input-text float-input boxed"/></textarea>
+                    <label class="input-text-placeholder" for="date">Question</label>
+                  </div>
+                  <p>Given Options for the question</p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label class="radio-label"><input type="radio" ng-model="category.option" value="0" class="custom_radio" name="rating{{$index}}"> <span>Yes/No</span></label>
+                      <label class="radio-label"><input type="radio" ng-model="category.option" value="1" class="custom_radio" name="rating{{$index}}"> <span>Rating</span></label>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="checkbox-label"><input type="checkbox" ng-model="category.photos" ng-true-value="true" ng-false-value="false" class="custom_checkbox" name="add_photos"> <span>Add Photos</span></label>
+                      <label class="checkbox-label"><input type="checkbox" ng-model="category.comments" ng-true-value="true" ng-false-value="false" class="custom_checkbox" name="comments"> <span>Comments</span></label>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-full btn_add" ng-disabled="!category.question" ng-click="addAuditQues(category,category.question,category.option,category.photos,category.comments,$index)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path d="M11.531,5.531H6.469V.469a.469.469,0,0,0-.937,0V5.531H.469a.469.469,0,0,0,0,.938H5.531v5.063a.469.469,0,0,0,.938,0V6.469h5.063a.469.469,0,0,0,0-.937Z" fill="#ee5323"/></svg>
+                  Add
+                </button>
+              </div>
+            </div>
+            <div class="col-md-4" ng-repeat="list in auditGetlist track by $index" ng-init="parentIndex = $index">
+              <div class="card audit_qus">
+                <div class="card-body">
+                  <div class="control floating_label" ng-show="edit && parentIndex == editIndex">
+                    <textarea type="text" name="question" ng-model="list.feedback_question" maxlength = "160" class="textarea input-text float-input boxed"/></textarea>
+                    <label class="input-text-placeholder" for="date">Question</label>
+                  </div>
+                  <h6 class="mt-4" ng-hide="edit && parentIndex == editIndex">{{list.feedback_question}}</h6>
+                  <p>Given Options for the question</p>
+                  <div class="row">
+                    <div class="col-md-6" ng-if="!edit && parentIndex != editIndex && !load || edit && parentIndex != editIndex && !load">
+                      
+                      <label class="radio-label"><input type="radio" class="custom_radio"  ng-checked="{{list.feedback_question_type=='Yes/No'}}" value="Yes/No" ng-disabled="true"><span ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex">Yes/No</span></label>
+                      <label class="radio-label"><input type="radio" class="custom_radio" ng-checked="{{list.feedback_question_type=='Rating'}}" value="Rating" ng-disabled="true"><span ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex">Rating</span></label>
+                    </div>
+                    <div class="col-md-6" ng-if="edit" ng-hide="edit && parentIndex != editIndex">
+                      
+                       <label class="radio-label"><input type="radio" ng-model="list.feedback_question_type" value="Yes/No" class="custom_radio"  ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex"> <span ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex">Yes/No</span></label>
+                      <label class="radio-label"><input type="radio" ng-model="list.feedback_question_type" value="Rating" class="custom_radio" > <span ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex">Rating</span></label>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="checkbox-label" ><input type="checkbox" ng-model="list.feedback_image" ng-true-value="true" ng-false-value="false" class="custom_checkbox" name="image" ng-disabled="!edit || !edit && parentIndex != editIndex || parentIndex != editIndex"> <span ng-disabled="!edit || !edit && parentIndex != editIndex || parentIndex != editIndex">Add Photos</span></label>
+                      <label class="checkbox-label"><input type="checkbox" ng-model="list.feedback_comments" class="custom_checkbox" name="yes/no" ng-true-value="true" ng-false-value="false" ng-disabled="!edit || !edit && parentIndex != editIndex || parentIndex != editIndex"> <span ng-disabled="!edit || !edit && parentIndex != editIndex || parentIndex != editIndex">Comments</span></label>
+                    </div>
+                  </div>
+                 <!--  <div class="row" ng-show="!edit && !parentIndex == editIndex">
+                    <div class="col-md-6">
+                       <label class="radio-label"><input type="radio" ng-model="option" value="Yes/No" class="custom_radio" name="yes/no"> <span>Yes/No</span></label>
+                      <label class="radio-label"><input type="radio" ng-model="option" value="Rating" class="custom_radio" name=ratting> <span>Ratting</span></label>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="checkbox-label" ><input type="checkbox" ng-model="list.feedback_image" ng-true-value="true" ng-false-value="false" class="custom_checkbox" name="image" ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex"> <span ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex">Add Photos</span></label>
+                      <label class="checkbox-label"><input type="checkbox" ng-model="list.feedback_comments" class="custom_checkbox" name="yes/no" ng-true-value="true" ng-false-value="false" ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex"> <span ng-disabled="!edit || !edit && !parentIndex == editIndex || !parentIndex == editIndex">Comments</span></label>
+                    </div>
+                  </div> -->
+
+                  <div class="action_btn_grp" ng-hide="edit && parentIndex == editIndex">
+                    <button class="btn btn-clear" ng-click="editQues(category,parentIndex,list)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13.197" height="13.039" viewBox="0 0 13.197 13.039"><g transform="translate(0.1 -0.161)"><path d="M11.909,45.979a.321.321,0,0,0-.321.321v2.853a.965.965,0,0,1-.964.964H1.607a.965.965,0,0,1-.964-.964V40.779a.965.965,0,0,1,.964-.964H4.46a.321.321,0,1,0,0-.643H1.607A1.609,1.609,0,0,0,0,40.779v8.375A1.609,1.609,0,0,0,1.607,50.76h9.017a1.609,1.609,0,0,0,1.607-1.607V46.3a.321.321,0,0,0-.321-.321Zm0,0" transform="translate(0 -37.661)" fill="#ee5323" stroke="#ee5323" stroke-width="0.2"/><path d="M116.817.684a1.446,1.446,0,0,0-2.045,0l-5.733,5.733a.321.321,0,0,0-.082.141L108.2,9.281a.321.321,0,0,0,.4.4l2.722-.754a.321.321,0,0,0,.141-.082l5.733-5.733a1.448,1.448,0,0,0,0-2.045Zm-7.078,5.942,4.692-4.692,1.513,1.513L111.252,8.14Zm-.3.607,1.209,1.209-1.672.463Zm7.3-4.581-.341.341L114.885,1.48l.341-.341a.8.8,0,0,1,1.136,0l.377.377A.8.8,0,0,1,116.74,2.652Zm0,0" transform="translate(-104.713 0)" fill="#ee5323" stroke="#ee5323" stroke-width="0.2"/></g></svg>
+                    </button>
+                    <button class="btn btn-clear" data-toggle="modal" data-target="#modal-1" ng-click="deleteDialog(list,category)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13.119" height="16.223" viewBox="0 0 13.119 16.223"><g transform="translate(-46.155)"><g transform="translate(46.155)"><path d="M57.421,1.944H54.9a2.2,2.2,0,0,0-4.362,0H48.008A1.855,1.855,0,0,0,46.155,3.8v.1a1.855,1.855,0,0,0,1.171,1.722V14.37a1.856,1.856,0,0,0,1.853,1.853h7.07A1.856,1.856,0,0,0,58.1,14.37V5.614a1.855,1.855,0,0,0,1.171-1.722V3.8A1.856,1.856,0,0,0,57.421,1.944ZM52.714.879a1.319,1.319,0,0,1,1.293,1.065H51.422A1.319,1.319,0,0,1,52.714.879ZM57.224,14.37a.976.976,0,0,1-.974.975H49.18a.976.976,0,0,1-.974-.975V5.746h9.018ZM58.395,3.892a.976.976,0,0,1-.974.975H48.008a.976.976,0,0,1-.974-.975V3.8a.976.976,0,0,1,.974-.975h9.412a.976.976,0,0,1,.974.975v.1Z" transform="translate(-46.155)" fill="#ee5323"/><path d="M158.514,255.4a.44.44,0,0,0,.439-.439V250.01a.439.439,0,1,0-.879,0v4.949A.439.439,0,0,0,158.514,255.4Z" transform="translate(-154.311 -241.178)" fill="#ee5323"/><path d="M228.584,255.4a.44.44,0,0,0,.44-.439V250.01a.44.44,0,1,0-.879,0v4.949A.439.439,0,0,0,228.584,255.4Z" transform="translate(-222.025 -241.178)" fill="#ee5323"/><path d="M298.654,255.4a.439.439,0,0,0,.439-.439V250.01a.439.439,0,1,0-.879,0v4.949A.439.439,0,0,0,298.654,255.4Z" transform="translate(-289.738 -241.178)" fill="#ee5323"/></g></g></svg>
+                    </button>
+                  </div>
+                </div>
+                <button ng-show="edit && parentIndex == editIndex" class="btn btn-full btn_add" ng-disabled="!list.feedback_question" ng-click="updateAuditData(category,list.feedback_question,list.feedback_question_type,list.feedback_image,list.feedback_comments,list)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13.75" height="15.197" viewBox="0 0 13.75 15.197"><g transform="translate(-4.396 -0.001)"><path d="M15.293,2.758a.631.631,0,0,0-.738,1.023,5.61,5.61,0,1,1-4.119-1,.3.3,0,0,0,.035-.009L10.5,4.016a.342.342,0,0,0,.588.229l1.795-1.873a.341.341,0,0,0-.01-.483L11,.1a.342.342,0,0,0-.482.01.347.347,0,0,0-.1.243l.025,1.187a.631.631,0,0,0-.2,0,6.87,6.87,0,1,0,5.045,1.226Z" fill="#ee5323"/></g></svg>
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modal-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <!-- <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this question?</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div> -->
+                  <div class="modal-body machine-registration">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this question?</h5>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn btn-primary proceed" data-dismiss="modal" ng-click="deleteQues()">OK</button>
+                  </div>
+              </div>
+          </div>
+        </div>
+     
+    </div>
+  </div>
+</section>
+
+</body>
+<script  type="text/javascript">
+// debugger;
+//   var textarea = document.getElementsByClassName('.textarea');
+
+//   for (var i = 0 ; i < textarea.length; i++) {
+//     debugger;
+//     textarea[i].addEventListener('keydown', autosize);
+              
+//     function autosize(){
+//       var el = this;
+//       setTimeout(function(){
+//         el.style.cssText = 'height:auto; padding:0';
+//         // for box-sizing other than "content-box" use:
+//         // el.style.cssText = '-moz-box-sizing:content-box';
+//         el.style.cssText = 'height:' + el.scrollHeight + 'px';
+//       },0);
+//     }
+//   }
+
+(function(){
+    'use strict';
+    angular.module('angular-autogrow', []).directive('autogrow', ['$window', function($window){
+        return {
+            link: function($scope, $element, $attrs){
+
+                /**
+                 * Default settings
+                 */
+                $scope.attrs = {
+                    rows: 1,
+                    maxLines: 999
+                };
+
+                /**
+                 * Merge defaults with user preferences
+                 */
+                for(var i in $scope.attrs){
+                    if($attrs[i]){
+                        $scope.attrs[i] = parseInt($attrs[i]);
+                    }
+                }
+
+                /**
+                 * Calculates the vertical padding of the element
+                 * @returns {number}
+                 */
+                $scope.getOffset = function(){
+                    var style = $window.getComputedStyle($element[0], null),
+                        props = ['paddingTop', 'paddingBottom'],
+                        offset = 0;
+
+                    for(var i=0; i<props.length; i++){
+                        offset += parseInt(style[props[i]]);
+                    }
+                    return offset;
+                };
+
+                /**
+                 * Sets textarea height as exact height of content
+                 * @returns {boolean}
+                 */
+                $scope.autogrowFn = function(){
+                    var newHeight = 0, hasGrown = false;
+                    if(($element[0].scrollHeight - $scope.offset) > $scope.maxAllowedHeight){
+                        $element[0].style.overflowY = 'scroll';
+                        newHeight = $scope.maxAllowedHeight;
+                    }
+                    else {
+                        $element[0].style.overflowY = 'hidden';
+                        $element[0].style.height = 'auto';
+                        newHeight = $element[0].scrollHeight - $scope.offset;
+                        hasGrown = true;
+                    }
+                    $element[0].style.height = newHeight + 'px';
+                    return hasGrown;
+                };
+
+                $scope.offset = $scope.getOffset();
+                $scope.lineHeight = ($element[0].scrollHeight / $scope.attrs.rows) - ($scope.offset / $scope.attrs.rows);
+                $scope.maxAllowedHeight = ($scope.lineHeight * $scope.attrs.maxLines) - $scope.offset;
+
+                $element[0].addEventListener('input', $scope.autogrowFn);
+
+                /**
+                 * Auto-resize when there's content on page load
+                 */
+                if($element[0].value != ''){
+                    $scope.autogrowFn();
+                }
+            }
+        }
+    }]);
+})();
+
+</script>
+
+<script type="text/javascript">
+  var app = angular.module('audit_review', ["angular-autogrow"]);
+  app.controller('audit_qus', function($scope,$http,$rootScope,$window,$filter,$timeout, $q) {
+    console.log('test')
+    var plannerURL="<%= $api_service%>"
+
+    $scope.editIndex = -1;
+    $scope.edit = false;
+    $scope.load =false; 
+    
+    $scope.Index = 0;   
+    $scope.auditTablist = [];
+    $scope.auditGetlist = [];
+    $scope.getRealDataList = [];
+    $scope.callInit = function(){
+      $http.get(plannerURL+'/api/v1/category_lists').then(function(res){
+       var auditData = res.data;
+
+       $scope.auditTablist = auditData.map(function(val, index){
+        return {
+          id: val.id,
+          category_name: val.category_name,
+          category_desc: val.category_desc,
+          status: val.status,
+          created_at: val.created_at,
+          updated_at: val.updated_at,
+          option: "0"  
+        }
+        
+       });
+
+       console.log($scope.auditTablist)
+
+       if($scope.auditTablist.length>0){
+        $scope.getData = $scope.auditTablist[0];
+
+        $scope.getAuditData($scope.auditTablist[0],'new',$scope.Index);
+       }
+      },function(error){
+          console.log(error)
+      })
+    }
+    
+    $scope.getAuditData = function(data,tab,index){
+     console.log(data,tab,index)
+     $scope.load =true; 
+     $scope.getData = data;
+     if($scope.Index!=index){
+      $scope.auditGetlist = [];
+     }
+     $scope.Index = index;
+     $http.get(plannerURL+'/api/v1/audit_feedback_questions/questions?category_id='+data.id).then(function(res){     
+       var auditList = res.data;
+       
+       $scope.auditGetlist = auditList.map(function(val, index){
+        return {
+          id: val.id,
+          feedback_question: val.feedback_question,
+          feedback_question_type: val.feedback_question_type,
+          feedback_question_desc: val.feedback_question_desc,
+          feedback_question_options: val.feedback_question_options,
+          feedback_image: val.feedback_image,
+          feedback_comments: val.feedback_comments,
+          status: val.status,
+          audit_feedback_category: val.audit_feedback_category
+        }
+        
+       });
+       $scope.getRealDataList = auditList.map(function(val, index){
+        return {
+          id: val.id,
+          feedback_question: val.feedback_question,
+          feedback_question_type: val.feedback_question_type,
+          feedback_question_desc: val.feedback_question_desc,
+          feedback_question_options: val.feedback_question_options,
+          feedback_image: val.feedback_image,
+          feedback_comments: val.feedback_comments,
+          status: val.status,
+          audit_feedback_category: val.audit_feedback_category
+        }
+        
+       });
+       $scope.load =false; 
+       if(tab=='tab'){
+        $scope.editIndex = -1;
+        $scope.edit = false;
+       }
+       
+     },function(error){
+         console.log(error)
+     })
+    }
+    
+
+    $scope.updateAuditData = function(category,getquestion,getoption,getphotos,comments,list){
+      //let type = Number(getoption) || null; 
+      var question_type = null
+      if(getoption=="Yes/No"){
+        question_type = "0"
+      }else if(getoption=="Rating"){
+        question_type = "1"
+      }
+      var data = {
+          "feedback_question": getquestion,
+          "feedback_question_desc": '',
+          "feedback_question_type": question_type,
+          "feedback_question_options": '',
+          "feedback_image":getphotos,
+          "feedback_comments": comments,
+          "status": 1,
+          "audit_feedback_category_id": $scope.getData['id']
+      }
+
+     $http.put(plannerURL+'/api/v1/audit_feedback_questions/demo?id='+list['id'],data).then(function(res){
+      
+       $scope.editIndex = -1;
+       $scope.edit = false;
+       alert("Question has updated successfully")
+       //$scope.auditGetlist = res.data;
+       $scope.auditGetlist = $scope.auditGetlist.map(function(val, index){
+        return {
+          id: val.id,
+          category_name: val.category_name,
+          category_desc: val.category_desc,
+          status: val.status,
+          created_at: val.created_at,
+          updated_at: val.updated_at,
+          option: "0"  
+        }
+        
+       });
+       $scope.getAuditData($scope.getData,'new',$scope.Index);  
+     },function(error){
+         console.log(error)
+     })
+    }
+
+    $scope.addAuditQues=function(category,question,option,photos,comments,index){
+      //let type = Number(option) || null; 
+      console.log(category)
+      var data = {
+          "feedback_question": question,
+          "feedback_question_desc": '',
+          "feedback_question_type": option,
+          "feedback_question_options": '',
+          "feedback_image":photos,
+          "feedback_comments": comments,
+          "status": 1,
+          "audit_feedback_category_id": $scope.getData['id']
+      }
+      console.log(data)
+       $http.post(plannerURL+'/api/v1/audit_feedback_questions',data).then(function(res){
+       console.log(res)
+       //$scope.question = "";
+       
+       // $scope.option = 0;
+       // $scope.photos = false;
+       // $scope.comments = false;
+      
+       $scope.auditGetlist = $scope.auditGetlist.map(function(val, index){
+        return {
+          id: val.id,
+          category_name: val.category_name,
+          category_desc: val.category_desc,
+          status: val.status,
+          created_at: val.created_at,
+          updated_at: val.updated_at,
+          option: "0"  
+        }
+        
+       });
+       $scope.editIndex = -1;
+       $scope.edit = false;
+       $scope.auditTablist[0].question = "";
+       $scope.auditTablist[0].option = "0";
+       $scope.auditTablist[0].photos = false;
+       $scope.auditTablist[0].comments = false;
+       
+       alert("Question created successfully")
+       
+       $scope.getAuditData($scope.getData,'new',$scope.Index);
+      },function(error){
+        console.log(error)
+       })
+    }
+
+    $scope.editQues=function(category,parentIndex,list){
+      console.log(category,parentIndex,list);
+      $scope.edit = true;
+      $scope.editIndex = parentIndex;
+      $scope.option = list['feedback_question_type'];
+      
+      $scope.getAuditData($scope.getData,'new',$scope.Index);
+    }
+
+    $scope.deleteQues = function(){
+      $http.delete(plannerURL+'/api/v1/audit_feedback_questions/'+$scope.deleteId).then(function(res){
+        console.log(res);
+        $scope.getAuditData($scope.getData,'new',$scope.Index);
+      },function(error){
+        console.log(error)
+      })
+    } 
+
+    $scope.deleteDialog = function(data,category){
+      $scope.deleteId = data['id']; 
+    }
+
+
+
+  })
+</script>

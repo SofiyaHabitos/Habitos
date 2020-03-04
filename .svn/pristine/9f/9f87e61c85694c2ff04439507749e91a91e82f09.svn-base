@@ -1,0 +1,76 @@
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="/assets/datatable.js"></script>
+<script src="/assets/datahtml5button.js"></script>
+<script src="/assets/jszip.js"></script>
+<script src="/assets/datatablebutton.js"></script>
+<link href="/assets/dataTable.css" rel="stylesheet">
+<link href="/assets/datatablebutton.css" rel="stylesheet">
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="col-md-12">
+      <div class="container">
+        <div class="body-header">
+          <div class="row">
+            <div class="col-md-8">
+              <h3 style="font-size: large;color: darkgreen;font-family: initial;">Attendance - <%= Tenant.find(params[:format]).name %> - <%= Date.today.strftime('%a, %d-%b-%Y') %></h3>
+            </div>
+            <div class="col-md-4">
+              <%= link_to "Back", attendance_index_path, class: "btn btn-info" %>
+            </div>
+          </div>           
+        </div>
+      </div>      
+    </div>  
+  </div>  
+    
+  <div class="body-content">
+    <div id="dashboard-container">
+      <div class="table-container">
+        <table class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%" id="attendance">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Name</th>
+              <th>Student Id</th>
+              <th>Sex</th>
+              <th>Age type</th>              
+              <th>Standard</th>
+              <th>Meal Time</th>
+              <th>Meal Type</th>
+              <th>Meal Restriction</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @attendances.each do |attendance| %>      
+              <tr id='<%= attendance.enrolment_id %>'>
+                <td><%= attendance.tenant.name.titleize %></td>
+                <td><%= attendance.enrolment.name.titleize %></td>
+                <td><%= attendance.identity_number %></td>
+                <td><%= attendance.enrolment.sex.titleize %></td>
+                <td><%= attendance.age_type.titleize %></td>
+                <td><%= attendance.standard %></td>                
+                <td><%= attendance.meal_time.titleize %></td>
+                <td><%= attendance.food_category.name.titleize %></td>
+                <td><%= attendance.enrolment.meal_restriction.present? ? attendance.enrolment.meal_restriction.meal_restriction_name.titleize : "-" %></td>
+                <% if attendance.attendance_log == true %>
+                  <td style="color: green;">Present</td>
+                <% else %>
+                  <td style="color: red;">Absent</td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <!-- <div class="side-pop" style="color:white;display:none;">
+          <ul>
+            <li><a title="Show" id="show" > <i class="btn btn-sm btn-default fa fa-sm fa-eye"></i></a></li>  
+          </ul>
+        </div> -->
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>

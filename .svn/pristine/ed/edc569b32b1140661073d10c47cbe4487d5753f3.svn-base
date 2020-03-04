@@ -1,0 +1,6 @@
+$("#newsite_category-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newsite_category-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+

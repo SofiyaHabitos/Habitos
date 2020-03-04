@@ -1,0 +1,3 @@
+
+$("#dispatch-modal").html("<%= escape_javascript(render 'dispatch_status') %>")
+$("#dispatch-modal").modal("show")

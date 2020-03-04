@@ -1,0 +1,6 @@
+<h1>Editing Normal Menu</h1>
+
+<%= render 'form', normal_menu: @normal_menu %>
+
+<%= link_to 'Show', @normal_menu %> |
+<%= link_to 'Back', normal_menus_path %>

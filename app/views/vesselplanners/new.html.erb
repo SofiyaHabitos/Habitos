@@ -1,0 +1,57 @@
+<div class="table-container"> 
+  <div class="card">
+  <% if menucycle.present? %>
+  <%= form_for :vesselplanner,url: {action: "index1"} do |f|%>
+  <table class="table table-striped table-bordered table-hover display">
+   <% menucycle.each do |s|%>
+    <thead>
+     <th colspan="3"><b>Date</b><span><%= s.date.strftime("%d-%m-%Y")%><%= hidden_field_tag "date", s.date.strftime("%Y-%m-%d")%></span></th>
+     <!-- <th></th>
+     <th></th> -->
+    </thead>
+    <tbody>
+    <%= hidden_field_tag "tenantid", s.tenant_id%>
+    <%= hidden_field_tag "stud_type", s.stud_type%>
+    <%= hidden_field_tag "spread_type", s.spread_type%>
+    <%= hidden_field_tag "category_id", s.category_id%>
+    <tr>
+       <td><%= s.category.category_name%><%= hidden_field_tag "categoryname", s.category.category_name%></td>
+       <td><%= s.tenant.name%><%= hidden_field_tag "tenantname", s.tenant.name%></td>
+       <td>Utensil Name</td>
+       <!-- <td>Count</td>
+       <td>Vessel ID</td>
+       <td>Wastage</td> -->
+    </tr>
+     
+    <%s.menu_items.each do |m| %>
+
+    <%qty=TenantDetail.find_by(tenant_id: s.tenant_id,stud_type:s.stud_type,spread_type: s.spread_type, meal_time: Category.find(s.category_id).category_name,food_category_id: s.food_category_id)%>
+
+    <%= hidden_field_tag "menu_qty[]", qty.present? ? qty.quantity.to_f * m[:qty].to_f : 0 %>
+   
+    <tr id="row<%=s.id%>">
+   
+     <td><%= m[:name] %><%= hidden_field_tag "menu_items[]", m[:name]%></td>
+    
+     <td><%=qty.present? ? qty.quantity.to_f * m[:qty].to_f : 0 %></td>
+
+     <td><%= select_tag 'utensilname[]', options_for_select(@utensilname),{class: " form control" } %></td>
+    </tr>
+<!-- <td>1</td>
+
+     <td></td>
+     <td></td>
+ -->
+    <%end%>
+
+
+   </tbody>
+   </table>
+    <%#= f.submit "save", class:"save_btn"%>
+    <%=f.submit "submit", class: "btn btn-primary"%>
+
+  <%end%>
+ <%end%>
+<%end%>
+</div>
+</div>

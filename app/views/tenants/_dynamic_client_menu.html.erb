@@ -1,0 +1,178 @@
+<!-- <div id="assigned_menu"> -->
+  <% if @menu_details.present? %>
+
+  <div class="download_div"></div>
+
+    <h4><%= @client.name %></h4>
+
+      <% @menu_details.map do |dat, v| %>
+
+          <div class="client_menus">
+            <label>
+              <span><%= dat.day if dat.present? %></span><br><span><%= dat.strftime("%B").first(3) if dat.present? %> <%= dat.year if dat.present? %></span><br><span><%= dat.strftime("%A") if dat.present? %></span>
+              </label>
+            <div class="client_menu_detail">
+            
+                  <% @client_categories.map do |client_category_id| %>
+
+                  <div class="card" style="display: none;">
+
+                  <div class="card-body">
+
+                     <% v.map do |plan| %>
+                       
+                      <label><%= ClientCategory.find(client_category_id.to_i).name %></label>
+
+                          <div class="detail_empty">
+
+                          <% if plan.tenant_detail.stud_type == client_category_id %> 
+
+                            <div class="meal_details">
+                              <h6><span><%= plan.category.category_name %></span></h6>
+
+                              <span><%= plan.menu_items.delete_if{|dish| dish["name"]=="" }.count %></span>
+
+                              <% unless plan.menu_items.delete_if{|dish| dish["name"]== "" }.count == 0 %>
+                                  <% plan.menu_items.map do |item| %>
+                                      <% if item["name"].present? %><span class="menu_items"><%= item["name"] %></span><%end%>
+                                  <%end%>
+                              <%else%>
+                                  <p>No record found</p>
+                              <%end%>
+                            </div>
+                          <%end%>
+                          </div>
+                        <%end%>
+                            </div>
+                </div>
+                  <%end%>
+
+               
+          </div>
+          </div>
+      <%end%>
+  <%else%>
+       <tr><div class="search_result"><p><i class="fa fa-search" aria-hidden="true"></i>&nbsp;No Record Found</p></div></tr>
+  <%end%>
+<!-- </div> -->
+
+<style type="text/css">
+  .search_result{
+    margin-top: 100px;
+    margin-bottom: 100px;
+    text-decoration: underline;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .download_div{
+    float: right;
+    margin-right: 10px;
+  }
+/*  .card{
+    background-color: #ffccbc;
+  }*/
+  /*.dot {
+    height: 35px;
+    width: 35px;
+    background-color: #ee5222;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 14px;
+    color: white;
+  }*/
+  .week_day{
+    font-size: 14px;
+  }
+  #assigned_menu h4{
+    margin-bottom: 30px;
+  }
+  .client_menus > label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #ed5323;
+      margin-left: 20px;
+      margin-bottom: 0;
+      text-align: center;
+      line-height: 1.2;
+  }
+  .client_menus > label > span:first-child{
+    font-size: 20px;
+  }
+  .client_menus > label > span:last-child{
+    font-size: 12px;
+  }
+  .client_menu_detail > .card .card-body label:empty {
+      display: none;
+  }
+  .client_menu_detail {
+      padding-left: 50px;
+      margin-left: 50px;
+      /*border-left: 1px dashed #ddd;*/
+      background-image: linear-gradient(#c7c7c7 50%, rgba(255,255,255,0) 0%);
+      background-position: left;
+      background-size: 1px 22px;
+      background-repeat: repeat-y;
+  }
+  .client_menu_detail > .card{
+    margin-bottom: 20px;
+  }
+  .client_menu_detail > .card .card-body label {
+      margin-bottom: 0;
+      position: absolute;
+      top: -14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 20px;
+      border-radius: 20px;
+      background-color: #ddd;
+      font-size: 14px;
+  }
+  .meal_details{
+    position: relative;
+  }
+  .meal_details h6 {
+      color: #ed5323;
+      position: relative;
+      margin: 0 0 24px;
+      border-bottom: 1px solid #ddd;
+  }
+  .meal_details .menu_items {
+      padding: 5px 8px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+  }
+  .meal_details h6 > span {
+      background-color: white;
+      position: relative;
+      top: 8px;
+      padding: 0 10px 0 0;
+  }
+  .meal_details h6 + span{
+    position: absolute;
+    top: 4px;
+    right: 0;
+    height: 30px;
+    width: 30px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+<script type="text/javascript">
+  $(document).ready(function(){
+    // $( ".client_menu_detail > .card .card-body" ).find( "meal_details" ).css( "color", "red" );
+    var cls = $(".meal_details");
+    $(".client_menu_detail > .card .card-body .detail_empty").each(function(){
+      var isEmpty = $(this).html().trim();
+      if(isEmpty.length != ""){
+        $(this).parent().parent().css("display","block");
+      }
+    });
+  });
+</script>

@@ -1,0 +1,3 @@
+$("#showkitchen1-modal").html("<%= escape_javascript(render 'show') %>")
+$("#showkitchen1-modal").on('shown.bs.modal', function() {
+}).modal("show");

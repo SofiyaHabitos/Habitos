@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Cutlery Dispatches</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cutlery_dispatches.each do |cutlery_dispatch| %>
+      <tr>
+        <td><%= link_to 'Show', cutlery_dispatch %></td>
+        <td><%= link_to 'Edit', edit_cutlery_dispatch_path(cutlery_dispatch) %></td>
+        <td><%= link_to 'Destroy', cutlery_dispatch, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cutlery Dispatch', new_cutlery_dispatch_path %>
+

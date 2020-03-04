@@ -1,0 +1,225 @@
+<div class="card">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <% if @menu_customers.where(category_id: Category.find_by(category_name: "Breakfast").id).present? %>
+        <a class="nav-item nav-link active" id="nav-breakfast-tab" data-toggle="tab" href="#nav-breakfast" role="tab" aria-controls="nav-breakfast" aria-selected="true">Breakfast</a>
+      <% end %>
+      <% if @menu_customers.where(category_id: Category.find_by(category_name: "Lunch").id).present? %>
+        <a class="nav-item nav-link" id="nav-lunch-tab" data-toggle="tab" href="#nav-lunch" role="tab" aria-controls="nav-lunch" aria-selected="false">Lunch</a>
+      <% end %>
+      <% if @menu_customers.where(category_id: Category.find_by(category_name: "Dinner").id).present? %>
+        <a class="nav-item nav-link" id="nav-dinner-tab" data-toggle="tab" href="#nav-dinner" role="tab" aria-controls="nav-dinner" aria-selected="false">Dinner</a>
+      <% end %>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+
+    <% if @menu_customers.where(category_id: Category.find_by(category_name: "Breakfast").id).present? %>
+      <div class="tab-pane fade show active" id="nav-breakfast" role="tabpanel" aria-labelledby="nav-breakfast-tab">
+        <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+          <% menus = @menu_customers.where(category_id: Category.find_by(category_name: "Breakfast").id).group_by(&:menu_master_id).map{|k, v| {:menu_master_id => k, :packs => v.pluck(:packs_to_send).sum+ParentOrder.where(date: Date.today,tenant_id:v.pluck(:tenant_id),meal_restriction: v.pluck(:meal_restriction),stud_type: v.pluck(:stud_type),meal_time: Category.find(v.pluck(:category_id))).count}} %>
+
+          <% items = [] %>
+          <% menus.map{|i| items << MenuMaster.find(i[:menu_master_id]).menu_production_items.map{|i| {:item => i.production_item.name, :qty => i.quantity}}} %>
+          <% array = [] %>
+          <% items.each_with_index do |i,j| %>
+            <% hash = {} %>
+            <% i.map do |k| %>
+              <% hash[k[:item]] = menus[j][:packs] * k[:qty].to_f %>
+            <% end %>
+            <% array << hash %>
+          <% end %>
+          <% result = array.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+
+          <div class="carousel-inner">
+            <% bb = result.each_slice(8).to_a %>
+            <% bb.each_with_index do |cc,indx| %>
+              <div class="carousel-item <% if indx == 0 %>active<% end %>">
+                <div class="container-fluid">
+                  <% d = cc.each_slice(4).to_a %>
+                  <% d.map do |e| %>
+                    <div class="row menu-items">
+                      <% e.map do |item| %>
+                        <div class="col-md-3">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <span class="food-img">
+                                <img src="/assets/sample.png" width="60px" height="60px">
+                              </span>
+                            </div>
+                            <div class="col-md-8">
+                              <h2>
+
+                                <%= item[1].round(2) %>
+                                <% uom = (ProductionItem.find_by_name(item[0]).unit_of_measurement.present? ? ProductionItem.find_by_name(item[0]).unit_of_measurement.name.downcase : nil) %>
+                                <% if uom.strip == "kg" %>
+                                  <% uom = "kg" %>
+                                <% elsif uom == "ltrs" %>
+                                  <% uom = "ml" %>
+                                <% else %>
+                                  <% uom = "pcs" %>
+                                <% end %>
+                                <span><%= uom %></span>
+                              </h2>
+                              <h4><%= item[0] %></h4>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @menu_customers.where(category_id: Category.find_by(category_name: "Lunch").id).present? %>
+      <div class="tab-pane fade" id="nav-lunch" role="tabpanel" aria-labelledby="nav-lunch-tab">
+        <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel">
+          <% menus = @menu_customers.where(category_id: Category.find_by(category_name: "Lunch").id).group_by(&:menu_master_id).map{|k, v| {:menu_master_id => k, :packs => v.pluck(:packs_to_send).sum+ParentOrder.where(date: Date.today,tenant_id:v.pluck(:tenant_id),meal_restriction: v.pluck(:meal_restriction),stud_type: v.pluck(:stud_type),meal_time: Category.find(v.pluck(:category_id))).count}} %>
+          <% items = [] %>
+          <% menus.map{|i| items << MenuMaster.find(i[:menu_master_id]).menu_production_items.map{|i| {:item => i.production_item.name, :qty => i.quantity}}} %>
+          <% array = [] %>
+          <% items.each_with_index do |i,j| %>
+            <% hash = {} %>
+            <% i.map do |k| %>
+              <% hash[k[:item]] = menus[j][:packs] * k[:qty].to_f %>
+            <% end %>
+            <% array << hash %>
+          <% end %>
+
+          <% result = array.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+
+          <div class="carousel-inner">
+            <% bb = result.each_slice(8).to_a %>
+            <% bb.each_with_index do |cc,indx| %>
+              <div class="carousel-item <% if indx == 0 %>active<% end %>">
+                <div class="container-fluid">
+                  <% d = cc.each_slice(4).to_a %>
+                  <% d.map do |e| %>
+                    <div class="row menu-items">
+                      <% e.map do |item| %>
+                        <div class="col-md-3">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <span class="food-img">
+                                <img src="/assets/sample.png" width="60px" height="60px">
+                              </span>
+                            </div>
+                            <div class="col-md-8">
+                              <h2>
+                                <%= item[1].round(2) %>
+                                <% uom = ProductionItem.find_by_name(item[0]).unit_of_measurement.name.downcase.strip if  ProductionItem.find_by_name(item[0]).unit_of_measurement.present?%>
+                                <% if uom == "kg" %>
+                                  <% uom = "kg" %>
+                                <% elsif uom == "ltrs" %>
+                                  <% uom = "ml" %>
+                                <% else %>
+                                  <% uom = "pcs" %>
+                                <% end %>
+                                <span><%= uom %></span>
+                              </h2>                            
+                              <h4><%= item[0] %></h4>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @menu_customers.where(category_id: Category.find_by(category_name: "Dinner").id).present? %>
+      <div class="tab-pane fade" id="nav-dinner" role="tabpanel" aria-labelledby="nav-dinner-tab">
+        <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
+          <% menus = @menu_customers.where(category_id: Category.find_by(category_name: "Dinner").id).group_by(&:menu_master_id).map{|k, v| {:menu_master_id => k, :packs => v.pluck(:packs_to_send).sum+ParentOrder.where(date: Date.today,tenant_id:v.pluck(:tenant_id),meal_restriction: v.pluck(:meal_restriction),stud_type: v.pluck(:stud_type),meal_time: Category.find(v.pluck(:category_id))).count}} %>
+          <% items = [] %>
+          <% menus.map{|i| items << MenuMaster.find(i[:menu_master_id]).menu_production_items.map{|i| {:item => i.production_item.name, :qty => i.quantity}}} %>
+          <% array = [] %>
+          <% items.each_with_index do |i,j| %>
+            <% hash = {} %>
+            <% i.map do |k| %>
+              <% hash[k[:item]] = menus[j][:packs] * k[:qty].to_f %>
+            <% end %>
+            <% array << hash %>
+          <% end %>
+          <% result = array.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+
+          <div class="carousel-inner">
+            <% bb = result.each_slice(8).to_a %>
+            <% bb.each_with_index do |cc,indx| %>
+              <div class="carousel-item <% if indx == 0 %>active<% end %>">
+                <div class="container-fluid">
+                  <% d = cc.each_slice(4).to_a %>
+                  <% d.map do |e| %>
+                    <div class="row menu-items">
+                      <% e.map do |item| %>
+                        <div class="col-md-3">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <span class="food-img">
+                                <img src="/assets/sample.png" width="60px" height="60px">
+                              </span>
+                            </div>
+                            <div class="col-md-8">
+                              <h2>
+                                <%= item[1].round(2) %>
+                                <% uom = ProductionItem.find_by_name(item[0]).unit_of_measurement.name.downcase %>
+                                <% if uom.strip == "kg" %>
+                                  <% uom = "kg" %>
+                                <% elsif uom == "ltrs" %>
+                                  <% uom = "ml" %>
+                                <% else %>
+                                  <% uom = "pcs" %>
+                                <% end %>
+                                <span><%= uom %></span>
+                              </h2>
+                              <h4><%= item[0] %></h4>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls3" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls3" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

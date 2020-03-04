@@ -1,0 +1,390 @@
+
+<% id = session[:kitchen_user_id] %>
+
+
+
+
+<!-- <style>
+  .panel-heading{
+    background-color: #E9E9E9!important;
+  }
+  .addrow{
+    padding-top:5px;
+    padding-bottom:5px;
+    background-color: #F9F9F9;
+  }
+  .card
+  {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-top: solid;
+    border-top-color: orangered;
+    padding: 13px;
+    background-color: #ddd;
+  }
+  .card-body
+  {
+    padding: 5px;
+  }
+  .plancount{
+    float: left;
+    margin-left: 18px;
+    margin-top: 5px;
+}
+.title
+{
+  font-size: 20px;
+    color: #353535;
+    float: left;
+}
+.meal_course
+{
+margin-top: 15px;
+margin-left: 18px;
+}
+
+
+</style> -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script> -->
+
+
+<script src="/assets/angular.js"></script>
+<script type="text/javascript" src="/assets/Chart.bundle.min.js"></script>
+<!-- <link href="/assets/medias.css" rel="stylesheet">
+<link href="/assets/new_menu.css" rel="stylesheet">
+<link href="/assets/old_menu.css" rel="stylesheet">
+<link href="/assets/menuplaner.css" rel="stylesheet"> -->
+
+<!-- <body> -->
+<!--  <section class="page-content">
+
+  <div class="row container_pad" ng-app="menu_cycle" ng-controller="MenuCycleCtrl">
+    <div class="col-md-12 loading" ng-show="spinner">
+      <img src="/assets/green_spinner.gif" height="70">
+    </div>
+    <div class="col-md-12 menu_body">
+      <div class="title_head">
+        <h1 class="planner-title">MENU CYCLE</h1>
+      </div>
+
+    <table class="table table-striped table-datatable table-hover display" id="menu_cycle">
+      <thead>
+        <th>Plan Name</th>
+        <th>Date</th>
+        <th>Plan For</th>
+        <th>Tenant Name</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="cycle in menuCycleList">
+          <td >{{cycle.plan_name}}</td>
+          <td>{{cycle.date}}</td>
+          <td>{{cycle.plan_for}}</td>
+          <td>{{cycle.tenant}}</td>
+          <td><a href="/normalmenu_sites/menu_cycle_assign?plan_name={{cycle.plan_name}}">Edit</a></td>
+        </tr>   
+      </tbody>
+    </table>
+  </div>
+
+  </div>
+     
+</section> -->
+<!-- </body> -->
+
+<section class="page-content" ng-app="menu_cycle" ng-controller="MenuCycleCtrl">
+  <div class="container-fluid" ng-init="onInit()">
+    <p class="page_path">Kitchen / Menu Cycle</p>
+    <h2 class="header_title">Menu Cycle</h2>
+    <div id="dashboard-container">
+      <div class="card table-container mb-2">
+        <div class="card-body">
+          <table class="table table-striped table-hover display" id="menu_cycle">
+            
+            <thead>
+              <th>Plan Name</th>
+              <th>Created Date</th>
+              <th>Plan For</th>
+              <!-- <th>Tenant Name</th> -->
+              <%if !["Accounts executive"].include?KitchenUser.find(session["kitchen_user_id"]).role.name %>
+              <th>Action</th>
+              <% end %>
+            </thead>
+
+            <tbody>
+              <tr ng-repeat="cycle in menuCycleList">
+                <td ng-cloak>{{cycle.plan_name}}</td>
+                <td ng-cloak>{{cycle.date}}</td>
+                <td ng-cloak>{{cycle.plan_for}} days</td>
+                <%if !["Accounts executive"].include?KitchenUser.find(session["kitchen_user_id"]).role.name %>
+                <!-- <td>{{cycle.tenant}}</td> -->
+                <td ng-cloak><a href="/normalmenu_sites/menu_cycle_assign?plan_name={{cycle.plan_name}}">Edit</a>&nbsp;&nbsp;&nbsp;<a data-toggle="modal" data-target="#myduplicatemodal1" ng-click="modal(cycle)">Duplicate</a></td>
+
+                <% end %>
+              </tr>   
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="myduplicatemodal1" class="modal fade" role="dialog" >
+       <div class="modal-dialog" style="width: 500px">
+          <div class="modal-content">
+            <div class="modal-header">
+                    <h4 class="modal-title">Full Plan Duplication</h4><span class="ti-close" data-dismiss="modal"></span>
+
+            </div>
+            <div class="modal-body modal-scroll">
+              <div class="control floating_label">
+                <!-- <input type="text" class="input-text" title="New Plan Name" ng-model="new_plan" required autofocus="true"> -->
+                <input type="text" class="input-text" name="new-plan-name" title="Plan Name" ng-model="NewPlanName" ng-focus="isFocused" required>
+                <label class="input-text-placeholder" for="plan_name">New Plan Name</label>
+              </div>
+                <!-- <label style="margin-left: 17%;">New Plan Name:&nbsp;&nbsp;</label>
+                <input type="text" ng-model="new_plan"> -->
+            </div>
+            <div class="footer">
+              <button type="button" class="btn btn_cancel" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn_submit" id="refresh" data-dismiss="modal" ng-click="createADNPlan()">Create</button>
+            </div>
+          </div>
+        
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<script type="text/javascript">
+var app = angular.module('menu_cycle', []);
+app.controller('MenuCycleCtrl', function($scope,$http,$rootScope,$window,$filter) {
+
+//var plannerURL="http://api.idlidabba.com"
+//var plannerURL="http://api.learnstein.com:81"
+
+var plannerURL='<%= $api_service%>'
+var PimURL='<%= $pim_core_service%>'
+//$scope.spinner=true;
+$scope.NewPlanName="";
+$scope.plan_id="";
+$scope.shouldBeOpen=true;
+//$http.get(plannerURL+"/api/v1/menu_planners/menuplanner_details").then(function(res){
+//  $scope.menuCycleList=res.data;
+//}) 
+$scope.onInit=function(){
+  $scope.menuCycleList=[];
+        $.ajax({
+         type: "GET",
+         url: plannerURL+"/api/v1/menu_planners/menuplanner_details",
+
+         success: function(response)
+           {
+             var menuCycleList=[];
+             menuCycleList=response;
+             $scope.menuCycleList=menuCycleList;
+             console.log($scope.menuCycleList)
+             $scope.$emit("initialized");
+
+            }
+        })
+}
+
+
+  $scope.createADNPlan=function(){
+    if($scope.NewPlanName!=undefined && $scope.NewPlanName!="" && $scope.NewPlanName!=null){
+     $http.get(plannerURL+'/api/v1/menu_planners/menu_planner_duplication_test?id='+$scope.plan_id+'&&name='+$scope.NewPlanName).then(function(res){
+        var data=res.data;
+        console.log(res.data)
+        console.log(res.data["status"])
+        console.log(data.status)
+        $scope.NewPlanName="";
+        if(data["status"]==true){
+        
+          alert("Full plan has been duplicated");
+          $scope.onInit();
+          location.reload();
+
+        }else{
+          
+          alert("Same Plan name exists")
+        }
+     },function(error){
+        alert("Failed to duplicate the full plan")
+     })
+    }else{
+      alert("Please enter the New Plan name");
+    }
+  }
+
+$scope.modal=function(cycle){
+  console.log(cycle)
+  $scope.plan_id=cycle.plan_id;
+
+}
+
+$scope.$on('initialized', function () {
+  $scope.$apply();
+});
+
+// $scope.PlanClick=function(test){
+//   console.log(test)
+//   location.href="/normalmenu_sites/menu_cycle_assign"
+// }
+app.directive('draggable', function() {
+  return function(scope, element, attrs) {
+    var el = element[0];
+    el.draggable = true; // Make dragable
+
+    // Add event listeners
+    el.addEventListener(
+      'dragstart',
+      function(e) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('item_id', this.id);
+        e.dataTransfer.setData('origin_id', el.parentElement.id);
+        this.classList.add('dragging');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragend',
+      function(e) {
+        this.classList.remove('dragging');
+        return false;
+      },
+      false
+    );
+  }
+});
+app.directive('ngFocus', function($timeout) {
+    return {
+        link: function ( scope, element, attrs ) {
+            scope.$watch( attrs.ngFocus, function ( val ) {
+                if ( angular.isDefined( val ) && val ) {
+                    $timeout( function () { element[0].focus(); } );
+                }
+            }, true);
+
+            element.bind('blur', function () {
+                if ( angular.isDefined( attrs.ngFocusLost ) ) {
+                    scope.$apply( attrs.ngFocusLost );
+
+                }
+            });
+        }
+    };
+});
+app.directive('droppable', function() {
+  return function(scope, element, attrs) {
+    // Get the native element
+    var el = element[0];
+
+    // Add event listeners
+    el.addEventListener(
+      'dragover',
+      function(e) {
+        e.preventDefault(); // Allow the drop
+
+        // Set effects
+        e.dataTransfer.dropEffect = 'move';
+        this.classList.add('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragenter',
+      function(e) {
+        this.classList.add('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragleave',
+      function(e) {
+        this.classList.remove('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'drop',
+      function(e) {
+        this.classList.remove('dragover');
+
+        // Get the data
+        var destination = this.id;
+        var item_to_move = e.dataTransfer.getData('item_id');
+        var origin = e.dataTransfer.getData('origin_id');
+
+        // Call the scope move function
+        scope.MoveItem(origin, destination, item_to_move);
+
+        return false;
+      }, false
+    );
+  }
+});
+app.directive('dateFormat', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attr, ngModelCtrl) {
+      //Angular 1.3 insert a formater that force to set model to date object, otherwise throw exception.
+      //Reset default angular formatters/parsers
+      ngModelCtrl.$formatters.length = 0;
+      ngModelCtrl.$parsers.length = 0;
+    }
+  };
+});
+});
+
+</script>
+<script type="text/javascript">
+  $(document).ajaxStop(function(){
+  $('#menu_cycle').DataTable();
+ });
+  // $(document).ready(function(){
+    
+
+  //   $('#refresh').on('click',function (event) {
+  //     setTimeout(function(){ $("#menu_cycle").dataTable().fnDraw() }, 3000);
+
+  //    })
+  // });
+</script> 
+
+
+<style type="text/css">
+.menu_header
+{
+  border-style: solid;
+  border-color: #fff;
+  border-width: 1px;
+  background-color: gainsboro;
+  padding: 5px;
+}
+.menu_items
+{
+  border-style: solid;
+  border-color: #fff;
+  border-width: 1px;
+   
+}
+.card.table-container .table td a{
+  display: inline;
+}
+td a {
+  cursor: pointer;
+}
+
+</style>

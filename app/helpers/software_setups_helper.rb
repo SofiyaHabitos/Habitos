@@ -1,0 +1,2 @@
+module SoftwareSetupsHelper
+end

@@ -1,0 +1,64 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Facility Management / Facility / Show Facility</p>
+    <h2 class="header_title">Show Facility <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, kitchens_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <label class="control-label">Facility Name</label>
+            <h3><%= @kitchen.name%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Facility Person</label>
+            <h3><%= @kitchen.responsible_person %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Address</label>
+            <h3><%= @kitchen.address %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">No of Attached Assets</label>
+            <h3><%= Utensil.where(:kitchen_id=> @kitchen.id).count  %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Created_by</label> 
+            <h3><%= create(@kitchen) %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Updated_by</label> 
+            <h3><%= update(@kitchen) %></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!--  <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Facility</h3></center>
+   </div>
+
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+
+        
+            </div>
+      
+          </article>
+    <div class="footer">
+    
+      <%#= link_to 'Back', kitchens_path, :class=>"btn btn-default"%>
+      <%#= link_to 'Edit', edit_kitchen_path(@kitchen), :class=>"btn btn-primary"%>
+    
+   
+    </div>
+  
+  </div>
+
+</div> -->

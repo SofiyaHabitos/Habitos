@@ -1,0 +1,4 @@
+<% if @array  %>
+ <%datas=params[:each_id]%>
+  $('#<%=datas%>').html("<%= escape_javascript(options_for_select(@array)) %>");
+<% end %>

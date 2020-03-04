@@ -1,0 +1,110 @@
+<div class="col-md-10 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Menu</h3></center>
+   </div>
+   
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+                <div class="col-xs-3">
+            
+                    <label class="control-label"><span style="font-weight:bold">Date</span></label>
+                
+                    <div class="form-group"><%=@normalmenu_site.date.strftime("%d-%m-%Y")%></div>
+                
+                  </div>
+        
+                  <div class="col-xs-3">
+            
+                    <label class="control-label"><span style="font-weight:bold">Customer</span></label>
+                
+                    <div class="form-group"><%=@normalmenu_site.tenant.name%></div>
+                
+                  </div>
+
+                  <div class="col-xs-3">
+            
+                    <label class="control-label"><span style="font-weight:bold">Meal Group</span></label>
+                
+                    <div class="form-group"><%=@normalmenu_site.meal_time%><br>
+</div>
+                
+                  </div>
+                  <div class="form-group">
+<div class="col-xs-3">
+<label class="control-label"><span style="font-weight:bold">
+Meal Type & Quantity :</span>
+</label><div class="form-group"> 
+<%food_cat_id=TenantDetail.where(:tenant_id=>@normalmenu_site.tenant_id).where(:meal_time=>@normalmenu_site.meal_time).pluck(:food_category_id).uniq%>
+<%food_cat_id.map do |i|%>
+<%= FoodCategory.find(i).name%> - <%= TenantDetail.where(:tenant_id=>@normalmenu_site.tenant_id).where(:meal_time=>@normalmenu_site.meal_time).where(:food_category_id=>i).pluck(:quantity).map(&:to_i).sum%><br>
+<%end%>
+</div>
+</div>
+</div>
+                                </div> </div> <br>
+
+<%normalmenu_site_id=@normalmenu_site.id%>
+<%normalmenu=@normalmenu_site.normal_menus%>
+<%if normalmenu.present?%>
+<%normalmenu.map do |i|%>
+<div class="row">
+
+                  <div class="col-xs-3">
+            
+                    <label class="control-label"><span style="font-weight:bold">Meal Type</span></label>
+                
+                    <div class="form-group"><%=i.food_category.name%></div>
+                
+                  </div>
+            
+                  <div class="col-xs-3">
+  
+                    <label class="control-label"><span style="font-weight:bold"> Production Item</span></label>
+      
+                    <div class="form-group"><%=i.nutrition.production_item.name%>(<%=i.nutrition.production_item.unit_of_measurement.name%>)</div>
+                
+                  </div>
+
+                  <div class="col-xs-3">
+            
+                    <label class="control-label"><span style="font-weight:bold">Qty per head </span></label>
+                
+                    <div class="form-group"><%=i.quantity%></div>
+                
+                  </div>
+                 <%if @normalmenu_site.delivery_status=="Menu Planned" %>
+                   <div class="col-xs-3">
+            
+                    <label class="control-label"><span style="font-weight:bold">Action</span></label>
+                
+                    <div class="form-group"><%=link_to "delete", normalmenu_sites_normalmenu_category_delete_path(:id=>normalmenu_site_id,:format=>i.id)%></div>
+                
+                  </div>
+                  <%end%>
+                  
+
+         </div>
+<%end%>
+<%end%>
+        <br>
+     
+     
+</div>
+          </article>
+
+
+    <div class="footer">
+    
+     <%= link_to 'Back', normalmenu_sites_path, :class=>"btn btn-default"%>
+   
+    </div>  
+  </div>
+
+</div>
+

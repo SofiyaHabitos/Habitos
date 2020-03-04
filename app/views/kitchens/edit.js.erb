@@ -1,0 +1,7 @@
+$("#editkitchen-modal").html("<%= escape_javascript(render 'edit') %>")
+$("#editkitchen-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+
+

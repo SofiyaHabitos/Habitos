@@ -1,0 +1,203 @@
+class ProductionItemsController < ApplicationController
+  before_action :set_production_item, only: [:show, :edit, :update, :destroy]
+
+  # GET /production_items
+  # GET /production_items.json
+  def index
+    @production_items = ProductionItem.all.order('created_at DESC')
+    #@production_items = ProductionItem.paginate(:page => params[:page], :per_page => 10).order('created_at DESC')
+  end
+
+  # GET /production_items/1
+  # GET /production_items/1.json
+  def show
+  end
+
+  # GET /production_items/new
+  def new
+    @production_item = ProductionItem.new
+    #@item_meal_courses = @production_item.item_meal_courses.build
+  end
+
+  # GET /production_items/1/edit
+  def edit
+    #@production_item = ProductionItem.find(params[:format])
+    #@item_meal_courses = @production_item.item_meal_courses
+   # @item_meal_courses = @production_item.item_meal_courses.build
+  end
+
+
+  def create
+
+   #@production_item = ProductionItem.new(production_item_params)
+    cate=params[:production_item][:category].shift
+    
+    a=params["production_item"]["nutrition"]["allergy"] .shift()
+    
+    production_item = ProductionItem.new(:item_code=> params[:production_item][:item_code],:name=> params[:production_item][:name], :quantity=> params[:production_item][:quantity],:item_subcategory_id=> params[:production_item][:item_subcategory_id], :unit_of_measurement_id=> params[:production_item][:unit_of_measurement_id],:category=> params[:production_item][:category],:food_category_id=> params[:production_item][:food_category_id],:production_category_id=> params[:production_item][:production_category_id], :cost=> params[:production_item][:cost], :allergy=> params[:production_item][:nutrition][:allergy].split(",").flatten)
+    
+    production_item.item_code = ProductionItem.generate_itemcode(production_item)     
+ 
+     respond_to do |format|
+     
+      if production_item.save   
+     
+        # meal_course = params[:production_item][:item_meal_courses][:meal_course_id].shift 
+        # item_meal_course = params[:production_item][:item_meal_courses][:meal_course_id].each {|i| ItemMealCourse.create(:production_item_id=>ProductionItem.last.id, :meal_course_id=>i) }  
+
+        item_meal_course = ItemMealCourse.create(:production_item_id=>ProductionItem.last.id, :meal_course_id=>params[:production_item][:item_meal_courses][:meal_course_id].to_i)
+
+        item_meal_restriction = ItemMealRestriction.create(:production_item_id=>ProductionItem.last.id, :meal_restriction_id=>params[:production_item][:item_meal_restriction][:meal_restriction_id])
+  
+        #meal_restriction = params[:production_item][:item_meal_restriction][:meal_restriction_id].shift   
+        #item_meal_restriction = params[:production_item][:item_meal_restriction][:meal_restriction_id].each {|e| ItemMealRestriction.create(:production_item_id=>ProductionItem.last.id, :meal_restriction_id=>e) }  
+
+       #nutrition = Nutrition.create(:production_item_id=>ProductionItem.last.id, :protein=>params[:production_item][:nutrition][:protein], :fat=>params[:production_item][:nutrition][:fat], :carbohydrates=>params[:production_item][:nutrition][:carbohydrates], :fibre=>params[:production_item][:nutrition][:fibre], :minerals=>Hash[*params[:nutrition][:minerals]], :vitamins=>Hash[[params[:production_item][:nutrition][:nutrition]],params[:nutrition][:vitamins]], :caloire=>params[:production_item][:nutrition][:caloire]) 
+        nutrition = Nutrition.create(:production_item_id=>ProductionItem.last.id, :protein=>params[:production_item][:nutrition][:protein], :fat=>params[:production_item][:nutrition][:fat], :carbohydrates=>params[:production_item][:nutrition][:carbohydrates], :fibre=>params[:production_item][:nutrition][:fibre], :minerals=>Hash[*params[:nutrition][:minerals]], :vitamins=>Hash[*params[:nutrition][:vitamins]], :caloire=>params[:production_item][:nutrition][:caloire]) 
+
+        #production=params[:production_item][:allergy].shift
+        #production_item.save(:allergy=> params[:production_item][:allergy].split(",").flatten)
+        production_item.update(:created_by=>session[:kitchen_user_id])
+        format.html { redirect_to action: "index", notice: 'Production item was successfully created.' }
+        format.json { render :show, status: :created, location: @production_item }
+      else
+        format.html { render :new }
+        format.json { render json: @production_item.errors, status: :unprocessable_entity }
+     end
+    end
+  end
+
+
+  def edit_item
+    @production_item = ProductionItem.find(params[:format])
+    @item_meal_courses = @production_item.item_meal_courses
+    @item_meal_restrictions = @production_item.item_meal_restrictions
+  end
+
+
+  # PATCH/PUT /production_items/1
+  # PATCH/PUT /production_items/1.json
+  def update_item
+    
+    @production_item = ProductionItem.find(params[:production_item_id])
+    #.update(:item_code=> params[:production_item][:item_code],:name=> params[:production_item][:name], :quantity=> params[:production_item][:quantity],:item_subcategory_id=> params[:production_item][:item_subcategory_id], :unit_of_measurement_id=> params[:production_item][:unit_of_measurement_id],:category=> params[:production_item][:category] ,:production_category_id=> params[:production_item][:production_category_id], :cost=> params[:production_item][:cost], :allergy=> params[:production_item][:allergy].split(",").flatten)
+    
+    respond_to do |format|
+      
+      if @production_item.update(:item_code=> @production_item.item_code,:name=> params[:production_item][:name], :quantity=> params[:production_item][:quantity],:item_subcategory_id=> params[:production_item][:item_subcategory_id], :unit_of_measurement_id=> params[:production_item][:unit_of_measurement_id],:category=> params[:production_item][:category],:food_category_id=> params[:production_item][:food_category_id],:production_category_id=> params[:production_item][:production_category_id], :cost=> params[:production_item][:cost], :allergy=> params[:production_item][:allergy].split(",").flatten)
+
+        pro_item_updated = ProductionItem.find_by(:name=>params[:production_item][:name]).id
+
+     # meal_course = params[:production_item][:item_meal_course][:meal_course_id].shift 
+      item_meal_course = ItemMealCourse.find_by(:production_item_id=>@production_item.id).present? ? ItemMealCourse.find_by(:production_item_id=>@production_item.id).update(:production_item_id=>@production_item.id,:meal_course_id=>params[:production_item][:item_meal_courses][:meal_course_id].to_i) : ItemMealCourse.create(:production_item_id=>ProductionItem.find(params[:production_item_id]), :meal_course_id=>params[:production_item][:item_meal_courses][:meal_course_id].to_i)
+
+      if params[:production_item][:item_meal_restrictions].present?
+    
+      item_meal_restriction = ItemMealRestriction.find_by(:production_item_id=>@production_item.id).present? ? ItemMealRestriction.find_by(:production_item_id=>@production_item.id).update(:production_item_id=>@production_item.id,:meal_restriction_id=>params[:production_item][:item_meal_restrictions][:meal_restriction_id].reject(&:blank?)[0]) : ItemMealRestriction.create(:production_item_id=>@production_item.id, :meal_restriction_id=>params[:production_item][:item_meal_restrictions][:meal_restriction_id].reject(&:blank?)[0,nil])
+
+    end
+
+ 
+     # restriction = params[:production_item]
+     # item_restriction = ProductionItem.meal_restriction_update(restriction)
+       
+        if Nutrition.where(:production_item_id=>@production_item.id).present?
+        nutrition = Nutrition.where(:production_item_id=>@production_item.id).update(:production_item_id=>pro_item_updated, :protein=>params[:production_item][:nutrition][:protein], :fat=>params[:production_item][:nutrition][:fat], :carbohydrates=>params[:production_item][:nutrition][:carbohydrates], :fibre=>params[:production_item][:nutrition][:fibre], :minerals=>Hash[*params[:nutrition][:minerals]], :vitamins=>Hash[*params[:nutrition][:vitamins]], :caloire=>params[:production_item][:nutrition][:caloire]) 
+        else 
+        nutrition = Nutrition.create(:production_item_id=>@production_item.id, :protein=>params[:production_item][:nutrition][:protein], :fat=>params[:production_item][:nutrition][:fat], :carbohydrates=>params[:production_item][:nutrition][:carbohydrates], :fibre=>params[:production_item][:nutrition][:fibre], :minerals=>Hash[*params[:nutrition][:minerals]], :vitamins=>Hash[*params[:nutrition][:vitamins]], :caloire=>params[:production_item][:nutrition][:caloire])    
+        end
+        production=params[:production_item][:allergy].shift
+        @production_item.update(:allergy=> params[:production_item][:allergy].split(",").flatten)
+        #format.html { redirect_to @production_item, notice: 'Production item was successfully updated.' }
+        #format.json { render :show, status: :ok, location: @production_item }
+        @production_item.update(:updated_by=>session[:kitchen_user_id])
+         #item_meal_course.update(:updated_by=>session[:kitchen_user_id])
+         #item_meal_restriction.update(:updated_by=>session[:kitchen_user_id])
+        format.html { redirect_to production_items_url, notice: 'Production item was successfully updated.' }
+      else
+        format.html { render :edit }
+        format.json { render json: @production_item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
+=begin
+  # POST /production_items
+  # POST /production_items.json
+  def create
+    #@production_item = ProductionItem.new(production_item_params)
+    cate=params[:production_item][:category].shift
+     production_item = ProductionItem.new(:item_code=> params[:production_item][:item_code],:name=> params[:production_item][:name], :quantity=> params[:production_item][:quantity],:item_subcategory_id=> params[:production_item][:item_subcategory_id], :unit_of_measurement_id=> params[:production_item][:unit_of_measurement_id],:category=> params[:production_item][:category] ,:production_category_id=> params[:production_item][:production_category_id], :cost=> params[:production_item][:cost], :allergy=> params[:production_item][:allergy].split(",").flatten)
+     production_item.item_code = ProductionItem.generate_itemcode(production_item)     
+     respond_to do |format|
+      if production_item.save        
+        nutrition = Nutrition.create(:production_item_id=>ProductionItem.last.id, :protein=>params[:production_item][:nutrition][:protein], :fat=>params[:production_item][:nutrition][:fat], :carbohydrates=>params[:production_item][:nutrition][:carbohydrates], :fibre=>params[:production_item][:nutrition][:fibre], :minerals=>Hash[*params[:nutrition][:minerals]], :vitamins=>Hash[*params[:nutrition][:vitamins]], :caloire=>params[:production_item][:nutrition][:caloire]) 
+        production=params[:production_item][:allergy].shift
+        production_item.save(:allergy=> params[:production_item][:allergy].split(",").flatten)
+        production_item.update(:created_by=>session[:kitchen_user_id])
+        format.html { redirect_to action: "index", notice: 'Production item was successfully created.' }
+        format.json { render :show, status: :created, location: @production_item }
+      else
+        format.html { render :new }
+        format.json { render json: @production_item.errors, status: :unprocessable_entity }
+     end
+    end
+  end
+
+  # PATCH/PUT /production_items/1
+  # PATCH/PUT /production_items/1.json
+  def update
+    
+    #production_item = ProductionItem.new(:item_code=> params[:production_item][:item_code],:name=> params[:production_item][:name], :quantity=> params[:production_item][:quantity],:item_subcategory_id=> params[:production_item][:item_subcategory_id], :unit_of_measurement_id=> params[:production_item][:unit_of_measurement_id],:category=> params[:production_item][:category] ,:production_category_id=> params[:production_item][:production_category_id], :cost=> params[:production_item][:cost], :allergy=> params[:production_item][:allergy].split(",").flatten)
+    respond_to do |format|
+      if @production_item.update(:item_code=> @production_item.item_code,:name=> params[:production_item][:name], :quantity=> params[:production_item][:quantity],:item_subcategory_id=> params[:production_item][:item_subcategory_id], :unit_of_measurement_id=> params[:production_item][:unit_of_measurement_id],:category=> params[:production_item][:category] ,:production_category_id=> params[:production_item][:production_category_id], :cost=> params[:production_item][:cost], :allergy=> params[:production_item][:allergy].split(",").flatten)
+        pro_item_updated = ProductionItem.find_by(:name=>params[:production_item][:name]).id
+      
+        if Nutrition.where(:production_item_id=>@production_item.id).present?
+        nutrition = Nutrition.where(:production_item_id=>@production_item.id).update(:production_item_id=>pro_item_updated, :protein=>params[:production_item][:nutrition][:protein], :fat=>params[:production_item][:nutrition][:fat], :carbohydrates=>params[:production_item][:nutrition][:carbohydrates], :fibre=>params[:production_item][:nutrition][:fibre], :minerals=>Hash[*params[:nutrition][:minerals]], :vitamins=>Hash[*params[:nutrition][:vitamins]], :caloire=>params[:production_item][:nutrition][:caloire]) 
+        else 
+        nutrition = Nutrition.create(:production_item_id=>@production_item.id, :protein=>params[:production_item][:nutrition][:protein], :fat=>params[:production_item][:nutrition][:fat], :carbohydrates=>params[:production_item][:nutrition][:carbohydrates], :fibre=>params[:production_item][:nutrition][:fibre], :minerals=>Hash[*params[:nutrition][:minerals]], :vitamins=>Hash[*params[:nutrition][:vitamins]], :caloire=>params[:production_item][:nutrition][:caloire])    
+        end
+        production=params[:production_item][:allergy].shift
+        @production_item.update(:allergy=> params[:production_item][:allergy].split(",").flatten)
+        #format.html { redirect_to @production_item, notice: 'Production item was successfully updated.' }
+        #format.json { render :show, status: :ok, location: @production_item }
+        @production_item.update(:updated_by=>session[:kitchen_user_id])
+        format.html { redirect_to production_items_url, notice: 'Production item was successfully updated.' }
+      else
+        format.html { render :edit }
+        format.json { render json: @production_item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+=end
+
+  # DELETE /production_items/1
+  # DELETE /production_items/1.json
+  def destroy
+    @production_item.destroy
+#    @production_item.nutrition.destroy
+    respond_to do |format|
+      format.html { redirect_to production_items_url, notice: 'Production item was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_production_item
+      unless params[:id] == "undefined"
+     @production_item = ProductionItem.find(params[:id])
+    else
+     redirect_to production_items_url
+    end
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def production_item_params
+      #params.fetch(:production_item, {})
+      params.require(:production_item).permit!#:item_code,:name, :quantity,:item_subcategory_id, :unit_of_measurement_id,[:category],:production_category_id, :cost, [:allergy], nutritions_attributes: [:id ,:production_item_id,:protein, :fat,:carbohydrates, :fibre, [:minerals], [:vitamins]])
+    end
+end

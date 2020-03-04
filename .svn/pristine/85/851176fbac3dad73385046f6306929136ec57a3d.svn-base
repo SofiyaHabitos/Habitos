@@ -1,0 +1,78 @@
+<%= form_for(food_group) do |f| %>
+  <!--% if food_group.errors.any? %>
+    <div id="error_explanation">
+      <h2><!%= pluralize(food_group.errors.count, "error") %> prohibited this food_group from being saved:</h2>
+
+      <ul>
+      <!% food_group.errors.full_messages.each do |message| %>
+        <li><!%= message %></li>
+      <!% end %>
+      </ul>
+    </div>
+  <!% end %-->
+  <article class="content item-editor-page">
+    <form name="item">
+        <div class="card card-block">
+            <div class="row">
+                <div class="form-group">
+                <div class="col-xs-6">
+                <label class="control-label">
+                 <%= f.label :meal_time, "Meal Group" %></label>
+                 <div class="form-group"> 
+                 <%#= f.select :meal_time, options_for_select([["Breakfast", "Breakfast"], ["Dinner", "Dinner"], ["Evening snacks", "Evening snacks"], ["Lunch", "Lunch"],["Morning snacks", "Morning snacks"],["Soup","Soup"]]),{prompt: "Please Select" },{class: "form-control boxed single",required: true} %>
+                  <%= f.collection_select :meal_time, Category.all.order('category_name'), :category_name, :category_name, {prompt: true}, {class: "form-control boxed single", required: true}  %>
+                 </div>
+                 </div>
+                <div class="col-xs-6">
+                <label class="control-label"><%= f.label :food_category_id,"Meal Type"%></label>
+                 <%= f.collection_select :food_category_id, FoodCategory.all.order('name'), :id, :name,{prompt:true},{class: "form-control boxed single",required: true}  %>
+                 </div>
+                 </div>
+                 </div>
+                 <div class="row">
+                <div class="form-group">
+                <div class="col-xs-12">
+                <label class="control-label">
+                <%= f.label :description %>                  
+                </label>
+                <%= f.text_area :description, :class=>"form-control boxed"%>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        <%= f.fields_for :image do |a| %>
+            <%unless @food_group.image_id.present?%>
+            <div class="form-group">
+            <div class="col-xs-12">
+            <label class="control-label"><%= a.label :image_path, "image" %></label>
+            <div class="form-group"> <%= a.file_field :image_path,:class=>"form-control boxed select_box",required: true ,:style=>"height: auto;"%> 
+            </div>
+            </div>  
+            <%else%>
+            <div class="form-group">
+            <div class="col-xs-12">
+            <label class="control-label"><%= a.label :image_path, "image" %></label>
+            <div class="form-group"><%=image_tag @food_group.image.image_path,:style=>"height:50px;width:50px;"%> 
+            <%= a.file_field :image_path,:class=>"form-control boxed select_box",:style=>"height: auto;"%> 
+            </div>
+            </div> 
+            <%end%>           
+        </div><%end%>
+        </div>
+        
+        
+        
+
+        <div class="row">
+            <div class="col col-md-3"><%= link_to "Back", food_groups_path ,:class=>"btn btn-primary"%></div>
+            <div class="col col-md-3"><%= f.submit "Submit",:class=>"btn btn-primary"%></div>
+        </div>
+  </form>
+  <script type="text/javascript">
+$(document).ready(function() {
+  $(".single").select2();
+}); 
+</script>
+  </article>
+   <% end %>
+

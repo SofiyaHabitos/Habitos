@@ -1,0 +1,11 @@
+$("#editfood-modal").html("<%= escape_javascript(render 'edit') %>")
+$("#editfood-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+
+
+$( ".dropdown" ).select2({
+});
+$( ".dropdown1" ).select2({
+});

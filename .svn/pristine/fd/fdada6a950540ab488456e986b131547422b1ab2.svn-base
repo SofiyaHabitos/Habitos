@@ -1,0 +1,11 @@
+class KitchenNotifierMailer < ApplicationMailer
+
+    def send_kitchen_email(kitchen_user)
+     
+    @kitchen_user = kitchen_user
+     mail( :to => @kitchen_user.email,
+    :subject => 'User credential details from Idlidabba' )
+  end
+
+
+end

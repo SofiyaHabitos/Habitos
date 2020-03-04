@@ -1,0 +1,268 @@
+
+ <%= form_for(driver) do |f| %>
+
+  <form name="item">
+      <div class="card card_form mb-5">
+        <div class="card-body">
+          <div class="row">
+
+            <div class="col-md-3">
+               <div class="control floating_label">
+                <%= f.text_field :driver_name, class: "input-text float_input boxed e1",id: "driver_name",autofocus: true,required: true %>
+                <%= f.label :driver_name, "Driver Name",:class=> "input-text-placeholder" %>
+               </div>
+            </div>
+
+            <div class="col-md-3">
+               <div class="control floating_label">
+                 <%= f.text_field :contact_no, class: "input-text float_input boxed e1",required: true,type:'text',title:'Phone Number (Format: +91(91)********)',:pattern=>'^\+?\d{0,10}',minlength:"10",maxlength:"10"  %>
+                 <%= f.label :contact_no, "Contact Number",:class=> "input-text-placeholder" %>
+               </div>
+            </div>
+
+            <div class="col-md-3">
+               <div class="control floating_label">
+                 <%= f.text_field :username, class: "input-text float_input boxed e1 username",id: "username",required: true %>
+                 <%= f.label :username, "Username (must have number in last)",:class=> "input-text-placeholder" %>
+                  <span class="err_msg" style="display: none;color: red;font-size: 14px;position: absolute;bottom: 0">Invalid Username (For e.g. habitos123)</span>
+                   <div class="msgg" style="display: none;color: red;font-size: 14px;position: absolute;bottom: 0"></div>
+               </div>
+            </div>
+
+            <div class="col-md-3">
+               <div class="control floating_label">
+                 <%= f.text_field :password, class: "input-text float_input boxed e1",required: true,minlength:"6",maxlength:"12"    %>
+                 <%= f.label :password, "Password",:class=> "input-text-placeholder" %>
+               </div>
+            </div>
+
+          </div>
+
+
+            <!-- <div class="col-md-3">
+               <div class="control floating_label">
+                <%#= f.text_field :last_name, class: "input-text float_input boxed e1",autofocus: true,required: true %>
+                <%#= f.label :last_name, "Last Name",:class=> "input-text-placeholder" %>
+               </div>
+            </div> -->
+
+            <!-- <div class="col-md-3">
+               <div class="control floating_label">
+                 <%#= f.text_field :vehicle_no, class: "input-text float_input boxed e1",required: true   %>
+                 <%#= f.label :vehicle_no, "Vehicle No",:class=> "input-text-placeholder" %>
+               </div>
+            </div> -->
+
+            <!-- <div class="col-md-3">
+               <div class="control floating_label">
+                 <%#= f.text_field :vehicle_type, class: "input-text float_input boxed e1",required: true  %>
+                 <%#= f.label :vehicle_type, "Vehicle Type",:class=> "input-text-placeholder" %>
+               </div>
+            </div> -->
+
+            
+   
+ 
+      
+        <div class="row">
+            
+            <div class="col-md-3">
+               <div class="control floating_label">
+                <%= f.text_field :email, class: "input-text float_input boxed e1 email",id: "e_mail"%>
+                <%= f.label :email, "Email (optional)",:class=> "input-text-placeholder" %>
+                <!-- <div class="msg" style="display: none;color: red;font-size: 14px;position: absolute;bottom: 0"></div> -->
+               <!--  <span class="err_mg" style="display: none;color: red;font-size: 14px;position: absolute;bottom: 0">Please enter the valid Email address</span> -->
+               </div>
+            </div>
+
+            <div class="col-md-3">
+               <div class="control floating_label">
+                <%= f.text_field :licence_no, class: "input-text float_input boxed e1",required: true, :maxlength => 18, :minlength => 10, :size => 22 %>
+                <%= f.label :License_Number, "License Number",:class=> "input-text-placeholder" %>
+               </div>
+            </div>
+
+             <div class="col-md-3">
+               <div class="control floating_label">
+                  <%= f.text_field :license_exp , class: "input-text float-input", id: "date_input", required: true, placeholder: "dd-mm-yyyy"%>
+                 <!-- <label class="input-text-placeholder" for="date">License Expiry</label> -->
+                 <%= f.label :License_Expiry, "License Expiry Date",:class=> "input-text-placeholder" %>
+               </div>
+             </div> 
+
+
+
+            <div class="col-md-3">
+              <%#= f.fields_for :image do |a| %>
+              <%unless @driver.proof.present?%>
+               <div class="control floating_label">
+                 <%= f.file_field :proof,class: "input-text float_input boxed e1",required: true,  accept: 'image/png,image/gif,image/jpeg' %>
+                 <%= f.label :proof, "Proof",class: "input-text-placeholder" %>
+               </div>
+
+               <%else%>
+                  <div class="control floating_label d-flex align-items-center">
+                    <%=image_tag @driver.proof,:class=>"company_logo" if @driver.proof.present?%>
+                    <%= f.file_field :proof ,class: "input-text boxed Proof",  accept: 'image/png,image/gif,image/jpeg'%>
+                  <%= f.label :proof, "Proof", :class => "input-text-placeholder" %>
+                  </div>
+                  
+                <%end%>
+              <%#end%>
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="col-md-3">
+                <div class="control floating_label">
+                    <%=f.select :vehicle_type, options_for_select(VehicleType.pluck(:vehicle_type_name,:id), selected: f.object.vehicle_type),{prompt: ""},{class: "input-text boxed e1 ", required: true,autofocus: true,}%> 
+                    <%= f.label :vehicle_type,"Vehicle Type", :class=> "input-text-placeholder"%>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+               <div class="control floating_label">
+                <%= f.text_field :vehicle_no, class: "input-text float_input boxed e1",required: true %>
+                <%= f.label :vehicle_no, "Vehicle Name",:class=> "input-text-placeholder" %>
+               </div>
+            </div>
+
+             <div class="col-md-3">
+               <div class="control floating_label">
+                  <%= f.text_field :reg_no , class: "input-text float-input"%>
+                  <%= f.label :reg_no, "Registeration Number(Optional)",:class=> "input-text-placeholder" %>
+               </div>
+             </div> 
+
+             
+             <div class="col-md-3">
+               <div class="control floating_label">
+                  <%= f.text_field :vehicle_owner , class: "input-text float-input"%>
+                  <%= f.label :vehicle_owner, "Vehicle Owner(Optional)",:class=> "input-text-placeholder" %>
+               </div>
+             </div>         
+
+          </div>
+
+
+          <div class="row">
+            
+            <div class="col-md-3">
+               <div class="control floating_label">
+                 <%= f.text_field :vehicle_contact, class: "input-text float_input boxed e1",type:'text',title:'Phone Number (Format: +91(91)********)',:pattern=>'^\+?\d{0,10}',minlength:"10",maxlength:"10"  %>
+                 <%= f.label :vehicle_contact, "Owner Contact Number(Optional)",:class=> "input-text-placeholder" %>
+               </div>
+             </div> 
+
+          </div>
+
+
+            <div class="actions">
+              <%= f.submit "Submit",:class=>"btn btn_submit button float-right enable" %>
+            </div>
+
+       
+      </div>
+    </div>
+  </form>
+
+  <% end %>
+
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+
+    $(".username").on("change", function () {
+
+      var username = $(this).val();
+      
+      $.ajax({
+        type: "GET",
+        url: "/drivers/check_driver_present?username="+username,
+        success: function nt(msgg) { 
+
+           $( ".msgg" ).text(msgg.message); 
+           $(".msgg").show();
+
+            if (msgg.message != "") {
+            $('.enable').attr('disabled',true);
+            }
+             if (msgg.message == "") {
+            $('.enable').attr('disabled',false);
+            }
+            $( ".msgg" ).text(msgg.message); 
+           $(".msgg").show();
+        }
+
+      });
+    });
+
+ });
+</script>
+
+ <!-- <script type="text/javascript">
+
+  $(document).ready(function(){
+
+     $('#driver_name').keyup(function(){
+     $('#username').val(this.value);
+     });
+
+  });
+</script> -->
+
+
+<!-- <script type="text/javascript">
+
+$('#e_mail').blur(function() {
+  var input = this.value;
+  var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+  var valid = testEmail.test(input);
+
+       if(valid != true){
+      $( ".err_mg" ).show();
+    }
+    else{
+      $( ".err_mg" ).hide();
+    }
+});
+
+</script> -->
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+$("#username").on("change",function count() {
+    var input = this.value;
+    var regex = new RegExp(/^[A-Za-z]{1,}[0-9]{1,}$/);
+    var valid = regex.test(input);
+    if(valid != true){
+      $( ".err_msg" ).show();
+    }
+    else{
+      $( ".err_msg" ).hide();
+    }
+});
+
+});
+</script>
+
+
+<%#----JQuery-----%>  
+<script type="text/javascript">
+  $(document).ready(function(){
+<%#-------datepicker--------%>
+      $('#date_input').flatpickr({
+         dateFormat: "d-m-Y"
+      });
+<%#-------searchable dropdown--------%>      
+     $('.edit_form .username').attr('readonly', true);
+
+  });
+</script>
+

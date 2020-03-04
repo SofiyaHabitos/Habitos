@@ -1,0 +1,86 @@
+<%= form_for(dispatch, validate: true) do |f| %>
+  <!--% if dispatch.errors.any? %>
+    <div id="error_explanation">
+      <h2><!%= pluralize(dispatch.errors.count, "error") %> prohibited this dispatch from being saved:</h2>
+
+      <ul>
+      <!% dispatch.errors.full_messages.each do |message| %>
+        <li><!%= message %></li>
+      <!% end %>
+      </ul>
+    </div>
+  <!% end %-->
+
+<article class="content item-editor-page">
+    <div class="title-block">
+        <h3 class="title"><span class="sparkline bar" data-type="bar"></span> </h3>
+    </div>
+    <form name="item">
+<div class="row">
+  <div class="form-group">
+          <div class="col-xs-4">
+          <label class="control-label">
+          <%= f.label :date ,"Date"%>
+          </label>
+          <div class="form-group"> 
+          <%= f.text_field :date,required:true,:class=>"form-control boxed datepicker" ,:readonly=> true%>
+          </div>
+          </div>
+
+         <div class="col-xs-4">
+        <label class="control-label">
+          <%= f.label :tenant_id,"Tenant" %>
+        </label>
+        <div class="form-group">
+          <%= f.collection_select :tenant_id, Tenant.all,:id, :name,{:prompt=>true} ,{:class=>"form-control boxed single"}%>
+        </div>
+      </div>
+      
+       <div class="col-xs-4">
+        <label class="control-label">
+          <%= f.label :normal_menu_id,"Menu"  %>
+        </label>
+        <div class="form-group">
+          <%= f.collection_select :normal_menu_id, ProductionItem.where(:id=>NormalMenu.pluck(:production_item_id)),:id,:name, {:prompt=>true} ,{:class=>"form-control boxed single"} %>
+        </div>
+      </div>
+        
+        <!-- <div class="col-xs-4">
+        <label class="control-label">
+          <!%= f.label :no_of_utensil%>
+        </label>
+        <div class="form-group">
+          <!%= f.number_field :no_of_utensil,min:0, :class=>"form-control boxed"%>
+        </div>
+      </div> -->
+
+      <div class="col-xs-4">
+        <label class="control-label">
+          <%= f.label :quantity%>
+        </label>
+        <div class="form-group">
+          <%= f.number_field :quantity,min:0, :class=>"form-control boxed"%>
+        </div>
+      </div>
+</div>
+</div>
+ <div class="form-group row mrgn-top">
+            <div class="col-sm-10 col-sm-offset-4"> <%= f.submit "submit",:class=>"btn btn-primary"%></div>
+       </div>
+ </form> 
+</article>
+<% end %>
+<script type="text/javascript">
+  $(document).ready(function() { 
+    $(".single").select2();
+  });
+
+  $(function(){
+$('.datepicker').datepicker({
+            format: 'dd-mm-yyyy',
+            startDate: '+0d',
+            autoclose: true,
+            todayHighlight: true
+        });
+});
+</script>

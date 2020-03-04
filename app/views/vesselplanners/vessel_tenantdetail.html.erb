@@ -1,0 +1,116 @@
+<br>
+<div class="modal-body">
+
+<div class="bs-example">
+
+
+ <% @vesseltenant.each do |i,j|%>
+
+ <table class="table table-bordered dcprint" >
+ <thead>
+  <tr>
+  <td>Date</td>
+  <td>Menuitem</td>
+   <td>Quantity(per head)</td>
+   <td>Total-<%= j.first.tenant_detail.quantity.to_f%></td>
+   <td>Vessel Category</td>
+   <td>Tenant Name</td>
+   <td>Meal Time</td>
+   <td>Student type</td>
+   <td>Vessel ID</td>
+   <td>Count</td>
+   <td ><center>Action</center></td>
+  </tr>
+ </thead>
+
+ <tbody>  
+<% j.each do |k|%>
+
+    <tr id="row<%=k.id%>">
+    <td><%=k.date.present? ? k.date.strftime("%d-%m-%Y") : '' %></td>
+  	<td><%=k.menuitem.keys.join(' ')%></td>
+  	<td><%=k.menuitem.values.join(' ').to_f%></td>  
+    <td><%=k.tenant_detail.present? ? (k.tenant_detail.quantity.to_f * k.menuitem.values.join(' ').to_f).round(3) : "0" %></td>		
+    <td><%=k.utensil.utensil_name%></td>
+    <td><%=k.tenant_detail.tenant.name%></td>
+    <td><%=k.tenant_detail.meal_time%></td>
+    <td><%=k.tenant_detail.stud_type%></td>
+  	<td></td>
+  	<td><span  id="count<%=k.id%>">1</span></td>
+    <td ><button onclick="printData(<%=k.id%>)" id="printbtn<%=k.id%>">print</button></td>
+     <!-- <td  title="edit"><%#=link_to '', vesselplanners_edit_path(k.id), class: "fa fa-pencil" %> --><!-- </td> --> 
+  </tr>
+
+  <%end%>
+  <tr >
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>total count</td>
+    <td><%=j.count%></td>
+    <td></td>
+    
+  </tr>
+</tbody>
+ 
+
+
+
+    <script type="text/javascript">
+
+          function printData(name)
+          {
+          var divToPrint=document.getElementById("row"+name);
+          alert(divToPrint.outerHTML.replace(new RegExp("</td>","g"),"<br>").replace(new RegExp("<td>","g"),"<br>"));
+          var printButton=document.getElementById("printbtn"+name);
+          var count = document.getElementById("count"+name);
+          newWin= window.open("");
+          printButton.style.visibility = 'hidden';
+           count.style.visibility = 'hidden';
+            //$(".count").hide()
+          newWin.document.write(divToPrint.outerHTML.replace(new RegExp("</td>","g"),"<br>").replace(new RegExp("<td>","g"),""));
+          newWin.print();
+          newWin.close();
+          printButton.style.visibility = 'visible';
+          count.style.visibility = 'visible';
+          }
+  
+
+</script>
+ 
+ 
+</table>
+</div>
+</div>
+<%end%>
+
+
+
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('table.dcprint').DataTable({
+    "bPaginate": false,
+    "bSort"    : false,
+    dom: 'Bfrtip',
+    buttons: [{
+            extend: 'pdf',
+            exportOptions: { columns: [0,1,2,3,4,5,6,7,8,9] },
+      
+        }]
+
+  });
+});
+</script>
+

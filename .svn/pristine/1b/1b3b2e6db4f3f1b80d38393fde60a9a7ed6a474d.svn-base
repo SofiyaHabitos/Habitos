@@ -1,0 +1,160 @@
+<% if false %>
+
+<header class="header">
+  <nav class="navbar">
+    <div class="container-fluid">
+      <ul class="list-unstyled header_nav">
+        <li><a id="sidebarCollapse" href="#" class="menu-btn"><i class="fas fa-bars" aria-hidden="true"></i></a></li>
+        <li class="li_width">
+          <ul class="list-unstyled">
+            <li><a href="/kitchen_users/logout" class="nav-link logout"><i class="fas fa-power-off"></i></a></li>
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+<% end %>
+
+
+
+
+
+
+
+
+
+<div class="sandwich"><img src="/assets/sandwich-icon.png"></div>
+<div class="dash-top">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="nopad">
+        <div class="userinfo" style="height: 66px;">
+          <div class="panel panel-default tog_menu float-left">
+            <h4 class="panel-title">
+              <a class="side-hide" ><i class="fa fa-bars" aria-hidden="true"></i></a>
+            </h4>
+            <div id="collapseOne" class="panel-collapse collapse">
+              <div class="panel-body">
+              </div>
+            </div>
+          </div>
+ <!--        <div id="noti_Counter">
+          <%# if PointOfSale.where('date >= ?', Date.today).present? and ParentOrder.where('date >= ?', Date.today).present? %>
+          <h6>2</h6>
+          <%# elsif PointOfSale.where('date >= ?', Date.today).present? or ParentOrder.where('date >= ?', Date.today).present? %>
+          <h6>1</h6>
+          <%# end %>
+        </div>
+
+          <a class="btn btn-primary Notifications" data-toggle="modal" data-target="#myModal">
+            <span class="fa fa-bell-o fa-2x"></span>
+          </a>   -->        
+          <% if not session[:kitchen_user_id].blank? %>
+            <span style="float:right;"><%= link_to "",kitchen_users_logout_path,title: "sign out",:class=>"fa fa-sign-out fa-2x"%></span>
+            <span class="name"><%= KitchenUser.find(session[:kitchen_user_id]).name%></span>
+            <img src="/assets/user-icon.png">
+          <% end %>
+        </div>                       
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+<!-- 
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Notifications</h4>
+        </div>
+        <div class="modal-body" style="font-size: 150%;">
+          <h3>Instant Orders</h3>
+          <table class="table table-striped table-bordered table-hover display" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Tenant</th>
+                <th>Meal Time</th>
+                <th>Restriction</th>
+                <th>Count</th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%# PointOfSale.where('date >= ?', Date.today).map do |pos| %>
+                <tr>
+                  <td><%#= pos.tenant.name %></td>
+                  <td><%#= pos.meal_time %></td>
+                  <td><%#= pos.meal_restriction.present? ? pos.meal_restriction.meal_restriction_name : "" %></td>
+                  <td><%#= pos.quantity %></td>
+                  <td><%#= link_to "View", point_of_sales_path %></td>
+                </tr>
+              <%# end %>
+            </tbody>
+          </table>
+          <h3>Parent Orders</h3>
+          <table class="table table-striped table-bordered table-hover display" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Tenant</th>
+                <th>Count</th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%# ParentOrder.where('date >= ?', Date.today).group_by(&:tenant_id).map do |t,v| %>
+                <tr>
+                  <td><%#= v.first.tenant.name %></td>
+                  <td><%#= v.count %></td>
+                  <td><%#= link_to "View", parent_orders_path %></td>
+                </tr>
+              <%# end %>
+            </tbody>
+          </table>          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
+<style type="text/css">
+#noti_Counter {
+      /*display: inline-block;*/
+      position: absolute;
+      top: 26px !important;
+      right: 246px;
+      min-width: 10px;
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      background-color: #fdc006;
+      border-radius: 10px;
+      border: 2px solid #fff;
+      z-index: 1;
+      margin: -12px 0 0 20px;
+    }
+    .dash-top .userinfo img
+    {
+      height: 40px;
+    }
+</style>
+<script type="text/javascript">
+  $(".side-hide").click(function(){
+    $(".sidebar").toggleClass("hide-nav");
+    $(".wrapper").toggleClass("active");
+  }); 
+</script>
+
+

@@ -1,0 +1,4 @@
+$("#nutrition-modal").html("<%= escape_javascript(render 'nutrition_pop') %>")
+$("#nutrition-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show")

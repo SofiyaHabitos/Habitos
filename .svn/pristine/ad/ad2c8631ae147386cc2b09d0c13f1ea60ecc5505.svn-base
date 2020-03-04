@@ -1,0 +1,17 @@
+<%= form_for(dispatch_utensils_mapping) do |f| %>
+  <% if dispatch_utensils_mapping.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(dispatch_utensils_mapping.errors.count, "error") %> prohibited this dispatch_utensils_mapping from being saved:</h2>
+
+      <ul>
+      <% dispatch_utensils_mapping.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

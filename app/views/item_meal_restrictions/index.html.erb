@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Item Meal Restrictions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Production item</th>
+      <th>Meal restriction</th>
+      <th>Created by</th>
+      <th>Updated by</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @item_meal_restrictions.each do |item_meal_restriction| %>
+      <tr>
+        <td><%= item_meal_restriction.production_item %></td>
+        <td><%= item_meal_restriction.meal_restriction %></td>
+        <td><%= item_meal_restriction.created_by %></td>
+        <td><%= item_meal_restriction.updated_by %></td>
+        <td><%= link_to 'Show', item_meal_restriction %></td>
+        <td><%= link_to 'Edit', edit_item_meal_restriction_path(item_meal_restriction) %></td>
+        <td><%= link_to 'Destroy', item_meal_restriction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Item Meal Restriction', new_item_meal_restriction_path %>

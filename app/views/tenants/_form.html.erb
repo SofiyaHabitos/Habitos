@@ -1,0 +1,642 @@
+
+<div ng-app="">
+  <%= nested_form_for(tenant) do |f| %>
+    <form name="item">
+      <div class="card card_form mb-5">
+        <div class="card-body">
+          <div class="row">
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :name, class: "input-text boxed clientname",required: true, autofocus: true %>
+                <%= f.label :name,"Client Name", :class => "input-text-placeholder" %>
+                  <div class="msgg" style="color: red"></div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.collection_select :site_category_id, SiteCategory.order("name"), :id, :name,{:prompt=>true, selected: f.object.site_category_id.present? ? f.object.site_category_id : SiteCategory.first.id} ,{class: "input-text client_type boxed e1",required: true }%>
+                <%= f.label :site_category_id,"Client Type", :class => "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :email, class: "input-text boxed",required: true,:type=>"email" %>
+                <%= f.label :email, :class => "input-text-placeholder"%>
+              </div>
+            </div>
+
+
+            <div class="col-md-3">
+              <%= f.fields_for :image do |a| %>
+                  <%unless @tenant.image.image_path.present?%>
+                    <div class="control floating_label">
+                      <%= a.file_field :image_path ,class: "input-text boxed company_logo",required: true,accept: 'image/*'%>
+                      <%= a.label :image_path, "Company Logo", :class => "input-text-placeholder" %>
+                    </div>
+                   
+                  <%else%>
+                  <div class="control floating_label d-flex align-items-center">
+                    <%=image_tag @tenant.image.image_path,:class=>"company_logo" if @tenant.image.present?%>
+                    <%= a.file_field :image_path ,class: "input-text boxed company_logo", accept: 'image/*'%>
+
+
+                    <%= a.label :image_path, "Company Logo", :class => "input-text-placeholder" %>
+                  </div>
+                  
+                <%end%>
+              <%end%>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_area :address, class: "input-text boxed",required: true %>
+                <%= f.label :address, :class => "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.collection_select :kitchen_id, Kitchen.order("name"), :id, :name,{:prompt=>""} ,{class: "input-text boxed e1", required: true}%>
+                <%= f.label :kitchen_id,"Facility", :class => "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :latitude,:pattern=>'-?\d{1,3}\.\d+',class: "input-text boxed",required: true %>
+                <%= f.label :latitude, :class => "input-text-placeholder"  %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :longitude,:pattern=>'-?\d{1,3}\.\d+', class: "input-text boxed",required: true %>
+                <%= f.label :longitude, :class => "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :contact_person1, class: "input-text boxed",required: true %>
+                <%= f.label :contact_person1,"Primary Contact", :class => "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :contact_person2, class: "input-text float_input boxed",required: true %>
+                <%= f.label :contact_person2,"Secondary Contact", :class => "input-text-placeholder"%>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :phone1, class: "input-text boxed",required: true,type:'text',title:'Phone Number (Format: +91(91)********)',:pattern=>'^\+?\d{0,10}' %>
+                <%= f.label :phone1,"Primary Contact_Number", :class => "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :phone2, class: "input-text boxed",type:'text',title:'Phone Number (Format: +91(91)********)',:pattern=>'^\+?\d{0,10}',required: true  %>
+                <%= f.label :phone2,"Secondary Contact_Number", :class => "input-text-placeholder" %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :gst_number, class: "input-text float_input boxed gst", minlength:"15", maxlength:"15" %>
+                <%= f.label :gst_number,"GST Number (optional)", :class => "input-text-placeholder" %>
+              </div>
+            </div> 
+
+            <div class="col-md-3">
+              <div class="d-flex align-items-center">
+                <%= f.label :color_code, "Choose Tenant Colour",:class=> 'mb-0 mr-2' %>
+                <span name="color_code" class="form-control" id="display_color" style="background-color: <%= tenant.color_code if tenant.id.present? %>"></span>
+                <%= f.hidden_field :color_code, id: "color_code_choosen" %>
+              </div>
+              <div class="color_palette">
+                <% color_list.map do |color| %>
+                  <span class="color_cell" style="background-color: <%= color %>" onclick="colorFunction('<%= color %>')"></span>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+                <label class="checkbox-label">
+                  <%= f.check_box :active,:class=> 'custom_checkbox' %>
+                  <span>Is Active<%#= f.label :active,"Is Active" %></span>
+                </label>
+            </div>
+          </div>
+          <div class="meal_info" ng-show="tenant[meal] == 'true' || tenant[meal] == null || tenant[meal] =='' " >
+            <h5>ADD - MEAL INFO </h5>
+              <div class="position-relative">
+                <table class="table table-container table-bordered table-striped mb-0" id="tasks">
+                  <thead>
+                    <tr>
+                      <th>Meal Course</th>         
+                      <th>Client Category</th>
+                      <th>Spread Type</th>
+                      <th>Total Count</th>
+                      <th>Consuming Time</th>
+                      <th>Dispatch Time</th>
+                      <th>Delivery Time</th>
+                      <th class="text-center">Action</th> 
+                    </tr>                 
+                  </thead>      
+                  <tbody>        
+                    <%= f.fields_for :tenant_details,wrapper:false  do |ff| %>          
+                    <tr class="fields">                     
+                      <td>
+                        <%= ff.select :meal_time, Category.all.order('position').pluck(:category_name),{prompt:true},{class: "form-control  boxed e1 a1 ",required: true}  %>
+                      </td>
+
+                      <td>
+                        <%= ff.select :stud_type, options_for_select(ClientCategory.pluck(:name,:id), selected: ff.object.stud_type.to_i),{include_blank: "Please Select"}, {class: "form-control  boxed e1 a2 student_type stud_type_#{@num}", id: "student_type_#{ff.object.id}",required: true} %>
+                      </td>
+
+                      <td>
+                       <%= ff.select :spread_type, options_for_select(@spread["Spread"].pluck('spreadtype','spreadid'), selected: ff.object.spread_type.to_i),{include_blank: "Please Select"}, {class: "form-control boxed e1 a2 spread_type", id: "spread_type_#{ff.object.id}",required: true} %>
+                      </td>
+
+                      <td>
+                      <%= ff.text_field :quantity ,:pattern=>'[-+]?[0-9]*[0-9]+', class: "form-control boxed e1 a5" ,required: true%>
+                      </td>
+
+                      <td><%= ff.select :meal_plan,meal_time,{prompt: true },{class: "form-control consuming_time boxed e1 a2 clock ",required: true} %>
+                        <%#= ff.text_field :meal_plan, class: "form-control consuming_time",required: true %>
+                      <%#= ff.time_field :meal_plan, class: " consuming_time"%>
+                      <%#= ff.time_select :meal_plan,  minute_step: 5,ampm: true, class: "form-control boxed e1 a2 dispatch consuming_time" %>
+
+                      </td>
+                              
+                      <td><%= ff.select :dispatch_time,meal_time,{prompt: true },{class: "form-control boxed e1 a2 dispatch dispatchtime",required: true}%>
+
+
+                      <%#= ff.time_field :dispatch_time, class: " dispatchtime", :ampm => true, :minute_step => 5 %>
+
+                      <%#= ff.time_select :dispatch_time,  minute_step: 5,ampm: true, class: "form-control boxed e1 a2 dispatch dispatchtime" %>
+
+
+                          <%#= ff.text_field :dispatch_time, class: "form-control dispatchtime boxed e1 a2 clock " %>
+                      </td>
+
+                      <td><%= ff.select :delivery_time,meal_time,{prompt: true },{class: "form-control boxed e1 a2 delivery  deliverytime",required: true}%>
+                        <%#= ff.text_field :delivery_time, class: "form-control delivery_time boxed e1 a2 clock " %>
+                      </td> 
+
+                      <td class="text-center">
+                      
+                       <%= ff.link_to_remove "<i class='far fa-trash-alt'></i>".html_safe,{:class=>"confirmation btn" ,title:"Remove",method: :delete, data: {confirm: "Are you sure?"}}%>
+                      </td>
+
+                    </tr>
+
+                    <%unless params[:id].present?%>
+                      <div class="msg"></div>
+                      <%else%>
+                      <div class="mssffg"></div>
+                      <%end%>
+                    <%end%>
+                  </tbody>
+
+                </table>
+
+
+             
+              <div class="add_more_row">
+                <%= f.link_to_add "<i class='fas fa-plus mr-1'></i>Add New".html_safe, :tenant_details, :class=>"btn btn_add gg", title: "Add Meal Info", :data => { :target => "#tasks" } %>
+              </div>
+
+               
+
+          </div>
+          <%= f.submit 'Submit',title:"Submit" ,:class=>"btn btn_submit button enable" %>
+        </div>
+        <div class="container-fluid"> 
+            <div id="colorModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                       <div class="row">
+                            <% color_list.map do |color| %>
+                                <div class="col-md-1" style="background-color: <%= color %>" onclick="colorFunction('<%= color %>')">&nbsp;&nbsp;</div>
+                            <% end %>
+                        </div>   
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </form>
+  <% end %>
+</div>
+
+
+
+
+<style type="text/css">
+  .content{
+    width: 100%;
+    overflow: auto;
+  }  
+</style>
+
+<!-- Script For Changing Spread and Client Category -->
+<script type="text/javascript">
+         
+  function client_category(client_type){
+       
+     $.ajax({
+             type: "GET",
+             url: '<%=$api_service%>/api/v1/client_categories?client_type_id='+client_type,
+          success: function(responses) 
+           { 
+            var lists = responses["client_categories"]
+            console.log(lists);
+            var spreads = responses["Spread"]
+            $.each(lists, function(index, value){
+             
+              $('.student_type option').filter('[value="'+value.id+'"]').remove();
+            })
+            $.each(spreads, function(index, value){
+           
+              $('.spread_type option').filter('[value="'+value.spreadid+'"]').remove();
+            })
+
+
+          }
+                });
+  }
+
+  function drop_down_append(client_type){
+   
+         $.ajax({
+             type: "GET",
+             url: '<%= $api_service%>/api/v1/client_type_categories?client_type_id='+client_type,
+           
+         success: function(responses) 
+           {
+
+            var newlists = responses["client_categories"]
+            var newspread = responses["Spread"]
+           
+            console.log(newlists);
+            $.each(newlists, function(index, value){
+             
+              $('.student_type').append($("<option>").val(value.id).text(value.name));
+
+           })
+            $.each(newspread, function(index, value){
+        
+              $('.spread_type').append($("<option>").val(value.spreadid).text(value.spreadtype));
+
+           })
+
+             
+          }
+        });
+  }
+  $(document).ready(function() {
+
+ // $(".consuming_time,.dispatchtime,.delivery_time").flatpickr({
+ //        enableTime: true,
+ //        noCalendar: true,
+ //        altInput: true,
+ //        dateFormat: "H:i",
+ //        time_24hr: false,
+ //        timeFormat: "H:i",
+    
+ //    });
+
+
+   $(".client_type").on("change", function () {
+     
+     var client_type = $(this).val();
+     drop_down_append(client_type);
+     client_category(client_type);
+          
+   });
+  
+  $(document).on('nested:fieldAdded', function(event){
+     var client_type = $('.client_type').val();
+     client_category(client_type);         
+  })
+
+     
+  });
+
+  $(document).ready(function() {
+  var client_type = $('.client_type').val();
+      client_category(client_type);         
+    });
+
+
+</script>
+
+<!-- End the Script  -->
+
+<!-- Script For Compare Time  Consuming, Dispatch, Delivery Time-->
+<script type="text/javascript">
+
+$(document).ready(function() {
+    
+    var duplication_status = '<%= @duplication_status %>';
+    if (duplication_status == "true") {
+      alert('Meal Time, Client Category and Spread Type cant be same');
+    }
+
+    var month = '<%= Date.today.strftime('%B')%>'
+    var date = '<%= Date.today.strftime('%d')%>'
+    var year = '<%= Date.today.strftime('%Y')%>'
+
+
+    function check_dispatch_time(clocktime,dispatchtime){
+    
+     var clockhours = Number(clocktime.match(/^(\d+)/)[1]);
+     var clockminutes = Number(clocktime.match(/:(\d+)/)[1]);
+     var clockAMPM = clocktime.match(/\s(.*)$/)[1];
+
+     var hours = Number(dispatchtime.match(/^(\d+)/)[1]);
+     var minutes = Number(dispatchtime.match(/:(\d+)/)[1]);
+     var AMPM = dispatchtime.match(/\s(.*)$/)[1];
+
+     var clock_time  = new Date(month+" "+date+","+year+" "+clockhours+":"+clockminutes+" "+clockAMPM);
+     
+     var dispatch_time  = new Date(month+" "+date+","+year+" "+hours+":"+minutes+" "+AMPM);
+
+     if ( clock_time <= dispatch_time )
+        {
+          alert("Please select the Dispatch Time Lesser than Consuming Time");
+          $('.dispatchtime').val("");
+        }
+    }
+
+    function delivery_time_check(clocktime,deliverytime,dispatchtime){
+
+    var clockhours = Number(clocktime.match(/^(\d+)/)[1]);
+    var clockminutes = Number(clocktime.match(/:(\d+)/)[1]);
+    var clockAMPM = clocktime.match(/\s(.*)$/)[1];
+
+    var hours = Number(dispatchtime.match(/^(\d+)/)[1]);
+    var minutes = Number(dispatchtime.match(/:(\d+)/)[1]);
+    var AMPM = dispatchtime.match(/\s(.*)$/)[1];
+
+    var delhours = Number(deliverytime.match(/^(\d+)/)[1]);
+    var delminutes = Number(deliverytime.match(/:(\d+)/)[1]);
+    var delAMPM = deliverytime.match(/\s(.*)$/)[1];
+
+    var clock_time  = new Date(month+" "+date+","+year+" "+clockhours+":"+clockminutes+" "+clockAMPM);
+    
+    var dispatch_time  = new Date(month+" "+date+","+year+" "+hours+":"+minutes+" "+AMPM);
+
+    var delivery_time  = new Date(month+" "+date+","+year+" "+delhours+":"+delminutes+" "+delAMPM);
+    
+    if ( dispatch_time >= delivery_time || clock_time <= delivery_time){
+        alert("Please select the Delivery Time Greater than Dispatch Time and Lesser Than Consume Time");
+        $('.deliverytime').val("");
+      }
+
+    }
+  
+  $(".dispatchtime").on("change", function () {
+    var clocktime = $('.consuming_time').val();
+    var dispatchtime = $('.dispatchtime').val();
+    
+    check_dispatch_time(clocktime,dispatchtime);
+
+  });
+
+  $('.deliverytime').on("change", function () {
+
+    var dispatchtime = $('.dispatchtime').val();
+    var deliverytime = $('.deliverytime').val();
+    var clocktime = $('.consuming_time').val();
+    delivery_time_check(clocktime,deliverytime,dispatchtime);
+  
+});
+
+
+});
+
+
+
+  // $(document).on('nested:fieldAdded', function(event){
+  //   // this field was just inserted into your form
+  //   var field = event.field; 
+  //   // it's a jQuery object already! Now you can find date input
+  //   var dateField = field.find('.delivery_time,.consuming_time,.dispatch_time');
+  //   // $(".remove_fields")[0].style.display="block";
+  //   // and activate datepicker on it
+  //   dateField.flatpickr({
+  //       enableTime: true,
+  //       noCalendar: true,
+  //       altInput: true,
+  //       dateFormat: "H:i",
+  //       time_24hr: false,
+  //       timeFormat: "H:i",
+  //   });
+  // });
+
+
+
+
+$(document).on('nested:fieldAdded', function(event){
+    //  $(".consuming_time,.dispatch_time,.delivery_time").flatpickr({
+    //     enableTime: true,
+    //     noCalendar: true,
+    //     altInput: true,
+    //     dateFormat: "H:i",
+    //     time_24hr: false,
+    //     timeFormat: "H:i",
+    
+    // })
+
+    var month = '<%= Date.today.strftime('%B')%>'
+    var date = '<%= Date.today.strftime('%d')%>'
+    var year = '<%= Date.today.strftime('%Y')%>'
+
+    var field = event.field;
+
+    // var dateField = field.find('.delivery_time,.consuming_time,.dispatchtime');
+    // // $(".remove_fields")[0].style.display="block";
+    // // and activate datepicker on it
+    // dateField.flatpickr({
+    //     enableTime: true,
+    //     noCalendar: true,
+    //     altInput: true,
+    //     dateFormat: "H:i",
+    //     time_24hr: false,
+    //     timeFormat: "H:i",
+    // });
+    
+    var delete_btn = field.find('.confirmation');
+
+    delete_btn.click(function () {
+        return confirm('Are you sure?');
+    });
+
+    var dispatchField = field.find('.dispatchtime');
+    var deliveryField = field.find('.deliverytime');
+    var consumeField = field.find('.consuming_time');
+
+  dispatchField.change(function(){
+
+    var dispatchTime = $(this).val();
+
+    var clockTime = consumeField.val();
+
+    var clockhours = Number(clockTime.match(/^(\d+)/)[1]);
+    var clockminutes = Number(clockTime.match(/:(\d+)/)[1]);
+    var clockAMPM = clockTime.match(/\s(.*)$/)[1];
+
+    var hours = Number(dispatchTime.match(/^(\d+)/)[1]);
+    var minutes = Number(dispatchTime.match(/:(\d+)/)[1]);
+    var AMPM = dispatchTime.match(/\s(.*)$/)[1];
+
+    var clockTime  = new Date(month+" "+date+","+year+" "+clockhours+":"+clockminutes+" "+clockAMPM);
+    var dispatchTime  = new Date(month+" "+date+","+year+" "+hours+":"+minutes+" "+AMPM);
+      
+    if ( clockTime <= dispatchTime )
+        {
+          alert("Please select the Dispatch Time Lesser than Consuming Time");
+          dispatchField.val("");
+        }
+  });
+
+  deliveryField.change(function(){
+
+    var deliveryTime = $(this).val();
+    var dispatchTime = dispatchField.val(); 
+    var clockTime = consumeField.val();
+      
+    var hours = Number(dispatchTime.match(/^(\d+)/)[1]);
+    var minutes = Number(dispatchTime.match(/:(\d+)/)[1]);
+    var AMPM = dispatchTime.match(/\s(.*)$/)[1];
+
+    var delhours = Number(deliveryTime.match(/^(\d+)/)[1]);
+    var delminutes = Number(deliveryTime.match(/:(\d+)/)[1]);
+    var delAMPM = deliveryTime.match(/\s(.*)$/)[1];
+
+    var clockhours = Number(clockTime.match(/^(\d+)/)[1]);
+    var clockminutes = Number(clockTime.match(/:(\d+)/)[1]);
+    var clockAMPM = clockTime.match(/\s(.*)$/)[1];
+    
+    var clockTime  = new Date(month+" "+date+","+year+" "+clockhours+":"+clockminutes+" "+clockAMPM);
+     
+    var dispatchTime  = new Date(month+" "+date+","+year+" "+hours+":"+minutes+" "+AMPM);
+
+    var deliveryTime  = new Date(month+" "+date+","+year+" "+delhours+":"+delminutes+" "+delAMPM);
+    
+    if ( dispatchTime >= deliveryTime || clockTime <= deliveryTime) 
+        {
+        alert("Please select the Delivery Time Greater than Dispatch Time and Lesser Than Consume Time");
+        deliveryField.val("");
+        }
+  });
+});
+</script>
+
+<script type="text/javascript">
+  function colorFunction(color_value){
+    $("#display_color").css("background-color", color_value);
+    $('#color_code_choosen').val(color_value);
+  };
+  $(".color_palette span").on("click", function(){
+    var this_e = $(this);
+    $(".color_palette span").removeClass("selected_color");
+    $(this).addClass("selected_color");
+  });
+  $(document).ready(function(){
+    var button = $( '#display_color' )[0];
+    var spancolor = $( '.color_cell' );
+    var elem = $( '.color_palette' )[0];
+  
+    $( button ).on( 'click', function ( e ) {
+        $( elem ).toggle();
+        e.stopPropagation();
+    });
+    $( spancolor ).on( 'click', function ( e ) {
+        $( elem ).toggle();
+        e.stopPropagation();
+    });
+    $( document ).on( 'click', function ( e ) {
+        if ( $( e.target ).closest( elem ).length === 0 ) {
+            $( elem ).hide();
+        }
+    });
+    $( document ).on( 'keydown', function ( e ) {
+        if ( e.keyCode === 27 ) {
+            $( elem ).hide();
+        }
+    });
+
+   });
+
+ </script>
+
+ <script type="text/javascript">
+
+  $(document).ready(function(){
+   
+ 
+    $(".clientname").on("change", function () {
+
+      var clientname_id = $(this).val();
+            
+
+      $.ajax({
+        type: "GET",
+        url: "/tenants/check_clientname_present?clientname_id="+clientname_id,
+        success: function nt(msgg) { 
+            
+           $( ".msgg" ).text(msgg.message); 
+           $(".msgg").show();
+
+            if (msgg.message != "") {
+            $('.enable').attr('disabled',true);
+            }
+             if (msgg.message == "") {
+            $('.enable').attr('disabled',false);
+            }
+            $( ".msgg" ).text(msgg.message); 
+           $(".msgg").show();
+        }
+
+      });
+    });
+  });
+ $(".company_logo").on("change", function () {
+  var logo = $(this).val();
+  var format = logo.split('.').pop();
+  if (!(format == "jpg" || format == "jpeg" || format == "png" ))
+  {
+    alert("Please select the image file");
+    $('.company_logo').val("");
+  }
+ });
+
+</script>
+
+
+<style type="text/css">
+.msg{
+  color: #e40000;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: italic;
+  margin-bottom: 10px;
+  position: absolute;
+  right: 0;
+  top: -25px;
+}
+</style>

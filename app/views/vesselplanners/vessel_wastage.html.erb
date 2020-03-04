@@ -1,0 +1,133 @@
+<section class="page-content">
+  <div class="container-fluid">
+  	<div class="row container_pad">
+  	  <div class="col-md-9 menu_body">
+  	  	    <p class="page_path">SCM / Wastage</p>
+            <h2 class="header_title d-flex align-items-center justify-content-between">Wastage</h2>
+  	  </div>
+
+       <div class="col-md-3 vessel_new">
+          <div class="row planned_unplanned">
+            <div class="col-md-6">
+              <div class="card" data-toggle="modal" data-target="#unplannedModal">
+                  <div class="card-body">
+                    <h6>Planned</h6>
+                    <h2><%#= @wasted.count %></h2>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card" data-toggle="modal" data-target="#plannedModal">
+                  <div class="card-body">
+                    <h6>Dispatched</h6>
+                    <h2><%= @planned.count %></h2>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+<div id="plannedModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title">Planned Details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="ti-close" aria-hidden="true"></span>
+          </button>
+      </div>
+
+      <div class="modal-body">
+          <table class="table table-striped">
+            <thead>
+              <th>Date</th>
+              <th>Client Name</th>
+              <th>Meal Type</th>
+              <th>Client Type</th>
+              <th>Client Category</th>
+              <th>Spread Name</th>
+            </thead>
+            <tbody>
+              <% @planned.each do |plan| %>
+                <tr>
+                   <td><%= plan.date.present? ? plan.date.strftime('%d-%m-%Y') : "" %></td>
+                  <td><%= plan.tenant_detail.tenant.name %></td>
+                  <td><%= plan.tenant_detail.meal_time %></td>
+                  <td><%= plan.tenant_detail.tenant.site_category.name %></td>
+                  <td><%= ClientCategory.find(plan.tenant_detail.stud_type.to_i).name %></td>
+                  <td><%= @spread_type_response["Spread"].select{|i| i["spreadid"] == plan.tenant_detail.spread_type}[0]["spreadtype"] %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+      </div>
+    
+      <div class="modal-footer">
+          <button type="button" class="btn btn_cancel" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+        <div class="filter_by">
+           <label>Filter by:</label>
+
+              <%= form_for :dispatch, url: {action: "vessel_wastage"} do |j|%>
+
+                    <div class="row">
+
+                    	<div class="col-md-3">
+                          <div class="control floating_label">
+                             <%= j.text_field :date , class: "input-text", id: "date_input",autofocus: true, value: @dropdown.present? ? @dropdown[0].date.strftime('%Y-%m-%d'): "", required: true, placeholder: "dd-mm-yyyy" %>
+                             <label class="input-text-placeholder" for="date">Date</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="control floating_label">
+                             <%=j.select "mealcourse" , options_for_select(@category, selected: @dropdown.present? ? Category.find_by(category_name: @dropdown[0].tenant_detail.meal_time).category_name : ""),{prompt: ""},{class: "input-text",required:true}%>
+                             <label class="input-text-placeholder" for="date">Meal Course</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="control floating_label">
+                             <%=j.select "clientname" , options_for_select(@tenant.sort_by{|k| k}, selected: @dropdown.present? ? @dropdown[0].tenant_detail.tenant.id : "" ),{prompt: ""},{class: "input-text" , id: "clientname",required:true} %>
+                             <label class="input-text-placeholder" for="date">Client Name</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                           <label></label><br>
+                           <%= j.submit "Submit", class: "btn btn_submit" %>
+                        </div>
+
+                    </div>
+
+              <% end %>
+
+        </div>
+
+    <%unless @vesseldispatch.nil?%>
+       <%= render 'vesselwastage', vessel_wastage: @vesseldispatch %>
+    <%end%>
+       <%= render 'vesselwasted', wasted: @wasted %>  
+    
+  </div>
+</section>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+      $('#clientname').select2();
+
+      $('#date_input').flatpickr({
+         minDate: 'today'
+      });
+  });
+
+</script>
+

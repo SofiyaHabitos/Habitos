@@ -1,0 +1,13 @@
+<!-- <h1>Editing Trip Detail</h1> -->
+
+
+
+<%#= link_to 'Show', @trip_detail %> |
+<%#= link_to 'Back', trip_details_path %>
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">SCM / Trip Management / Edit Trip Management</p>
+    <h2 class="header_title">Edit Trip Management <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, trip_details_path, title:"Back", :class=>"btn btn_back"%></h2>
+        <%= render 'form', trip: @trip, trip_details: @trip_detail  %>
+  </div>
+</section>

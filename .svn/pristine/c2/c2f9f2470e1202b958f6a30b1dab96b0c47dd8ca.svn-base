@@ -1,0 +1,126 @@
+
+<div id="newsite_category-modal" class="modal-dialog modal"></div>
+<div id="editsite_category-modal" class="modal-dialog modal"></div>
+
+<div id="newuom-modal" class="modal-dialog modal"></div>
+<div id="edituom-modal" class="modal-dialog modal"></div>
+
+<div id="newproduction_category-modal" class="modal-dialog modal"></div>
+<div id="editproduction_category-modal" class="modal-dialog modal"></div>
+
+<div id="newfood_category-modal" class="modal-dialog modal"></div>
+<div id="editfood_category-modal" class="modal-dialog modal"></div>
+
+<div id="newutensils_category-modal" class="modal-dialog modal"></div>
+<div id="editutensils_category-modal" class="modal-dialog modal"></div>
+
+<div id="newdispatch-modal" class="modal-dialog modal"></div>
+<div id="editdispatch-modal" class="modal-dialog modal"></div>
+
+
+<div id="image-modal" class="modal-dialog modal"></div>
+<div id="billing-modal" class="modal-dialog modal"></div>
+<div id="nutrition-modal" class="modal-dialog modal"></div>
+
+
+<div id="newtenant-modal" class="modal-dialog modal"></div>
+<div id="edittenant-modal" class="modal-dialog modal"></div>
+<div id="showtenant-modal" class="modal-dialog modal"></div>
+
+<div id="newfood-modal" class="modal-dialog modal"></div>
+<div id="editfood-modal" class="modal-dialog modal"></div>
+<div id="showfood-modal" class="modal-dialog modal"></div>
+
+<div id="newfood1-modal" class="modal-dialog modal"></div>
+<div id="editfood1-modal" class="modal-dialog modal"></div>
+<div id="showfood1-modal" class="modal-dialog modal"></div>
+
+<div id="newcat-modal" class="modal-dialog modal"></div>
+<div id="newcat-modal" class="modal-dialog modal"></div>
+
+<div id="newcategory-modal" class="modal-dialog modal"></div>
+<div id="editcategory-modal" class="modal-dialog modal"></div>
+
+<div id="newnut-modal" class="modal-dialog modal"></div>
+<div id="editnut-modal" class="modal-dialog modal"></div>
+
+<div id="newitem-modal" class="modal-dialog modal"></div>
+<div id="edititem-modal" class="modal-dialog modal"></div>
+
+<div id="newcategory1-modal" class="modal-dialog modal"></div>
+<div id="editcategory1-modal" class="modal-dialog modal"></div>
+
+<div id="newsetup-modal" class="modal-dialog modal"></div>
+<div id="editsetup-modal" class="modal-dialog modal"></div>
+
+<div id="newcustomer-modal" class="modal-dialog modal"></div>
+<div id="editcustomer-modal" class="modal-dialog modal"></div>
+
+<div id="newparent-modal" class="modal-dialog modal"></div>
+<div id="editparent-modal" class="modal-dialog modal"></div>
+<div id="showorder-modal" class="modal-dialog modal"></div>
+
+<div id="newaudit-modal" class="modal-dialog modal"></div>
+<div id="editaudit-modal" class="modal-dialog modal"></div>
+
+<div id="newfeed-modal" class="modal-dialog modal"></div>
+<div id="editfeed-modal" class="modal-dialog modal"></div>
+
+<div id="newkitchen-modal" class="modal-dialog modal"></div>
+<div id="editkitchen-modal" class="modal-dialog modal"></div>
+<div id="showkitchen1-modal" class="modal-dialog modal"></div>
+
+<div id="newasset-modal" class="modal-dialog modal"></div>
+<div id="editasset-modal" class="modal-dialog modal"></div>
+
+<div id="newpage-modal" class="modal-dialog modal"></div>
+<div id="editpage-modal" class="modal-dialog modal"></div>
+
+<div id="newconfig-modal" class="modal-dialog modal"></div>
+<div id="editconfig-modal" class="modal-dialog modal"></div>
+
+<div id="delivery-modal" class="modal-dialog modal"></div>
+
+<div id="utensil_status-modal" class="modal-dialog modal"></div>
+
+<div id="editpos-modal" class="modal-dialog modal"></div>
+
+
+<div id="showcategory-modal" class="modal-dialog modal"></div>
+
+<div id="showitem-modal" class="modal-dialog modal"></div>
+
+<div id="shownutrition-modal" class="modal-dialog modal"></div>
+  
+<div id="shownkitchen-modal" class="modal-dialog modal"></div>
+
+<div id="shownutensil-modal" class="modal-dialog modal"></div>
+
+<div id="showntenant-modal" class="modal-dialog modal"></div>
+
+<div id="showsoftware_set-modal" class="modal-dialog modal"></div>
+
+<div id="showview_control-modal" class="modal-dialog modal"></div>
+
+<div id="dispatch-modal" class="modal-dialog modal"></div>
+
+<div id="newpage-modal" class="modal-dialog modal"></div>
+
+<div id="editpage-modal" class="modal-dialog modal"></div>
+
+<div id="newconfig-modal" class="modal-dialog modal"></div>
+
+<div id="editconfig-modal" class="modal-dialog modal"></div>
+
+
+
+<div id="newenrol-modal" class="modal-dialog modal"></div>
+<div id="editenrol-modal" class="modal-dialog modal"></div>
+<div id="showenrol-modal" class="modal-dialog modal"></div>
+
+<div id="editmenufood-modal" class="modal-dialog modal"></div>
+
+<div id="newfood-modal" class="modal-dialog modal"></div>
+
+<div id="editplan-modal" class="modal-dialog modal"></div>
+<div id="showplan-modal" class="modal-dialog modal"></div>

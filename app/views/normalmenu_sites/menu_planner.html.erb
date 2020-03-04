@@ -1,0 +1,2000 @@
+<% id = session[:kitchen_user_id] %>
+
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+ -->
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script> -->
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<script src="/assets/angular.min.js"></script> -->
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
+
+    <!--     <script src="/assets/angular-sanitize.min.js"></script>
+ -->   
+
+
+
+    <link href="/assets/bootstrap.min.css" rel="stylesheet">
+    <!-- <script href="/assets/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="/assets/Chart.bundle.min.js"></script> -->
+    <link href="/assets/medias.css" rel="stylesheet">
+    <link href="/assets/new_menu.css" rel="stylesheet">
+    <link href="/assets/old_menu.css" rel="stylesheet">
+
+     <link href="/assets/menuplaner.css" rel="stylesheet">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.js"></script>
+    <!-- <script src="//cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.min.js"></script>
+    <link href="//cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.min.css" rel="stylesheet"> -->
+    <link href="/assets/xeditable.css" rel="stylesheet">
+     <script src="/assets/xeditable.js"></script>
+    <script src="/assets/customSelect.js"></script>
+
+
+    <script src="//cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.min.js"></script>
+    <link href="//cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.min.css" rel="stylesheet">
+     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
+        
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script> -->
+</head>
+<body>
+  <style>
+  .panel-heading{
+    background-color: #E9E9E9!important;
+  }
+  .addrow{
+    padding-top:5px;
+    padding-bottom:5px;
+    background-color: #F9F9F9;
+    position: sticky;
+    left: 0;
+  }
+  .card{
+    width: 5.5rem;
+    height: 5.5rem;
+    border-top: solid;
+    border-top-color: orangered;
+    padding-top: 15px;
+    background-color: #ddd;
+  }
+  .card-body{
+    padding: 5px;
+  }
+  .plancount{
+    float: left;
+    margin-left: 18px;
+    margin-top: 5px;
+}
+.title{
+  font-size: 15px;
+    color: #353535;
+    float: left;
+     font-weight: 700;
+}
+
+.meal_course{
+margin-top: 15px;
+margin-left: 18px;
+}
+
+.menu_header
+{
+  border-style: solid;
+  border-color: #fff;
+  border-width: 1px;
+  background-color: gainsboro;
+  padding: 5px;
+}
+.menu_items
+{
+  border-style: solid;
+  border-color: #fff;
+  border-width: 1px;
+   
+}
+th{
+  white-space: nowrap;
+}
+.proceed{
+  margin-left: 20px;
+}
+.bgcolor{
+  background-color: white;
+}
+
+</style>
+  <div class="row container_pad" ng-app="dragDrop" ng-controller="DragDropCtrl">
+    <div class="col-md-12 loading" ng-show="spinner">
+      <img src="/assets/green_spinner.gif" height="70">
+    </div>
+    <div class="col-md-9 menu_body">
+      <div class="title_head">
+        <h1 class="planner-title">MENU PLANNER</h1>
+      </div>
+      <div class="row">
+      <div class="col-md-3">
+          <div class="form-group">
+            <!-- <label>Plan Name</label> -->
+            <input type="text" name="plan-name" placeholder="Plan name" ng-model="menu_plan_name" class="form-control">
+            </div>
+      </div>
+
+     <!--  <div class="input-group"
+     moment-picker="ctrl.datepicker"
+     format="YYYY-MM-DD">
+          <span class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+          </span>
+          <input class="form-control"
+                 placeholder="Select a date"
+                 ng-model="ctrl.datepicker"
+                 ng-model-options="{ updateOn: 'blur' }">
+      </div> -->
+
+      <div class="col-md-3">
+          <div class="form-group">
+           <!--  <label>Date</label> -->
+             <!-- <input type="date" name="" ng-model="menu_assign_date" class="form-control" date-format/> -->
+              <div class="input-group"
+     moment-picker="ctrl.datepicker"
+     format="DD-MM-YYYY">
+          
+          <input class="form-control"
+                 placeholder="Date"
+                 ng-model="ctrl.datepicker"
+                 ng-model-options="{ updateOn: 'blur' }">
+          <span class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+          </span>       
+      </div>
+             <!-- <input moment-picker="ctrl.dateFormatted" ng-model="menu_assign_date" format="DD/MM/YYYY"> -->
+         </div>
+      </div>
+
+      <!-- <div class="input-group"
+         moment-picker="ctrl.datepicker"
+         format="YYYY-MM-DD">
+        <span class="input-group-addon">
+            <i class="octicon octicon-calendar"></i>
+        </span>
+        <input class="form-control"
+               placeholder="Select a date"
+               ng-model="menu_assign_date"
+               ng-model-options="{ updateOn: 'blur' }">
+      </div> -->
+      
+      <div class="col-md-3">
+          <div class="form-group">
+            <!-- <label>Plan For</label> -->
+             <select name="no_of_days" required id="no_of_days" class="form-control" ng-model="no_of_days" ng-change ="click(no_of_days)" >
+              <option value="" disabled selected>Plan For</option>
+              <option value="1">1 Day</option>
+              <option value="3">3 Days</option>
+              <option value="8">8 Days</option>
+              <option value="10">10 Days</option>
+              <option value="15">15 Days</option>
+              <option value="30">30 Days</option>
+            </select>
+          </div>
+      </div>
+      <div class="col-md-3">
+         <div class="div-left">
+          <input type="checkbox" class="abc" ng-model="qty" name="qty">
+         </div>
+         <div class="div-right">
+          <label>Show Quantity</label>
+         </div>
+      </div>
+  </div>
+  
+  <!-- <div class="col-md-12 menu_header">
+        <center><b><label>Breakfast</label><span style="float:right"> <a href="#"><i class="fa fa-plus"></i></a></span></b></center>
+      
+  </div>
+  <div class="col-md-12 menu_items">
+      <table class="table table-striped table-bordered table-hover display" cellspacing="0" width="50%" >
+          <thead >
+             <th ng-repeat="date in dateRange">Day {{date}}</th>
+          </thead>
+          <tbody>
+          <tr>
+          <td ng-repeat="date in dateRange track by $index">
+            <select name='country' id="category" class="form-control cate1"    ng-model="category_type[$index]" ng-options="cate as cate.FoodCategory for cate in categories.RecepieCategoryWise" required >
+            <option value="" disabled>Select</option>
+            </select>
+            <span class="showrecipe"></span>
+              <select name='recipe_name' required id="reciperecipe" class="form-control" ng-model="recipe[$index]"  ng-options="recipe as recipe.RecepieName for recipe in category_type[$index].Foodrecipielist" ng-show="category_type">
+              <option value="" disabled>Select</option>
+              </select>
+
+            
+          </td>
+            
+          </tr>
+            
+          </tbody>                       
+      </table>
+  </div> -->
+
+  <div class="panel panel-default" ng-repeat="category in mealtime track by $index" ng-init="parentIndex = $index">
+
+     <div class="panel-heading">   
+      <h4 class="panel-title" data-toggle="collapse" href="#{{$index}}" ng-click="showClickIcon($index)">
+        <span>{{category.category_name}}</span>
+        <span  style="float:right">
+          <span> <a href="#"><i ng-class="showIcon[{{$index}}]==true? 'fa fa-minus':'fa fa-plus'"></i></a></span>
+        </span>
+      </h4>
+     </div>
+     <div id="{{$index}}" class="panel-collapse collapse scrol" style="overflow-x: scroll; overflow-y: hidden; position: relative;">
+      
+      <table class="table table-striped table-bordered table-hover display" cellspacing="0">
+          <thead>
+
+             <!-- <th style="background-color: #FFFFFF;" ng-repeat="date in dateRange">Day {{date}} <input type="checkbox"
+               ng-model="string"
+               [name="string"]
+               [ng-true-value="expression"]
+               [ng-false-value="expression"]
+               ng-change="CheckUncheckAll()">
+             </th> -->
+             <th style="background-color: #FFFFFF;width: 100px !important;" ng-repeat="dataa in Range track by $index" ng-init="headerDate= $index +1">
+            <!--  <a href="#" editable-bsdate="dataa" e-is-open="opened.$data" e-ng-click="open($event,'$data')" e-ng-change="scopeFunction($data)"
+             e-datepicker-popup="dd-MMMM-yyyy" onbeforesave="checkName($data,$index)">
+             {{ (dataa | date:"dd-MM-yyyy") || 'Day'+headerDate }}
+             </a> -->
+             
+             <input type="checkbox"
+               ng-model="getAlldata[parentIndex][category.category_name][0][dataa][0].CheckAll"
+
+               ng-change="toggleAll(parentIndex,category.category_name,dataa,getAlldata[parentIndex][category.category_name][0][dataa][0].CheckAll)" ng-disabled="getAlldata[parentIndex][category.category_name].length==0">
+              <span class="div-right">{{dataa}}</span>
+        
+             </th>
+               
+          </thead>
+          <tbody>
+          <tr ng-repeat="data1 in addRow[$index]" ng-init="dataindex = $index">
+          <td ng-repeat="date in getAlldata[parentIndex][category.category_name][$index] track by $index" ng-init="data = $index +1">
+            <input type="checkbox"
+               ng-model="date[0].rowSelect"
+              
+               ng-change="optionToggled(parentIndex,category.category_name,$index,date[0].rowSelect)"><!-- {{parentIndex}}{{dataindex}}{{$index}} --><!-- <select name='country' id="category" class="form-control" ng-model="category_type" ng-options="cate as cate.FoodCategory for cate in categories.RecepieCategoryWise" required style="width:100%" ng-change="recipePush(category_type)" ng-hide="recipe">
+            <option value="">Select</option>
+            </select> -->
+            <div name='country' id="category" custom-select="cate as cate.FoodCategory for cate in categories.RecepieCategoryWise | filter: $searchTerm" custom-select-options="level1Options" ng-model="category_type" required style="width:100%" ng-change="recipePush(category_type)" ng-init="category_type=dropDown1(date)"></div>
+            <div name='recipe_name' id="reciperecipe" custom-select="recipe as recipe.RecepieName for recipe in category_type.Foodrecipielist | filter: $searchTerm" ng-model="recipe" cs-depends-on="category_type" ng-change="recipePush(parentIndex,dataindex,$index,recipe,category.category_name,data)" ng-init="recipe=dropDown2(date,category_type.Foodrecipielist)" style="width:100%" required></div>
+            <span class="showrecipe" ng-show="category_type && qty">
+              
+              <!-- <select name='recipe_name' required id="reciperecipe" class="form-control" ng-model="recipe" ng-change="recipePush(parentIndex,$parent.$index,$index,recipe,category.category_name,date)" ng-options="recipe as recipe.RecepieName for recipe in category_type.Foodrecipielist" ng-show="category_type" style="width:100%">
+              <option value="">Select</option>
+              </select> -->
+
+                <!-- <input type="number" name="qty" value="{{getAlldata[parentIndex][category.category_name][dataindex]['Day'+data][0].Portion_size}}" readonly="true" style="width:85%;"> -->Quantity :{{getAlldata[parentIndex][category.category_name][dataindex]['Day'+data][0].Portion_size}}&nbsp;{{getAlldata[parentIndex][category.category_name][dataindex]['Day'+data][0].UOM}}
+<!--                 {{tenant_list[0].quantity}}<br>{{getAlldata[parentIndex][category.category_name][dataindex]['Day'+data][0].qty}}<br>
+                {{getAlldata[parentIndex][category.category_name][dataindex]['Day'+data][0].Portion_size}}<br>
+                {{getAlldata[parentIndex][category.category_name][dataindex]['Day'+data][0]}} -->
+              </span>
+             <!-- {{date}}
+             {{getAlldata[parentIndex][category.category_name][dataindex]['Day'+data][0].qty}} -->
+              <!-- <button ng-click="recipePush(parentIndex,$parent.$index,$index,category_type.Foodrecipielist[0],category.category_name,date)">dfgd</button> -->
+              
+          </td>
+            
+          </tr>
+          </tbody>                       
+      </table>
+      <div class="addrow" ng-click="rowAdd($index,category.category_name)" ng-hide="!no_of_days">
+        <center><label>+ Add row</label></center>
+      </div> 
+     </div>   
+  </div>
+  </div>
+
+  <div class="col-md-3 side_plan_item">
+  <div class="row">
+  <div class="plancount">
+      <div class="card">
+          <div class="card-body">
+            <h3 class="card-title" style="color: black;"><label><b>Planned</b></label></h3>
+            <h2 style="color:  orangered; padding: 10px;"><label><b>{{assigned}}</b></label></h2>
+                       
+          </div>
+      </div>
+  </div>
+  <div class="plancount">
+      <div class="card">
+          <div class="card-body">
+            <h3 class="card-title" style="color: black;"><label><b>Un Planned</b></label></h3>
+            <h2 style="color:  orangered; padding: 10px;"><label><b>{{unassigned}}</b></label></h2>         
+          </div>
+      </div>
+  </div>
+  </div>
+
+    <div class="row">
+      <div class="plancount">
+           <label class="title">Client Type</label><br><br>
+          <div class="items" ng-repeat="client in clientList">  
+           <input type="radio" ng-model="$parent.clientType" name="clienttype" value="{{client.name}}" ng-click="ClientType(client)"> {{client.name}}
+          </div>
+      </div>
+      <div class="plancount">
+          <label class="title" ng-if="studenType != null" >Student Type</label><br><br>
+          <div class="items" ng-repeat="student in student_type">  
+           <input type="radio" ng-model="$parent.studenType" name="studentype" value="{{student.type}}" ng-click="stud_type('Default')"> {{student.type}}
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="plancount">
+            <label class="title">Spread Type</label><br><br>
+            <div class="items" ng-repeat="spread in SpreadName"> 
+            <input  type="radio" ng-model="$parent.spread_name" name="spread" value="{{spread.spreadtype}}" ng-click="stud_type('Default')" > {{spread.spreadtype}}
+            </div>
+      </div>
+      <div class="plancount">
+          <label class="title">Meal Type</label><br><br>
+          <div class="items" ng-repeat="meal in meal_type">
+            <input type="radio" ng-model="$parent.mealname" name="meal_type" value="{{meal.name}}" ng-click="stud_type(meal)">{{meal.name}}
+          </div>
+      </div>
+    </div>
+  <div class="row">
+  <!-- <div class="meal_course">
+    <label class="title">Client Type</label><br><br>
+    <div class="items" ng-repeat="client in clientList">  
+     <input type="radio" ng-model="$parent.clientType" name="clienttype" value="{{client.name}}" ng-click="ClientType(client)"> {{client.name}}
+    </div>
+  </div> -->
+  <div class="meal_course" ng-init="multidropdown()">
+    <label class="title">Meal Course</label><br><br>
+    <!-- <div class="items" ng-repeat="course in student_type">  
+     <input type="radio" ng-model="$parent.studenType" name="studentype" value="{{course.type}}" ng-click="stud_type('Default')"> {{course.type}}
+    </div> -->
+  
+   <select  class="selectpicker" title="Choose Meal course" multiple ng-model="mealCourseName" required  style="width:100%" ng-change="stud_type('Default')"> 
+    <option ng-repeat="course in mealtime">{{course.category_name}}</option>
+   
+   </select>
+ 
+ 
+ <!-- <select id="multi-select-demo" multiple="multiple" >
+ 
+  <option ng-repeat="meal in mealtime">{{meal.category_name}}</option>
+
+</select>  -->
+
+    <!-- <div class="wrapper">
+        <div class="selected-items-box">
+        Choose Meal Course
+         <span class="dropdown-icon"></span>
+        </div>
+        <div class="list">
+          <ul class="items-list">
+            <li ng-repeat="friend in friends">
+              <input type="checkbox" ng-model="friend.selected" />
+              <span>{{friend.name}}</span>
+            </li>
+          </ul>
+        </div>
+    </div> -->
+  </div>
+<!--   <div class="meal_course">
+    <label class="title">Student Type</label><br><br>
+    <div class="items" ng-repeat="student in student_type">  
+     <input type="radio" ng-model="$parent.studenType" name="studentype" value="{{student.type}}" ng-click="stud_type('Default')"> {{student.type}}
+    </div>
+  </div>
+  <div class="meal_course">
+    <label class="title">Spread Type</label><br><br>
+    <div class="items" ng-repeat="spread in SpreadName">  
+    <input type="radio" ng-model="$parent.spread_name" name="spread" value="{{spread.spreadtype}}" ng-click="stud_type('Default')"> {{spread.spreadtype}}
+    </div>
+  </div>
+  <div class="meal_course">
+    <label class="title">Meal Type</label><br><br>
+    <div class="items" ng-repeat="meal in meal_type">
+      <input type="radio" ng-model="$parent.mealname" name="meal_type" value="{{meal.name}}" ng-click="stud_type(meal)">{{meal.name}}
+    </div>
+  </div> -->
+  <!-- <div class="meal_course">
+    <label class="title">School/Corporate</label><br><br>
+    <input type="checkbox" ng-model="$parent.tenant" name="tenant_type" value="{{tenant.name}}"> Altius
+  </div> -->
+  <div class="meal_course" ng-init="onInit()">
+    <label class="title">School/Corporate</label><br><br>
+    <div class="items" ng-repeat="list in tenant_list">
+      <input type="checkbox" ng-model="list.checked"  ng-checked="list.checked" ng-change="check()" name="tenant_type" value="{{list.name}}">{{list.name}}
+    </div>
+  </div>
+  
+  <div class="meal_course">
+   <button class="btn btn-primary" ng-click="menuAssign()" ng-disabled="!menu_plan_name || !ctrl.datepicker || !clientType || !mealCourseName  || !no_of_days || !studenType && clientType!='Corporate' || !spread_name || !mealname || !tenantCheckStatus">Assign</button>
+  </div>
+
+  <div class="meal_course" ng-init="assignedTenants()">
+    <label class="title">Assigned Tenants</label><br><br>
+     <!-- <div class="items" >
+       <p style="color:#000000" ng-click="InitialLoad(list)">{{list.tenant_name}}<span>&nbsp;({{list.stud_type}} - {{list.spread_type}})</span></p>
+     </div> -->
+
+     <div class="panel panel-default" ng-repeat="list in getTenants track by $index" ng-init="tourIndex = $index">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <i data-toggle="collapse" href="#123_{{tourIndex}}">
+            {{list.sub.sub_plan_name}} 
+          </i>
+        </h4>
+      </div>
+      <div id="123_{{tourIndex}}" class="panel-collapse collapse">
+
+        <div class="panel-body">
+          <div ng-repeat="tenant in list.tenant track by $index">
+            <input type="checkbox" ng-model="tenant.assign"  ng-checked="tenant.assign" name="check_tenant"><span ng-click="InitialLoad(tenant)">{{tenant.tenant_name}}</span>
+            
+            <button type="button" class="btn btn-primary"  ng-if="list.tenant.length==$index+1" style="float:right;margin-top: 10px;" ng-click="updateTenant(list.tenant,tourIndex)"> Update</button> 
+          </div> 
+        <!-- <span role="button" ng-click="InitialLoad(tenant)">Edit</span> -->
+         
+        </div>
+        
+      </div>
+     </div>
+
+    <!--  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <i data-toggle="collapse" href="#70291516059420">
+          Collapsible Group Item #1
+        </i>
+      </h4>
+    </div>
+    <div id="70291516059420" class="panel-collapse collapse">
+      {{collapse}}
+      <div class="panel-body">Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div> -->
+  </div>
+  <a href="/normalmenu_sites/menu_cycle" role="button" class="btn btn-primary proceed">Proceed to MenuCycle</a>
+  </div>
+</div>
+</div>
+<!-- <form id="selectionForm">
+    <input type="checkbox" ng-click="toggleAll()" ng-model="isAllSelected">Select all
+    <br>
+     <div ng-repeat = "option in options">
+        <input type="checkbox" ng-model="option.selected" ng-change="optionToggled()">{{option.value}}
+     </div>
+      {{options}} 
+</form> -->
+ 
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*$('#multi-select-demo').multiselect();*/
+        $('.selectpicker').selectpicker();
+    });
+
+</script>
+
+<script type="text/javascript">
+/*var app = angular.module('dragDrop', ['moment-picker',"xeditable","ui.bootstrap",'AxelSoft']);*/
+
+var app = angular.module('dragDrop', ['moment-picker',"xeditable","ui.bootstrap",'AxelSoft']);
+
+/*app.run(['editableOptions', function(editableOptions) {
+  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+}]);
+*/app.controller('DragDropCtrl', function($scope,$http,$rootScope,$window,$filter,$timeout, $q) {
+
+
+// $scope.options = [
+//     {value:'Option1', selected:true}, 
+//     {value:'Option2', selected:false}
+//   ];
+  
+//   $scope.toggleAll = function() {
+//      var toggleStatus = !$scope.isAllSelected;
+//      angular.forEach($scope.options, function(itm){ itm.selected = toggleStatus; });
+   
+//   }
+  
+//   $scope.optionToggled = function(){
+//     $scope.isAllSelected = $scope.options.every(function(itm){ return itm.selected; })
+//   }
+
+// $scope.data =[];
+//     $scope.arr=["l","b","d"]
+   
+//    for(var i in $scope.arr){
+
+//    var ss = {
+//       [$scope.arr[i]]: {
+//         "day1":
+//           { "name": "", "qty": "" },
+//         "day2":
+//           { "name": "", "qty": "" },
+//         "day3":
+//           { "name": "", "qty": "" }
+//       }
+//   }
+// $scope.data.push(ss);
+// }
+
+
+
+//var plannerURL="http://api.idlidabba.com"
+//var plannerURL="http://api.learnstein.com:81"
+var plannerURL="http://192.168.1.73:3005"
+var PimURL="http://192.168.0.48:8080"
+$scope.spinner=true;
+$scope.category_type="";
+$scope.recipe="";
+$scope.getAlldata=[];
+$scope.no_of_days="";
+var count = $scope.no_of_days;
+$scope.menu_plan_name="";
+$scope.menu_assign_date="";
+$scope.mealCourseName=[];
+
+$scope.student_type = [{
+ "id":1,
+ "type":'Primary' 
+},{
+ "id":2,
+ "type":'Secondary',
+
+},{
+ "id":3,
+ "type":'Corporate',
+  
+}];
+
+
+$scope.multidropdown=function(){
+   $scope.showIcon=[];
+   
+    $http.get(plannerURL+"/api/v1/categories")
+        .then(function(response) {
+            $scope.addRow=[];
+            $scope.additionData=[];
+            
+            $scope.getAllCategories=[];
+            //$scope.beforePush=[];
+
+            $scope.mealtime = response.data;
+            
+  
+            for(var i in $scope.mealtime){
+
+              $scope.showIcon.push(false)
+              var data=0;
+              $scope.addRow.push([data]);
+              //$scope.beforePush.push(i)
+              $scope.getAllCategories.push($scope.mealtime[i].category_name)
+              $scope.getAlldata.push({[$scope.mealtime[i].category_name]:[]})
+              $scope.additionData.push({[$scope.mealtime[i].category_name]:[]})
+              
+            }
+            $scope.mealCourseName=[$scope.mealtime[0].category_name]
+            setTimeout(() => {
+              jQuery('.selectpicker').selectpicker('refresh');
+            }, 500);
+            
+            localStorage.setItem("menuassign",JSON.stringify($scope.additionData))
+           
+           
+    })
+}
+
+
+
+/*$scope.mealtime = [
+     {"category_name": "Lunch", "id":1}, 
+     {"category_name": "Breakfast", "id":2},
+     {"category_name": "Dinner", "id":3}, 
+     {"category_name": "Mid-day Snacks", "id":4}, 
+     {"category_name": "Tea Break-Morning", "id":5}, 
+     {"category_name": "Tea Break-Evening", "id":6}, 
+   ];
+
+$scope.mealCourseName=[($scope.mealtime[0].category_name).toString()]   */
+
+//$scope.studenType=$scope.student_type[0].type;
+
+$scope.opened = {};
+
+  $scope.open = function($event, elementOpened) {
+   
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.opened[elementOpened] = !$scope.opened[elementOpened];
+  };
+
+  $scope.checkName=function(data,index){
+
+    if(data!=null && data!=undefined && data!=""){
+      
+      $scope.addRange=[];
+      var calc= new Date(data)
+      for(var j=0;j<$scope.Range.length;j++){
+       
+        if(j==index){
+          calc= new Date(data)
+        }else if(j<index){
+          calc= new Date(data)
+          calc.setDate(calc.getDate() +(parseInt(j)-parseInt(index)));
+        }else{
+          calc.setDate(calc.getDate() + 1);
+        }
+        var assign_date=$filter('date')(calc, "yyyy-MM-dd")
+        $scope.addRange.push(assign_date);
+      } 
+    
+      $scope.Range=$scope.addRange;  
+    }else{
+     
+   
+      $scope.addRange=[];
+      for(var i=0;i<=$scope.additionRange.length;i++){
+        $scope.additionRange.push($scope.additionRange[i])
+      }  
+      $scope.Range=$scope.additionRange
+    }
+  }
+  
+  $scope.searchAsync = function (term) {
+                            // No search term: return initial items
+                        if (!term) {
+                            return  ['Item 1', 'Item 2', 'Item 3'];
+                        }
+                        var deferred = $q.defer();
+                        $timeout(function () {
+                            var result = [];
+                            for (var i = 1; i <= 3; i++)
+                            {
+                                result.push(term + ' ' + i);
+                            }
+                            deferred.resolve(result);
+                        }, 300);
+                        return deferred.promise;
+                    };
+                    $scope.nestedItemsLevel1 = ['Item 1', 'Item 2', 'Item 3'];
+          $scope.level1 = $scope.nestedItemsLevel1[0];
+                    $scope.level1Options = {
+                        onSelect: function (item) {
+                            var items = [];
+                            for (var i = 1; i <= 5; i++) {
+                                items.push(item + ': ' + 'Nested ' + i);
+                            }
+                            $scope.nestedItemsLevel2 = items;
+                        }
+                    };
+                    $scope.nestedItemsLevel2 = [];
+              $scope.level1Options.onSelect($scope.nestedItemsLevel1[0]);
+              
+  $scope.toggleAll = function(index,category,day,boolean) {
+    
+    
+    for(var i in $scope.getAlldata[index][category]){
+      $scope.getAlldata[index][category][i][day][0].rowSelect=boolean;
+      $scope.getAlldata[index][category][i][day][0].CheckAll=boolean;
+    }
+  }
+
+  $scope.optionToggled = function(index,category,day,boolean){
+   
+   
+    var date=('Day'+''+Number(day+1)).toString();
+    
+    for(var i in $scope.getAlldata[index][category]){
+      if(boolean==false){
+       
+        $scope.getAlldata[index][category][i][date][0].CheckAll=boolean;
+      }
+     }
+      
+   
+   
+    /*$scope.isAllSelected = $scope.options.every(function(itm){ return itm.selected; })*/
+  }
+
+  $scope.ClientType=function(client){
+    
+    $scope.clientID=client.id;
+    
+    $scope.stud_type('Default');
+  }
+
+  
+
+  //Spread API
+  $scope.onInit=function(){
+   
+   $http.get(plannerURL+'/api/v1/site_categories').then(function(res){
+     $scope.clientList=res.data;
+     $scope.clientType=res.data[0].name;
+     if($scope.clientType=='Corporate'){
+       $scope.student_type=[];
+       $scope.studenType=nil;
+     }else{
+      $scope.student_type = [{
+                             "id":1,
+                             "type":'Primary' 
+                            },{
+                             "id":2,
+                             "type":'Secondary',
+
+                            },{
+                             "id":3,
+                             "type":'Corporate',
+                              
+                            }];
+      $scope.studenType=$scope.student_type[0].type;                     
+     }
+     $scope.clientID=res.data[0].id;
+     
+    $http.get(PimURL+"/pimcore/api/FoodRecepie/SpreadName"
+    ).then(function(response){
+    $scope.SpreadName=[];
+    
+    for(var i=0;i<response.data.SpreadNames.length;i++){
+     $scope.SpreadName.push({"id":i+1,"spreadtype":response.data.SpreadNames[i].spreadtype});
+    }
+    
+    $scope.spread_name=$scope.SpreadName[0].spreadtype;
+
+    $scope.tenantPlanDetails();
+
+    $http.get(plannerURL+"/api/v1/all_food_categories").then(function(response){
+      
+      $scope.meal_type = response.data
+      $scope.mealname= $scope.meal_type[0].name;
+      $scope.mealId=$scope.meal_type[0].id;      
+      $scope.stud_type($scope.meal_type[0]);  
+     
+      
+     }); 
+   
+    });
+   })
+
+   
+  }
+
+$scope.tenantPlanDetails=function(){
+   $http.get(plannerURL+"/api/v1/menu_planners/tenant_count_details").then(function(response){
+     $scope.assigned = response.data.assigned;
+     $scope.unassigned = response.data.unassigned;
+
+   });
+} 
+
+
+$scope.stud_type=function(test){
+ $scope.getMealValues=[];
+ if(test != "Default"){    
+    $scope.mealId=test.id;
+ }
+
+ if($scope.clientType=='Corporate'){
+       $scope.student_type=[];
+       $scope.studenType=null;
+
+
+
+  $http.get(PimURL+"/pimcore/api/FoodRecepie/SpreadName"
+    ).then(function(response){
+    $scope.SpreadName=[];
+    
+    for(var i=0;i<response.data.SpreadNames.length;i++){
+     $scope.SpreadName.push({"id":i+1,"spreadtype":response.data.SpreadNames[i].spreadtype});
+    }
+    
+    
+   
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+  }else{
+    if($scope.clientType=='School'){ 
+ console.log($scope.clientType)
+
+$scope.SpreadName= $scope.SpreadName.filter(function(d) {
+  return !(d.id === 4 && d.spreadtype === 'Corporate');
+});
+        console.log($scope.SpreadName);
+  }
+
+       $scope.student_type = [{
+                             "id":1,
+                             "type":'Primary' 
+                            },{
+                             "id":2,
+                             "type":'Secondary',
+
+                            },{
+                             "id":3,
+                             "type":'Corporate',  
+       }];
+       if($scope.studenType==null){
+        $scope.studenType=$scope.student_type[0].type;
+       }
+  }
+
+ if($scope.mealCourseName==undefined || $scope.mealCourseName==null){
+  $scope.getMealValues=[];
+ }else if($scope.mealCourseName.length!=0  ){
+   $scope.getMealValues=$scope.mealCourseName.map(function(res){
+   return res;
+  }) 
+ }else{
+  $scope.getMealValues=[];
+ }
+ /*console.log($scope.getMealValues)
+ console.log($scope.clientID,$scope.spread_name,$scope.studenType,$scope.mealId)*/
+ $http.get(plannerURL+'/api/v1/tenant_details/student_filter?site_category_id='+$scope.clientID+'&&spread_type='+$scope.spread_name+'&&stud_type='+$scope.studenType+'&&food_category_id='+$scope.mealId+'&&meal_time='+$scope.getMealValues).then(function(res){
+   var data=res.data;
+   $scope.tenant_list=[];
+   if(data.length!=0){
+   
+     $scope.tenant_list=data.map(function(res){
+       if($scope.tenantStatus==undefined){
+        var data=-1
+       }else{
+        var data=$scope.tenantStatus.findIndex(m => m==res.tenant.id)
+       }  
+        if(data>-1){
+          $scope.TenantState=true;
+          $scope.tenantCheckStatus=true;
+        }else{
+          $scope.TenantState=false;
+          $scope.tenantCheckStatus=false;
+        }
+       
+       return {"id":res.tenant.id,"name":res.tenant.name,"checked":$scope.TenantState,"spread_type":res.spread_type,"stud_type":res.stud_type,"quantity":res.quantity}
+       
+     });
+     //$scope.checkAssign();
+
+   }else{
+     $scope.tenant_list=[];
+      $scope.tenantCheckStatus=false;
+   }
+  
+   $scope.recipePush('test');
+  });
+}
+
+
+$scope.check=function(){
+  $scope.tenant_list.some(checked);
+  function checked(check){
+    return check.checked==true
+  }
+  $scope.tenantCheckStatus=$scope.tenant_list.some(checked);
+}
+ 
+
+$http.get(plannerURL+"/api/v1/all_food_categories"
+).then(function(response){
+  $scope.meal_type = response.data
+  $scope.mealname= $scope.meal_type[0].name;
+});
+
+
+// $http.get(plannerURL+"/api/v1/all_tenants").then(function(response){
+//    var data=response.data;
+//    $scope.tenant_list=[];
+//    $scope.tenant_list=data.map(function(res){
+ 
+//      return {"id":res.id,"name":res.name,"checked":false}
+     
+//    });
+// });
+
+
+
+
+$scope.showClickIcon=function(index){
+
+  /*for(var i=0;i<$scope.showIcon.length;i++){
+    if(i==index){*/
+     
+       $scope.showIcon[index]==false? $scope.showIcon[index]=true:$scope.showIcon[index]=false;
+      
+   /* }*/
+  /*}*/
+
+}
+
+/*$('.plandetail').click(function() {
+    $('.plndetails').toggle('slow');
+      icon = $('.plandetail').find("i");
+      if (icon.hasClass("fa-plus"))
+      {
+          icon.addClass("fa-minus").removeClass("fa-plus");
+      }
+      else
+      {
+        icon.addClass("fa-plus").removeClass("fa-minus");
+      }
+
+});
+$('.addplan').click(function() {
+    $('.addplaninfo').toggle('slow');
+     icon = $('.addplan').find("i");
+      if (icon.hasClass("fa-plus"))
+      {
+          icon.addClass("fa-minus").removeClass("fa-plus");
+      }
+      else
+      {
+      icon.addClass("fa-plus").removeClass("fa-minus");
+      }
+    
+});*/
+
+$http.get(PimURL+"/pimcore/api/FoodRecepie/categorywiserecipie"
+).then(function(response){
+  $scope.categories = response.data;
+
+})
+
+
+  $scope.click=function(test){
+
+    $scope.Range=[];
+    $scope.additionRange=[];
+    if($scope.previousDays==undefined){
+      //$scope.getAlldata=[];
+    }
+   
+    for(var i=1;i<=$scope.no_of_days;i++){
+     $scope.Range.push('Day'+i);
+     $scope.additionRange.push('Day'+i);
+     }
+    
+    $scope.addRow=[];
+    for(var j=0;j<$scope.mealtime.length;j++){  
+     
+      var data=0;
+      $scope.addRow.push([data]);
+
+    }
+    
+    for(var k in $scope.getAllCategories){
+     
+     if($scope.previousDays==undefined){
+      var initiate=1
+     }else{
+      var initiate=parseInt($scope.previousDays)+1;
+     }
+        var dayValue=[]
+
+        for(var l=initiate;l<=$scope.no_of_days;l++){
+          var day = 'Day'+''+l.toString();
+          var data={
+                  [day] : [{"name":'',"qty":0,"dependant":'',"rowSelect":false,"CheckAll":false,"Portion_size":0,"UOM":""}]  
+                 };
+          if(dayValue.length==0){ 
+           dayValue=[data]
+          }else{
+           dayValue[0][day]=[{"name":'',"qty":0,"dependant":'',"rowSelect":false,"CheckAll":false,"Portion_size":0,"UOM":""}];
+          }
+        }
+      
+        if($scope.getAlldata[k][$scope.getAllCategories[k]].length==0){
+          
+          //$scope.getAlldata[$scope.getAllCategories[k]]=dayValue;
+        }else if($scope.previousDays<$scope.no_of_days){
+          var data=[];
+        
+          for(var l=1;l<=$scope.previousDays;l++){
+            var day = 'Day'+''+l.toString();
+           
+            for(var i in $scope.getAlldata[k][$scope.getAllCategories[k]][0][day]){
+               if(i==0){
+                 var push={
+                    [day] : [$scope.getAlldata[k][$scope.getAllCategories[k]][0][day][0]]
+                 };
+
+                
+               
+                 if(data.length==0){ 
+                  data.push(push);
+                
+                 }else{
+                  data[0][day]=[$scope.getAlldata[k][$scope.getAllCategories[k]][0][day][0]];
+                 }
+               }
+            }
+           
+
+          }
+
+          
+
+          for(var l=initiate;l<=$scope.no_of_days;l++){
+             var day = 'Day'+''+l.toString();
+             data[0][day]=[{"name":'',"qty":0,"dependant":'',"rowSelect":false,"CheckAll":false,"Portion_size":0,"UOM":""}];
+           }
+         
+           
+          $scope.getAlldata[k][$scope.getAllCategories[k]]=data;
+         
+        }else{
+         if($scope.previousDays>$scope.no_of_days){
+          
+          var data=[];
+          for(var l=1;l<=$scope.no_of_days;l++){
+            var day = 'Day'+''+l.toString();
+           if($scope.getAlldata[k][$scope.getAllCategories[k]][0][day]==undefined){
+             var push={
+                  [day] : [{"name":'',"qty":0,"dependant":'',"rowSelect":false,"CheckAll":false,"Portion_size":0,"UOM":""}]
+                 };
+           }else{
+             for(var i in $scope.getAlldata[k][$scope.getAllCategories[k]][0][day]){
+               if(i==0){ 
+                      var push={
+                                [day] : [$scope.getAlldata[k][$scope.getAllCategories[k]][0][day][0]]
+                              };
+                }        
+              }
+           }
+            
+            if(data.length==0){ 
+             data.push(push)
+            }else{
+             data[0][day]=push[day];
+            }
+          }
+
+          $scope.getAlldata[k][$scope.getAllCategories[k]]=data;
+         }else{
+         
+         } 
+        }
+        
+        
+     // }else if($scope.previousDays<test){
+     //   var dayValue=[]
+     //   var value=parseInt($scope.previousDays)+1;
+     //   for(var l=value;l<=$scope.no_of_days;l++){
+     //     
+     //      var day = 'Day'+''+l.toString();
+     //      var data={
+     //              [day] : {"name":'',"qty":''}
+     //             };
+     //       if(dayValue.length==0){ 
+     //        dayValue=[data]
+     //       }else{
+     //        dayValue[0][day]={"name":'',"qty":''};
+     //       }
+     //    }
+   
+     //    var tr =dayValue[0];
+     //    //var check=$scope.getAlldata[[$scope.getAllCategories[k]]
+    
+     //    var datavalue=[tr,$scope.getAlldata[$scope.getAllCategories[k]][0]]
+     
+                 
+     //    //$scope.getAlldata[$scope.getAllCategories[k]]=data;
+     
+     
+     //   // var data=$scope.getAlldata[$scope.getAllCategories[k]][0].concat(dayValue[0]);
+     
+     
+     //    //$scope.getAlldata[$scope.getAllCategories[k]].splice(0,0,dayValue[0])
+     
+     //    //$scope.getAlldata[$scope.getAllCategories[k]]=dayValue[0];
+     // }else{
+
+     // }
+
+      // }  
+    }
+    $scope.previousDays=parseInt(test);
+  }
+
+$scope.rowAdd=function(index,categoryName){
+
+  for(var i=0;i<$scope.addRow.length;i++){
+   
+    if(i==index){
+
+       $scope.addRow[i].push($scope.addRow[i].length)  
+      
+    }
+   
+  }
+
+  for(var i in $scope.getAlldata){
+    for(var j in $scope.getAlldata[i]){
+      
+      if(j==categoryName){
+        
+            var dayValue=[];
+            for(var l=1;l<=$scope.no_of_days;l++){
+              var day = 'Day'+''+l.toString();
+              
+              var boolean=false;
+              if($scope.getAlldata[i][j].length!=0){
+                if($scope.getAlldata[i][j][0][day][0].CheckAll==true){
+                  boolean=true
+                }else{
+                  bolean=false;
+                }
+              }else{
+                boolean=false;
+              }
+              var data={
+                      [day] : [{"name":'',"qty":0,"dependant":'',"rowSelect":boolean,"CheckAll":boolean,"Portion_size":0,"UOM":""}]
+                     };
+             if(dayValue.length==0){
+              dayValue=[data]
+              }else{
+                dayValue[0][day]=[{"name":'',"qty":0,"dependant":'',"rowSelect":boolean,"CheckAll":boolean,"Portion_size":0,"UOM":""}];
+              }
+            }
+            
+            $scope.getAlldata[i][j].push(dayValue[0]) 
+            //$scope.getAlldata[i].push(dayValue[0]);
+            // for(var j in $scope.getAlldata[i]){
+            //   for(var k in $scope.getAlldata[i][j]){
+            //     $scope.getAlldata[i][j][k].push({"name":'',"qty":''});
+
+            //   } 
+            // }
+            
+        
+      } 
+    
+    }
+  }
+
+}
+
+$scope.recipePush=function(parentIndex,parentindex,index,recipe,categoryName,date){
+
+  if(parentIndex!='test'){
+    for(var i in $scope.getAlldata){
+
+     for(var j in $scope.getAlldata[i]){
+      
+    
+      if(j==categoryName){
+          for(var a in $scope.categories.RecepieCategoryWise){
+           for(var b in $scope.categories.RecepieCategoryWise[a]){
+            for(var k in $scope.categories.RecepieCategoryWise[a][b]){
+              if(recipe==null || recipe==undefined || recipe==""){
+                var dayNum='Day'+date;
+                
+
+                 $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].name="";
+                 $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].qty=0;
+                 $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].dependant="";
+                 $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].Portion_size=0;
+                 $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].UOM="";
+              
+               }else{
+                var dayNum='Day'+date;
+          
+                if($scope.categories.RecepieCategoryWise[a][b][k].RecepieName==recipe.RecepieName){
+
+                  $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].name=recipe.RecepieName;
+                  $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].dependant=$scope.categories.RecepieCategoryWise[a].FoodCategory;
+                  for(var l in $scope.categories.RecepieCategoryWise[a][b][k].SpreadMaster){                
+                      
+                        if($scope.categories.RecepieCategoryWise[a][b][k].SpreadMaster[l].clienttype==$scope.studenType && $scope.categories.RecepieCategoryWise[a][b][k].SpreadMaster[l].spreadtype==$scope.spread_name){
+                          
+                         var quantity=0;
+                         if($scope.tenant_list.length!=0){
+                           quantity =$scope.tenant_list[0].quantity;
+                         }
+                         
+                         var dataSplitPortion=$scope.categories.RecepieCategoryWise[a][b][k].SpreadMaster[l].Portion_size;
+                         var dataPortion = dataSplitPortion.split(" ");
+                          
+                          $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].qty=$scope.categories.RecepieCategoryWise[a][b][k].SpreadMaster[l].Portion_size;
+
+                          $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].Portion_size=(dataPortion[0]*quantity).toFixed(2);
+                          $scope.getAlldata[parentIndex][j][parentindex][dayNum][0].UOM=dataPortion[1];
+
+                        }                
+                    
+                  }
+                  
+
+                }  
+               
+               } 
+            } 
+          }
+         }
+      }
+     }
+    }    
+  }else{
+  
+    for(var i in $scope.getAlldata){
+     for(var j in $scope.getAlldata[i]){ 
+      for(var k in $scope.getAlldata[i][j]){
+        for(var l in $scope.getAlldata[i][j][k]){
+         for(var m in $scope.getAlldata[i][j][k][l]){
+          if($scope.getAlldata[i][j][k][l][m].name==""){
+            
+          }else{
+            
+            if($scope.getAlldata[i][j][k][l][m].name!=""){
+            
+              for(var a in $scope.categories.RecepieCategoryWise){
+               for(var b in $scope.categories.RecepieCategoryWise[a]){
+                for(var c in $scope.categories.RecepieCategoryWise[a][b]){
+                   
+                  if($scope.categories.RecepieCategoryWise[a][b][c].RecepieName==$scope.getAlldata[i][j][k][l][m].name){
+                   
+                    for(var d in $scope.categories.RecepieCategoryWise[a][b][c].SpreadMaster){
+                     
+                      if($scope.categories.RecepieCategoryWise[a][b][c].SpreadMaster[d].clienttype==$scope.studenType && $scope.categories.RecepieCategoryWise[a][b][c].SpreadMaster[d].spreadtype==$scope.spread_name){
+                       var quantity=0;
+                       if($scope.tenant_list.length!=0){
+                         quantity =$scope.tenant_list[0].quantity;
+                       }
+                       var dataSplitPortion=$scope.categories.RecepieCategoryWise[a][b][c].SpreadMaster[d].Portion_size;
+                       var dataPortion = dataSplitPortion.split(" ");
+                      
+                        $scope.getAlldata[i][j][k][l][m].qty=$scope.categories.RecepieCategoryWise[a][b][c].SpreadMaster[d].Portion_size;
+                        $scope.getAlldata[i][j][k][l][m].Portion_size=dataPortion[0]*quantity;
+                        $scope.getAlldata[i][j][k][l][m].UOM=dataPortion[1];
+                       
+                        break;
+                      }else{
+                       
+                        $scope.getAlldata[i][j][k][l][m].qty=0;
+                        
+                      }
+                    }
+                  }
+                }
+               }
+              }  
+            }
+          }
+         }
+        }
+      }
+     }
+    } 
+  }  
+
+}
+
+$scope.InitialLoad=function(val){
+  
+ $scope.tenantStatus=[];
+ $scope.addRow=[];
+ $scope.Range=[];
+ $scope.getAlldata=[];
+ $http.get(plannerURL+'/api/v1/menu_planners/assigned_tenant_details?sub_plan_id='+val.sub_plan_id+'&&tenant_detail_id='+val.tenantdetail_id)
+ .then(function(res){
+
+   $scope.getEditdata=res.data;
+   $scope.ctrl={"datepicker":res.data[0].tenant[0].date};
+   $scope.studenType=res.data[0].tenant[0].stud_type;
+   $scope.spread_name=res.data[0].tenant[0].spread_type;
+   $scope.meal_ID={"id":res.data[0].tenant[0].food_category_id}
+   $scope.mealId=res.data[0].tenant[0].food_category_id;
+   $scope.dateRangeDetails=res.data[0].meal_details;
+   $scope.menu_plan_name=res.data[0].tenant[0].plan_name;
+   $scope.mealCourseName=[res.data[0].tenant[0].meal_time];
+   setTimeout(() => {
+              jQuery('.selectpicker').selectpicker('refresh');
+   }, 500);
+   
+   $scope.clientID=res.data[0].tenant[0].site_category_id;
+   
+   var clienTID=$scope.clientList.filter(function(res){
+     return $scope.clientID==res.id;
+   })
+   
+   $scope.clientType=clienTID[0].name;
+   
+   $scope.checkIndex=[];
+   for(var i in $scope.dateRangeDetails){
+    for(var j in $scope.dateRangeDetails[i]){
+      $scope.checkIndex.push(j);
+    }
+   }
+   var data=res.data[0].tenant[0].plan_for;
+   $scope.no_of_days=res.data[0].tenant[0].plan_for;
+   for(var plan=1;plan<=data;plan++){
+    $scope.Range.push('Day'+plan)
+   }
+   for(var i in $scope.meal_type){
+    if($scope.meal_type[i].id==$scope.meal_ID.id){
+     
+      $scope.mealname=$scope.meal_type[i].name
+    }
+   }
+   for(var j in $scope.getEditdata){
+    
+    $scope.tenantStatus.push($scope.getEditdata[j]["tenant"][0].id);
+   }
+
+        $scope.addRow=[];
+        $scope.getAllCategories=[];
+        //$scope.getAlldata=[];
+        
+        //$scope.mealtime = response.data;
+        
+        for(var i in $scope.mealtime){
+
+          $scope.showIcon.push(false)
+          var data=0;
+          $scope.addRow.push([data]);
+
+          $scope.getAllCategories.push($scope.mealtime[i].category_name)
+
+        }
+
+        for(var cat in $scope.getAllCategories){
+         
+          var state=false;
+          var checkdata=true;
+          var state1=true;
+          for(var date in $scope.dateRangeDetails){
+            
+
+            for(var date1 in $scope.dateRangeDetails[date]){
+
+               
+               var data=[]
+               state1=$scope.getAllCategories[cat]==date1
+               
+               if($scope.getAllCategories[cat]==date1){
+                state=true;
+
+                 data=$scope.dateRangeDetails[date][date1];
+
+                 $scope.getAlldata.push({[$scope.getAllCategories[cat]]:data});
+                 break;
+               }else{                
+
+                checkdata=$scope.checkIndex.indexOf($scope.getAllCategories[cat])>-1;
+                if(checkdata==false && state1==false){
+                  continue;
+                }
+                
+               
+               }
+               
+            }
+            
+            if(state==true){      
+              break;
+            }     
+           
+          }
+
+          if(state==false && checkdata==false && state1==false){
+              $scope.getAlldata.push({[$scope.getAllCategories[cat]]:[]})
+              
+          }
+
+           
+        }
+      $scope.tempArray=[];
+      for(var i in $scope.getAlldata){
+        
+        for(var j in $scope.getAlldata[i]){
+       
+          for(var k in $scope.getAlldata[i][j]){
+          
+            for(var l in $scope.getAlldata[i][j][k]){
+              var data=$scope.Range.indexOf(l)==-1;
+              if(data==true){
+                $scope.Range.push(l.toString());
+                $scope.additionRange.push(l.toString());
+              }
+              
+               for(var m in $scope.getAlldata[i][j][k][l]){
+                
+                   $scope.loopbreak=true;
+                   
+                   for(var n=0;n<$scope.categories.RecepieCategoryWise.length;n++){
+                     
+                    for(var y in $scope.categories.RecepieCategoryWise[n]){
+                     
+                      for(var o in $scope.categories.RecepieCategoryWise[n].Foodrecipielist){
+                        
+                       if($scope.categories.RecepieCategoryWise[n].Foodrecipielist[o].RecepieName==$scope.getAlldata[i][j][k][l][m].name){
+                         
+                        // if(m!=0){
+                          
+                        //   if($scope.dateRange[i][j][k][l].length>1){
+                         
+                          
+                          $scope.getAlldata[i][j][k][l][m].dependant=$scope.categories.RecepieCategoryWise[n].FoodCategory;
+                          
+                          // if(m==$scope.dateRange[i][j].length){
+                            
+                           
+                          //   var push={
+                          //     [l] : [$scope.dateRange[i][j][k][l][m]]
+                          //   };
+                            
+                          //   $scope.dateRange[i][j].push(push);
+                            
+                          //   $scope.dateRange[i][j][k][l].splice([m],1)
+                            
+                          //   $scope.loopbreak=false;
+                            
+                            
+                            
+                          // }else{
+                          
+                          //    $scope.getDataValue= $scope.dateRange[i][j][k][l][m]
+                          
+                      //        $scope.dateRange[i][j][$scope.dateRange[i][j].length-1][l]=[$scope.dateRange[i][j][k][l][m]];
+                     
+                      //        //$scope.dateRange[i][j][$scope.dateRange[i][j].length-1][l].push($scope.getDataValue);
+                              
+                      //        $scope.dateRange[i][j][k][l].splice([m],1)
+                           
+                      //        $scope.loopbreak=false;
+                             
+                      //     }
+
+                      //     }
+                      // }else{
+                       
+                      //   $scope.dateRange[i][j][k][l][m].dependant=$scope.categories.RecepieCategoryWise[n].FoodCategory
+                      //  }
+                         
+                       }
+                        if($scope.loopbreak==false){
+                          break;
+                        }
+                       
+                      }
+                      if($scope.loopbreak==false){
+                          break;
+                        }
+                    }
+                   if($scope.loopbreak==false){
+                          break;
+                        }
+                   }
+                 
+                
+               }
+
+            }
+          }
+        }
+      }
+
+      for(var i=0;i<$scope.getAlldata.length;i++){
+        
+          for(var j in $scope.getAlldata[i]){
+            
+            for(k in $scope.getAlldata[i][j]){
+              
+              if(k!=0){
+                 $scope.addRow[i].push(Number(k));
+              }
+            }
+            break;
+          }
+      }
+      
+      $scope.stud_type($scope.meal_ID);
+      $scope.dataLoaded=true;
+           
+   
+ })  
+ /*$http.get(PimURL+"/pimcore/api/FoodRecepie/categorywiserecipie").then(function(response){
+   $scope.categories = response.data;*/
+     
+     /*$http.get(plannerURL+"/api/v1/categories").then(function(response) {*/
+        
+     /*})*/
+
+      
+
+
+  /*})*/
+
+}
+
+
+$scope.spinner=false;
+$http.get(plannerURL+"/api/v1/all_production_items")
+    .then(function(response) {
+        $rootScope.data = response.data;
+        $scope.spinner=false;
+    },function(error){
+        $scope.spinner=false;
+    })
+
+
+$scope.dropDown1=function(test){
+  
+ if($scope.categories==undefined){
+   
+
+    for(var i in $scope.categories.RecepieCategoryWise){
+      if($scope.categories.RecepieCategoryWise[i].FoodCategory==test[0].dependant){
+         $scope.categories.RecepieCategoryWise[i];
+      }
+    }
+ }else{
+  
+    for(var i in $scope.categories.RecepieCategoryWise){
+      if($scope.categories.RecepieCategoryWise[i].FoodCategory==test[0].dependant){
+        return $scope.categories.RecepieCategoryWise[i];
+      }
+    }
+   
+ }
+  
+}
+
+$scope.dropDown2=function(test,test1){
+  
+   if($scope.categories==undefined){
+     
+
+      for(var i in test1){
+        if(test1[i].RecepieName==test[0].name){
+          
+          return test1[i];
+        }
+      }
+   }else{
+    
+      for(var i in test1){
+        if(test1[i].RecepieName==test[0].name){
+         
+           return test1[i];
+        }
+      }
+     
+   }
+  
+}    
+
+
+$scope.tenantEdit=function(val){
+ 
+ $http.get(plannerURL+'/api/v1/menu_planners/assigned_tenant_details?tenant_id='+val.tenant_id+'&&tenantdetail_id='+val.tenantdetail_id).then(function(res){
+   console.log(res);
+ })
+}    
+
+$scope.menuAssign=function(){
+  $scope.spinner=true;
+  $scope.menu_assign_date=$filter('date')($scope.ctrl.datepicker, "dd-MM-yyyy");
+  
+ /* var data=$scope.mealtime.filter(function(res){
+    var d=$scope.mealCourseName.indexOf(res.category_name)>-1
+    if(d==true){
+      return res
+    }else{
+      return;
+    }
+  }).map(function(res){
+    return res.id;
+  })*/
+
+  var mealCoursedata=$scope.mealCourseName.toString();
+
+  $scope.getTenant=$scope.tenant_list.filter(function(res){
+    return res.checked;
+  }).map(function(res){
+    return {"id":res.id,"stud_type":res.stud_type,"spread_type":res.spread_type,"plan_name":$scope.menu_plan_name,"date":$scope.menu_assign_date, "food_category_id": $scope.mealId, "plan_for": $scope.no_of_days, "site_category_id": $scope.clientID,"meal_time": mealCoursedata }
+  });
+ 
+  /*var allData=[];
+  for(var i in $scope.getAlldata){
+    allData.push({[i]:$scope.getAlldata[i]})
+  }*/
+
+  $scope.dataAssign=[];
+  
+  $scope.dataAssign=JSON.parse(localStorage.getItem("menuassign"))
+  
+  for(var i in $scope.mealCourseName){
+    for(var j in $scope.getAlldata){
+
+      for(var k in $scope.getAlldata[j]){
+        
+        for(var l in $scope.getAlldata[j][k]){
+          
+         for(var m in $scope.getAlldata[j][k][l]){
+             
+            
+              if(k==$scope.mealCourseName[i]){
+                
+                if($scope.dataAssign[j][k].length==0){
+                  
+                 $scope.dataAssign[j][k].push($scope.getAlldata[j][k][0])  
+                }else{
+                 if(l!=0){
+                   if($scope.getAlldata[j][k].length!=$scope.dataAssign[j][k][0][m].length){
+                     $scope.dataAssign[j][k][0][m].push($scope.getAlldata[j][k][l][m][0]);  
+                   }
+                   // $scope.dataAssign[j][k][0][m][$scope.dataAssign[j][k][0][m].length].name=$scope.getAlldata[j][k][l][m][0].name; 
+                   // $scope.dataAssign[j][k][0][m][$scope.dataAssign[j][k][0][m].length].qty=$scope.getAlldata[j][k][l][m][0].qty; 
+                   // $scope.dataAssign[j][k][0][m][$scope.dataAssign[j][k][0][m].length].CheckAll=$scope.getAlldata[j][k][l][m][0].CheckAll;
+                   // $scope.dataAssign[j][k][0][m][$scope.dataAssign[j][k][0][m].length].dependant=$scope.getAlldata[j][k][l][m][0].dependant; 
+                   //  $scope.dataAssign[j][k][0][m][$scope.dataAssign[j][k][0][m].length].rowSelect=$scope.getAlldata[j][k][l][m][0].rowSelect; 
+                 } 
+                }
+                
+              }else{
+
+              } 
+            
+         }
+        }
+        
+        
+      }
+      
+       
+    }
+  }
+
+ setTimeout(function(){
+  var assign={"data":[{"tenant":$scope.getTenant},{"meal_details":$scope.dataAssign}]}
+  console.log(assign)
+  
+  $http.post(plannerURL+"/api/v1/menu_planners/create",assign).then(function(res){
+    if(res.data==true){
+      $scope.spinner=false;
+      alert('Your Menu has Planned');
+      $scope.assignedTenants();
+      $scope.tenantPlanDetails();
+    }else{
+      $scope.spinner=false;
+      alert('Failed to Plan the Menu');
+    }
+    // $scope.menu_plan_name="";
+    // $scope.menu_assign_date="";
+    // $scope.no_of_days="";
+    //location.href="/normalmenu_sites/menu_cycle";
+    
+  },function(error){
+    $scope.spinner=false;
+    alert('Failed to connect the server');
+  })
+ },1000)
+  
+  
+}
+
+$scope.updateTenant=function(list,index){
+  $scope.spinner=true;
+  $scope.menu_assign_date=$filter('date')($scope.ctrl.datepicker, "dd-MM-yyyy");
+  
+    
+  
+  var tenant_list=[];
+
+  var mealCoursedata=$scope.mealCourseName.toString();
+  tenant_list=list.filter(function(res){
+    return res.assign
+  }).map(function(res){
+    return {"stud_type":$scope.studenType,"spread_type":$scope.spread_name,"plan_name":$scope.menu_plan_name,"date":$scope.menu_assign_date, "food_category_id": $scope.mealId, "plan_for": $scope.no_of_days, "site_category_id": $scope.clientID,"meal_time": mealCoursedata,"sub_plan_id":res.sub_plan_id,"tenant_detail_id":res.tenantdetail_id}
+  })
+
+  
+  var data=[];
+ 
+  data=JSON.parse(localStorage.getItem("menuassign"))
+ 
+  for(var i in $scope.mealCourseName){
+    for(var j in $scope.getAlldata){
+
+      for(var k in $scope.getAlldata[j]){
+        
+        for(var l in $scope.getAlldata[j][k]){
+         for(var m in $scope.getAlldata[j][k][l]){
+             
+             
+
+              if(k==$scope.mealCourseName[i]){
+                
+                if(data[j][k].length==0){
+                 data[j][k]=[$scope.getAlldata[j][k][0]]  
+                }else{
+                 if(l!=0){
+                   if($scope.getAlldata[j][k].length!=data[j][k][0][m].length){
+                     data[j][k][0][m].push($scope.getAlldata[j][k][l][m][0]);  
+                   }
+                 } 
+                }
+                
+              }else{
+
+              } 
+            
+         }
+        }
+        
+        
+      }
+      
+       
+    }
+  }
+
+  
+  var assign={"data":[{"tenant":tenant_list},{"meal_details":data}]}
+  console.log(assign)
+
+  $http.post(plannerURL+"/api/v1/menu_planners/menu_planner_update",assign).then(function(res){
+    if(res.data==true){
+      $scope.spinner=false;
+      alert('Your Menu has updated');
+      $scope.assignedTenants();
+      $scope.tenantPlanDetails();
+    }else{
+      $scope.spinner=false;
+      alert('Failed to update the Menu');
+    }
+    // $scope.menu_plan_name="";
+    // $scope.menu_assign_date="";
+    // $scope.no_of_days="";
+    //location.href="/normalmenu_sites/menu_cycle";
+  },function(error){
+    $scope.spinner=false;
+    alert('Failed to connect the server');
+  })
+}
+
+
+$scope.assignedTenants=function(){
+  $scope.getTenants=[];
+  $http.get(plannerURL+"/api/v1/menu_planners/menuplanner_tenants?plan_name="+$scope.menu_plan_name).then(function(res){
+    var data=res.data;
+    //$scope.getTenants=res.data;
+    /*$scope.getTenants=data.map(function(res){
+      return {"sub_plan_name":res.sub.sub_plan_name,"checked":false,"tenant":res.tenant}
+    });*/
+    for(var i=0;i<data.length;i++){
+      for(var j=0;j<data[i].tenant.length;j++){
+       
+        data[i].tenant[j].assign=false;
+      }
+    }
+    
+    $scope.getTenants=data;
+    
+  })
+}
+
+// $scope.removeitem=function(item){
+
+//   var index=$rootScope.data.sub_production_items.findIndex(x =>x.name == item.name) 
+  
+//   $rootScope.data.sub_production_items.splice(index, 1);
+//   $scope.production_data.splice(index, 1);
+//   $scope.production_dataval.splice(index, 1);
+//   $rootScope.data.production_items.push(item)
+// }
+
+// $scope.removedata=function(index,product){
+//   for(var i in $scope.production_dataval){
+//     if($scope.production_dataval[i].production_item_id == product.production_item_id){
+//     //var productIndex=$scope.production_dataval[i].indexOf(product.production_item_id)
+//      var productIndex=$scope.production_dataval.findIndex(x => x.production_item_id==$scope.production_dataval[i].production_item_id)
+//       $scope.production_dataval.splice(productIndex, 1);
+//     }
+
+//     //$scope.production_dataval($scope.production_dataval[i].production_item_id)
+//   }
+//   for(var l in $scope.predata){
+//     for(var x in $scope.predata[l]){
+//       for(var y in $scope.predata[l][x]){
+//         if($scope.predata[l][x][y].production_item_id == product.production_item_id){
+//           var productIndex=$scope.predata[l][x].findIndex(m => m.production_item_id==$scope.predata[l][x][y].production_item_id)
+//             $scope.predata[l][x].splice(productIndex, 1);
+//         }
+//       }
+//     }
+//   }
+ 
+// }
+  
+});
+
+/*app.directive('draggable', function() {
+  return function(scope, element, attrs) {
+    var el = element[0];
+    el.draggable = true; // Make dragable
+
+    // Add event listeners
+    el.addEventListener(
+      'dragstart',
+      function(e) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('item_id', this.id);
+        e.dataTransfer.setData('origin_id', el.parentElement.id);
+        this.classList.add('dragging');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragend',
+      function(e) {
+        this.classList.remove('dragging');
+        return false;
+      },
+      false
+    );
+  }
+});
+
+app.directive('droppable', function() {
+  return function(scope, element, attrs) {
+    // Get the native element
+    var el = element[0];
+
+    // Add event listeners
+    el.addEventListener(
+      'dragover',
+      function(e) {
+        e.preventDefault(); // Allow the drop
+
+        // Set effects
+        e.dataTransfer.dropEffect = 'move';
+        this.classList.add('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragenter',
+      function(e) {
+        this.classList.add('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'dragleave',
+      function(e) {
+        this.classList.remove('dragover');
+        return false;
+      }, false
+    );
+
+    el.addEventListener(
+      'drop',
+      function(e) {
+        this.classList.remove('dragover');
+
+        // Get the data
+        var destination = this.id;
+        var item_to_move = e.dataTransfer.getData('item_id');
+        var origin = e.dataTransfer.getData('origin_id');
+
+        // Call the scope move function
+        scope.MoveItem(origin, destination, item_to_move);
+
+        return false;
+      }, false
+    );
+  }
+});
+app.directive('dateFormat', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attr, ngModelCtrl) {
+      //Angular 1.3 insert a formater that force to set model to date object, otherwise throw exception.
+      //Reset default angular formatters/parsers
+      ngModelCtrl.$formatters.length = 0;
+      ngModelCtrl.$parsers.length = 0;
+    }
+  };
+});*/
+
+/*app.directive('selectpicker', function () {
+    return {
+      restrict: 'C',
+      link: function (scope, element) {
+        $(element).selectpicker({
+          style: 'btn-default',
+          size: false
+        });
+      }
+    };
+  });*/
+
+</script>
+<script type="text/javascript">
+  
+
+  /*$(document).ready(function() {
+        $('#multi-select-demo').multiselect();
+        $('.selectpicker').selectpicker();
+    });
+*/
+  /*$(document).ready(function () {
+    $(".sidebar").toggleClass("hide-nav");
+    $(".wrapper").toggleClass("active");
+
+    $('.scroll').slimScroll({});
+
+    $(".wrapper_rightbar").click(function(){
+      $(this).toggleClass("rb_active");
+            $("#rightbar").toggleClass("open_right");
+            $(".right_sidebar_nav i.fa-chevron-left").toggleClass("fa-chevron-right");
+    });
+    $(".right_sidebar_nav").click(function(){
+      $(".wrapper_rightbar").toggleClass("rb_active");
+            $("#rightbar").toggleClass("open_right");
+            $(".right_sidebar_nav i.fa-chevron-left").toggleClass("fa-chevron-right");
+    });
+    
+    /*$(".dropdown").click(function(){
+      $(this).toggleClass("open")
+    });*/  
+
+   /* $(".dd1").click(function(){
+      $(this).toggleClass("open")
+    });
+        
+    $(".dd2").click(function(){
+     $(this).toggleClass("open")
+    });
+
+    $(".dd3").click(function(){
+     $(this).toggleClass("open")
+    });
+
+    $(".dd4").click(function(){
+      $(this).toggleClass("open")
+    });
+  
+
+    $(".right_btn").click(function(){
+      $(".wrapper_rightbar").toggleClass("rb_active");
+            $("#rightbar").toggleClass("open_right");
+            $(".right_sidebar_nav i.fa-chevron-left").toggleClass("fa-chevron-right");
+    });
+
+    $(".horizontal-tabs ul li a").click(function(){
+            $(".horizontal-tabs ul li a").toggleClass("active");
+    });    
+
+   $("#tab_scrolls").horizontalTabs();
+
+    
+
+  });*/
+</script>

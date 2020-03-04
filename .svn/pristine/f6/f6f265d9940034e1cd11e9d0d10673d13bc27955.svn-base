@@ -1,0 +1,256 @@
+c
+k[:tenant_name]
+k["tenant_name"]
+k
+c
+@feedback
+exit
+c
+@feedback.c
+@feedback
+cc
+c
+UserFeedback.last(2)
+UserFeedback,lats
+v.pluck(:tenant_id).uniq
+v.pluck(:tenant_id)
+v.count
+v.coout
+v.cout
+v
+k
+c
+v.where(rating:" 5")
+v.first
+v.count
+c
+v.count
+v
+k
+c
+cc
+c
+feedback.tenant.name
+feedback
+c
+cc
+c
+cc
+c
+ tenant.tenant_details.pluck(:stud_type).include?data[17]
+c
+enrolment
+enrolment[2].present? and enrolment[3].present? and enrolment[4].present? and enrolment[5].present?
+ enrolment.class == Array and enrolment.count == 6
+exit
+enrolment = Enrolment.new(tenant_id: tenant.id, name: data[1], id_number: data[2], standard: data[3], sex: data[4], age_type: data[5], date_of_birth: data[6], meal_time: data[7], from_date: data[8], to_date: data[9], height: data[10], weight: data[11], bmi: data[12], email: data[13], parent_name: data[14], order_source: data[15], meal_restriction_id: meal_restriction_id, food_category_id: food_category_id, stud_type: data[17])
+Standard.where(tenant_id:tenant.id).pluck(:standard).include?data[3]
+tenant.tenant_details.pluck(:meal_restriction_id).flatten.uniq
+tenant.tenant_details.pluck(:meal_restriction_id).flatten.uniq.include?(meal_restriction_id)
+tenant.tenant_details.pluck(:meal_restriction_id).flatten.uniq.include?(meal_restriction_id) and Standard.where(tenant_id:tenant.id).pluck(:standard).include?data[3]
+meal_restriction_id = nil
+ meal_restriction = MealRestriction.find_by('lower(meal_restriction_name) = ?', data[16].downcase)
+data[16]
+data[16].present?
+    food_category_id = FoodCategory.find_by('lower(name) = ?', "veg").id
+data[7]
+tenant.tenant_details.pluck(:meal_time).flatten.uniq.map { |e| e.downcase }.include?(data[7].downcase.strip)
+tenant.tenant_details.pluck(:meal_time).flatten.uniq
+c
+tenant_name.first.downcase.strip == Tenant.find(params[:enrolment][:tenant_id].to_i).name.downcase.strip
+ tenant_name.count == 1
+c
+Tenant.last
+@tenant.update(:created_by=>session[:kitchen_user_id],feedback_code: "HU00"+''+@tenant.id.to_s)
+c
+item.menu_master.menu_production_items
+item.menu_master.menu_prodution_item
+item.menu_master.menu_prodution_items
+item.menu_master
+item
+ite,
+@a.to_h
+@a=item.menu_master.menu_production_items.map{|i| [i.quantity, i.production_item.name]}
+item.menu_master.menu_production_items.map{|i| [i.quantity, i.production_item.name]}
+item.menu_master.menu_production_items.map{|i| [i, i.production_item.name]}
+item.menu_master.menu_production_items.map{|i| i, i.production_item.name}
+item.menu_master.menu_production_items.map{|i| i.production_item.name}
+item.menu_master.menu_production_items.map{|i| i.production_item.name)}
+item.menu_master.menu_production_items.map{|i| i.production_item.pluck(:name)}
+item.menu_master.menu_production_items.map{|i| i.production_item.plick(:name)}
+item.menu_master.menu_production_items.first.production_item
+item.menu_master.menu_production_items.production_item
+item.menu_master.menu_production_items
+item.menu_master.menu_prodution_items
+item.menu_master
+item.menu_master.menu_production_items
+item.menu_master
+item
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.packs_to_send, meal_restriction_name: item.meal_restriction.present? ? item.meal_restriction.meal_restriction_name: nil, food_category:item.menu_master.food_category.name)
+item.menu_master.food_category.name
+item.menu_master.food_category
+item.menu_master
+item
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.packs_to_send, meal_restriction_name: item.meal_restriction.present? ? item.meal_restriction.meal_restriction_name: nil, food_category)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.packs_to_send, meal_restriction_name: item.meal_restriction.present? ? item.meal_restriction.meal_restriction_name: nil )
+MealRestriction.last
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.packs_to_send, meal_restriction_name: item.meal_restriction.name)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.packs_to_send)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.packs_to_se\nbd)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.packs_to_sebd)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name,pack_to_send: item.pack_to_sebd)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.menu_master_name)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type,menu_master_name: item.menu_master.name)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type),menu_master_name: item.menu_master.name
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name, stud_type: item.stud_type)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.category_name)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category.name)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name, category_name: item.category)
+ DailyTransaction.new(date: Date.today,tenant_name: item.tenant.name)
+item
+c
+ menucustomers
+menucustomers = MenuCustomer.where(delivery_status:"packed",date:Date.today)
+ menucustomers
+item
+c
+menu_customers
+DailyTransaction.new(date: Date.today,tenant_name: item.tenant_id )
+DailyTransaction.new(date: Date.today,tenant_name: )
+item
+c
+MenuCustomer.where(delivery_status:"packed",date:Date.today).map do |i|
+MenuCustomer.where(delivery_status:"packed",date:Date.today)
+MenuCustomer.where(delivery_status:"packed")
+MenuCustomer.all.pluck(:delivery_status)
+MenuCustomer.where(delivery_status:"Packed")
+MenuCustomer.last
+MenuCustomer.where(delivery_status:"Packed")
+MenuCustomer.where(status:"Packed")
+c
+Utensil.create(utensil_params).errors
+Utensil.create(utensil_params)
+c
+Utensil.create(utensil_params).errors
+c
+Utensil.create(utensil_params).errors
+Utensil.create(utensil_params)
+Utensil.create(utensil_params).errors
+Utensil.create(utensil_params).error
+Utensil.create(utensil_params)
+Utensil.new(utensil_params)
+c
+ utensil.utensils_category.nil?
+c
+utensil
+c
+utensil.upload_status
+select_tag "upload_status", options_for_select([ "Single", "Multiple" ]),{class: "form-control boxed e1",required: "true", id: "type" , prompt: "Select", selected: utensil.upload_status}
+c
+exit
+params[:upload_type]
+params
+ utensil = Utensil.new(utensil_params)
+c
+ utensils_category=catgry[0][0]
+utensils_category = nil; utnsl_num = nil
+ catgry = utensil.utensiltype.split(' ')
+utensil.utensils_category.nil?
+c
+utensils_category=catgry[0][0]
+utensils_category = nil; utnsl_num = nil
+utensil.utensiltype.split('')
+utensil.utensiltype.split(' ')
+utensil.utensils_category.nil?
+ utensil.utensils_category
+ utensil.utensils_category.
+utensil
+c
+utensil.tracking = Utensil.generate_tracking(utensil)
+  Utensil.create(utensil_params).errors
+  Utensil.create(utensil_params)
+ utensil = Utensil.new(utensil_params)
+utensil_params
+params
+c
+Light weight
+params
+params[:upload_type]
+params
+c
+latest_position = MealCourse.pluck(:position).compact.max
+latest_position = MealCourse.pluck(:position).compact
+latest_position = MealCourse.pluck(:position).compac
+latest_position = MealCourse.pluck(:position)
+latest_position = MealCourse.pluck(:position).max
+ MealCourse.find_by(:position=>params[:meal_course][:position])
+params
+c
+@result
+final_result
+c
+@menu_items
+c
+date
+ @menu_customers.where(category_id: cat_id,date: date).present?
+cat_id=Category.find_by(category_name:"Lunch").id
+Category.find_by(category_name:"Lunch").present?
+c
+header1
+header
+c
+header
+c
+final_result
+header
+c
+ @menu_items6.flatten.map{|list| sub_item6 << [list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+sub_item6=[]
+ @menu_items6.flatten.map{|list| sub_item6 << [list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+ @menu_items6.flatten[0][:tenant]
+ @menu_items6.flatten[0][:tenant]]
+ @menu_items6.flatten[0]
+ @menu_items6.flatten
+ @menu_items6.flatten.map{|list| sub_item6 << [list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+c
+@menu_items1
+@menu_items2
+@menu_items3
+@menu_items4
+@menu_items5
+c
+@menu_items6
+c
+@menu_items6
+@menu_items
+c
+final_result
+header
+c
+@menu_items
+c
+@menu_items
+c
+@menu_items
+c
+@menu_items
+@menu_customers
+@menu_customer
+c
+ @menu_items2
+header2
+c
+header2
+c
+header2
+ @menu_items2
+c
+ @menu_items2
+c
+ @menu_items2
+c
+header1
+ final_result2
+header2
+c
+head

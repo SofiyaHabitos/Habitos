@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Operations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+    <tr>
+    <td>name</td><td>time</td>
+      <td>manpower</td>
+<td>process_cost</td>
+ <td>unit_of_measurement</td>
+<td>quantity</td>
+</tr>
+  </thead>
+
+  <tbody>
+    <% @operations.each do |operation| %>
+      <tr>
+      <td><%= operation.name%></td>
+      <td><%= operation.time%></td>
+      <td><%= operation.manpower%></td>
+<td><%= operation.process_cost%></td>
+ <td><%= UnitOfMeasurement.find(operation.unit_of_measurement_id).name%></td>
+<td><%= operation.quantity%></td>
+        <td><%= link_to 'Show', operation %></td>
+        <td><%= link_to 'Edit', edit_operation_path(operation) %></td>
+        <td><%= link_to 'Destroy', operation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Operation', new_operation_path %>

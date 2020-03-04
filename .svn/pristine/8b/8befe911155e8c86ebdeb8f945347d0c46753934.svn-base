@@ -1,0 +1,54 @@
+<h1>Hello,<%= @kitchen_user.name %></h1>
+<p>Glad to inform you that your login credentials has been provided as follows:</p>
+
+<p>
+  <strong>Username:</strong>
+  <%= @kitchen_user.user_name %>
+</p>
+
+<p>
+  <strong>Password:</strong>
+  <%= @kitchen_user.password_digest %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @kitchen_user.email %>
+</p>
+
+<p>
+  <strong>Mobile_No:</strong>
+  <%= @kitchen_user.mobile_number %>
+</p>
+
+
+<p>
+  <strong>Address:</strong>
+  <%= @kitchen_user.address %>
+</p> 
+
+
+<p>
+  <strong>Role:</strong>
+  <%= @kitchen_user.role.name %>
+</p>
+
+
+<p>
+  <strong>Kitchen:</strong>
+  <%= @kitchen_user.kitchen.name %>
+</p>
+
+
+<p>
+  <strong>Tenant:</strong>
+  
+  <% if @kitchen_user.tenant.empty? %>
+      <p> Tenant not selected <p>
+  <% else %> 
+  <% tenant_name = Tenant.where(:id=>@kitchen_user.tenant).pluck(:name) %>
+    <% tenant_name.each do |i| %>
+     <li><%= i %></li>
+    <% end %>
+  <% end%>
+</p>

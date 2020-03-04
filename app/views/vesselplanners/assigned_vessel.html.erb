@@ -1,0 +1,29 @@
+
+<%=form_for :assignvessel, url: {controller: "vesselplanners",action: 'assigned_vessel' } do |a| %>
+
+<br>
+
+
+<%= a.date_field :date, :value => params["assignvessel"].present? ? params["assignvessel"]["date"]  : Date.today, class: "datepicker"%>   
+
+<%= a.submit "submit" %>
+<%end%>
+
+
+
+<%if @vessel.present?%>
+<% @vessel.map do |i|%>
+<div class="card"  >
+  <h5 class="card-header"></h5>
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <p class="card-text"></p>
+    
+    <div data-toggle="modal" data-target="#flipFlop" class="vessel">  <b><center><%=link_to i[0] ,vesselplanners_vessel_tenantdetail_path(i[1] ,date: params["assignvessel"].present? ? params["assignvessel"]["date"]  : Date.today ), style: "color:rgb(255,69,0)"; %><br></center></b>
+   <%end%>
+   <%end%>
+      </div>
+    </div>
+</div>
+
+

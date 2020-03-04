@@ -1,0 +1,54 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Client Category / Show Client Category</p>
+    <h2 class="header_title">Show Client Category <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, client_categories_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+           <div class="col-md-3">
+            <label class="control-label">Name</label>
+            <h3><%= @client_category.name %></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+    <div class="body-header">
+     <center><h3 class="modal-title">Show - Client Category</h3></center>
+    </div>
+
+ <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Name</span></label>
+                
+                    <div class="form-group">  <%#= @client_category.name %>
+                     </div>
+                
+                  </div>
+                 </div>
+
+               </div>
+            </div>
+ </article>
+ <div class="footer">
+   <%#= link_to 'Back', client_categories_path, :class=>"btn btn-default"%>
+ </div>
+
+ </div>
+
+</div>
+ -->

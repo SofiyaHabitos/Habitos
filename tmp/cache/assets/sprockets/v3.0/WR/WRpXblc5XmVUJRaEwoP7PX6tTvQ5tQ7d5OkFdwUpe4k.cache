@@ -1,0 +1,59 @@
+{:uriI"zfile://app/assets/images/icon.html?type=text/html&id=bdea2ec20018ad3ec7faed10fa95e09ac379588b12bcff3fd4c6621b8fb37eb4:ET:load_pathI"app/assets/images;T:filenameI" app/assets/images/icon.html;T:	nameI"	icon;T:logical_pathI"icon.html;T:content_typeI"text/html;T:sourceI"*<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="row">
+        <!-- Boxes de Acoes -->
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">							
+				<div class="icon">
+					<div class="image"><i class="fa fa-soundcloud"></i></div>
+					<div class="info">
+						<h3 class="title">Client Reports</h3>
+    					<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis sapien. Phasellus ultrices gravida massa luctus ornare. Suspendisse blandit quam elit, eu imperdiet neque semper.
+						</p>
+    <a class="btn btn-primary" href="#primary" data-toggle="modal"><h4><i class="fa fa-soundcloud"></i> Client Reports</h4></a>
+    <!-- Modal -->
+    <div class="modal fade" id="primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">√ó</button>
+                    <h1><i class="fa fa-bar-chart-o"></i> Client Reports</h1>
+                </div>
+                <div class="modal-body">
+                Hello World!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- Modal -->
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div> 
+		</div>		    
+		<!-- /Boxes de Acoes -->
+	</div>
+</body>
+</html>;T:metadata{	:dependencieso:Set:
+@hash}
+I"environment-version;TTI"environment-paths;TTI"rails-env;TTI"2processors:type=text/html&file_type=text/html;TTI".file-digest://app/assets/images/icon.html;TTF:charsetI"
+utf-8;F:digest"%˝b"†c©ùksQ3x˘9.1ªæOúGÙs
+âÀ∫:lengthi*:dependencies_digest"%mä&an]KŸ¥qΩêN\"oŒNk)A‹‹N±Çºˇ‹ö‰:idI"Ebdea2ec20018ad3ec7faed10fa95e09ac379588b12bcff3fd4c6621b8fb37eb4;F:
+mtimel+:NH\

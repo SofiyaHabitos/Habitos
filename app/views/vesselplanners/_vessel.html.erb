@@ -1,0 +1,227 @@
+ <!-- <Second page new planner> -->
+<div class="card border-0 table-container mb-2">
+
+  <% if menucycle.present? %>
+
+   <div class="card-body">
+
+    <%= form_for :vesselplanner,url: {action: "index1"} do |f|%>
+      <table class="table table-striped border-0 display vesselplanner" id="quantity">
+
+        <thead>
+            <th colspan="3"><b>Date:</b>&nbsp;<span><%= menucycle.first.date.to_date.strftime("%d-%m-%Y")%><%= hidden_field_tag "date", menucycle.first.date.strftime("%Y-%m-%d")%></span></th>
+        </thead>
+
+        <tbody>
+         <tr>
+
+          <td><b><%= menucycle.first.category.category_name if menucycle.first.present? && menucycle.first.category.present? %><%= hidden_field_tag "categoryname", menucycle.first.category.category_name if menucycle.first.present? && menucycle.first.category.present?%></b></td>
+
+          <td><b><%= menucycle.first.tenant_detail.tenant.name if menucycle.first.present? && menucycle.first.tenant_detail.present? && menucycle.first.tenant_detail.tenant.present? %><%= hidden_field_tag "tenantname", menucycle.first.tenant_detail.tenant.name if menucycle.first.present? && menucycle.first.tenant_detail.present? && menucycle.first.tenant_detail.tenant.present? %></b></td>
+
+          <td><b>Client Category</b></td>
+
+          <td><b>Utensil Name</b></td>
+
+         </tr>
+        <% menucycle.each do |s| %>
+
+        <%s.menu_items.each do |m| %>
+
+        <% if m[:name].present?%>
+
+        <tr id="row<%= s.id %>">
+         
+          <%= hidden_field_tag "menu_qty[]", s.quantity.present? ? s.quantity.to_f * m[:qty].to_f : 0, id: "org_qty" %>
+          
+          <td><%= text_field_tag "menu_items[]",m[:name],class: 'form-control item', autofocus: true ,readonly: true%></td>
+         
+          
+          <td><% quantity = s.quantity.present? ? s.quantity.to_f * m[:qty].to_f : 0 %>
+         
+            <% if quantity.present? && m[:UOM].present?%>
+             <%= text_field_tag "qty[]",quantity.round(3).to_s+" "+m[:UOM],class: 'form-control addqty'%></td>
+
+             <% else %>
+
+             <%= text_field_tag "qty[]",quantity.round(3).to_s+" "+m[:UOM],class: 'form-control addqty'%></td>
+             
+             <% end %>
+
+          <td><label><%= ClientCategory.find(s.tenant_detail.stud_type.to_i).name if s.tenant_detail.present? && s.tenant_detail.stud_type.present? %></label><%= hidden_field_tag "tenant_detail_id[]", s.tenant_detail_id%>
+          </td>
+
+          <td><%= select_tag 'utensilname[]', options_for_select(@utensilname),{ class: "form-control utensil",id: "utensilname",prompt: "Please Select",required: true} %>
+            
+          <%= select_tag 'tag_id[]', options_for_select([]),{class: "form-control tags", prompt: "Please Select",required: true}%>
+          </td>
+
+        </tr>
+          <%end%>
+          <%end%>
+          <%end%>
+
+        </tbody>
+
+      </table>
+     <%= f.submit "submit", class: "btn btn_submit float-right"%>
+   </div>
+
+  <%end%>
+
+ <%else%>
+
+ <h3>No Data Found</h3>
+ <%end%>
+</div>
+
+<!-- Script for Dynamic Auto ID -->
+<script type="text/javascript">
+
+    function drop_down_append(utensil_id,ind){
+        $.ajax({
+             type: "GET",
+             url: '<%= $api_service%>/api/v1/utensils/utensil_tags?utensil_id='+utensil_id,
+          success: function(responses) 
+           {  
+            var newlists = responses;
+            
+            var output = [];
+              output.push('<option value="">'+"Please Select"+'</option>');
+              
+            $.each(newlists, function(index, value)
+            {
+              if (value.status == null)
+              {
+             output.push('<option value="'+ value.id +'">'+ value.auto_id +'</option>');
+               }
+                             
+
+            });
+            
+            var select = [];
+            // console.log(output);
+            $('#quantity tbody tr').each(function(index) {
+            select.push($(this).find(".tags option:selected").val());
+            });
+
+            $('#quantity tbody tr').each(function(index) {
+            
+            if (index == ind-1)
+            {
+              console.log(output)
+              $(this).find(".tags").empty();
+              $(this).find(".tags").append(output.join(''));  
+              $('.tags option').filter(function () {
+                 return $.inArray(this.value, select) > -1 && !this.selected  
+              }).attr('disabled', true)
+            }
+          });
+    }
+       });
+  }
+
+  $(document).ready(function() {
+
+  // $('.utensil').select2();
+
+  $(document).on("change", '.utensil', function (event) {
+
+    var utensil_id = $(this).val();
+    ind = $(this).parent("td")[0].parentElement.rowIndex;
+
+    drop_down_append(utensil_id,ind);
+    });
+
+
+
+   $(document).on("change", '.tags', function (event) {
+
+    var tag_id = $(this).val();
+    var row_id = $(this).parent("td").parent("tr");
+    var classes = $(this).parent("td").parent("tr")
+    ind = $(this).parent("td")[0].parentElement.rowIndex;
+    var i=0;
+    $('#quantity tbody tr').each(function() {
+      var select = [];
+     
+       if(i <= ind-1){
+        select.push($(this).find(".tags option:selected").val());
+
+        if (i == ind-1)
+        {
+          
+          $('.tags option').filter(function () {
+               return $.inArray(this.value, select) > -1 && !this.selected  
+             }).attr('disabled', true)
+
+        }
+       }
+       i++;
+         
+
+    })
+
+
+    
+    });
+
+  });
+
+
+
+   var act_qty;
+   var $columns;
+   $(document).on("click", '.addqty', function (event) {
+   
+    act_qty = (event.target.value);
+
+    var $row = jQuery(this).closest('tr');
+     $columns = $row.find('td')[0].firstElementChild.defaultValue;
+     $prim = $row.find('td')[2].innerHTML;
+     $select = $row.find('td')[3].innerHTML;
+     console.log($select)
+ 
+   });
+
+   $(document).on("change", '.addqty', function (event) {
+     var new_qty = (event.target.value);
+     var uom = act_qty.split(' ')[1];
+
+     
+     var new_row = $("<tr>");
+     var num1 = parseFloat(act_qty);
+     
+     var num2 = parseFloat(new_qty);
+
+     if (num2 >= num1){
+      alert("Please Select Lesser Value ");
+      $(this).val(num1+" "+uom);
+     }
+     else if(num2 == 0){
+      alert("Please Select Greatest  Value")
+      $(this).val(num1+" "+uom);
+
+     }
+     else if (isNaN(num2)){
+      alert("Please Enter the value")
+
+     }
+     else{
+      var total_qty = num1-num2;
+      var col = "";
+    
+      col += '<td><input type="textbox" name="menu_items[]" class="form-control" value="'+$columns+'"></td>';
+      col += '<td><input type="text" name="qty[]" class="form-control addqty" value ="'+ Math.round(total_qty * 100) / 100 +" "+uom+'"></td>';
+      col += '<td>'+$prim+'</td>';
+      col += '<td>'+$select+'</td>';
+      new_row.append(col);
+      new_row.insertAfter($(this).closest("tr"));
+
+     }
+   });
+
+
+</script>
+
+

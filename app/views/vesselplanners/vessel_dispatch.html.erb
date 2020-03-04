@@ -1,0 +1,309 @@
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+<style>
+.box {
+  width: 90px;
+
+height: 74px;
+
+padding: 17px;
+
+border-top: solid;
+
+border-top-color: currentcolor;
+
+border-top-color: orangered;
+
+box-sizing: border-box;
+
+background-color: #ddd;
+
+float: right;
+
+margin-right: 15px;
+
+
+}
+.select2-search__field{
+  width: 100%!important;
+}
+</style> -->
+<style type="text/css">
+  .modal-dialog {
+      max-width: 999px;
+  }
+</style>
+<section class="page-content">
+  <div class="container-fluid">
+    <!-- <p class="page_path">Master / Vessel Dispatch</p>
+    <h2 class="header_title d-flex align-items-center justify-content-between">Vessel Dispatch
+      <span class="modal_planned">
+        <a href="#" data-toggle="modal" data-target="#plannedModal">Planned:<span><%= @planned.count %></span></a>
+        <a href="#" data-toggle="modal" data-target="#unplannedModal">Unplanned:<span><%= @unplanned.count %></span></a>
+      </span>
+    </h2> -->
+
+    <div class="row container_pad">
+        <div class="col-md-9 menu_body">
+            <p class="page_path">SCM / Vessel Dispatch</p>
+            <h2 class="header_title d-flex align-items-center justify-content-between">Vessel Dispatch</h2>
+          <!-- <span class="modal_planned"> -->
+          <!--   <a href="#" data-toggle="modal" data-target="#plannedModal">Planned:<span><%= @planned.count %></span></a>
+            <a href="#" data-toggle="modal" data-target="#unplannedModal">Unplanned:<span><%= @unplanned.count %></span></a>
+          </span> -->
+        </div>
+        <div class="col-md-3 vessel_new">
+          <div class="row planned_unplanned">
+            <div class="col-md-6">
+              <div class="card" data-toggle="modal" data-target="#plannedModal">
+                  <div class="card-body">
+                    <h6>Planned</h6>
+                    <h2><%= @planned.count %></h2>
+                    <!-- <h2 ng-cloak>{{planned_count.count[0].planned}}</h2> -->
+
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card" data-toggle="modal" data-target="#unplannedModal">
+                  <div class="card-body">
+                    <h6>Un Planned</h6>
+                    <h2><%= @unplanned.count %></h2>
+                    <!-- <h2 ng-cloak>{{planned_count.count[0].Unplanned}}</h2>          -->
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>  
+    <!-- <h2 class="header_title">Vessel Dispatch
+    <span class="float-right">
+        <a href="#" data-toggle="modal" data-target="#unplannedModal">
+            <div class="box">
+                <h3>Unplanned</h3>
+                <%#= @unplanned.count %>
+            </div>
+        </a>
+
+        <a href="#" data-toggle="modal" data-target="#plannedModal">
+            <div class="box">
+                <h3>Planned</h3>
+                <%#= @planned.count %>
+            </div>
+        </a>
+      </span>
+      </h2> -->
+
+  <div id="plannedModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title">Planned Details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="ti-close" aria-hidden="true"></span>
+          </button>
+      </div>
+
+      <div class="modal-body">
+          <table class="table table-striped">
+            <thead>
+              <th>Date</th>
+              <th>Client Name</th>
+              <th>Meal Type</th>
+              <th>Client Type</th>
+              <th>Client Category</th>
+              <th>Spread Name</th>
+            </thead>
+            <tbody>
+              <% @planned.each do |plan| %>
+                <tr>
+                   <td><%= plan.date.present? ? plan.date.strftime('%d-%m-%Y') : "" %></td>
+                  <td><%= plan.tenant_detail.tenant.name %></td>
+                  <td><%= plan.tenant_detail.meal_time %></td>
+                  <td><%= plan.tenant_detail.tenant.site_category.name %></td>
+                  <td><%= ClientCategory.find(plan.tenant_detail.stud_type.to_i).name %></td>
+                  <td><%= @spread_type_response["Spread"].select{|i| i["spreadid"] == plan.tenant_detail.spread_type}[0]["spreadtype"] %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+      </div>
+    
+      <div class="modal-footer">
+          <button type="button" class="btn btn_cancel" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div id="unplannedModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title">Unplanned Details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="ti-close" aria-hidden="true"></span>
+          </button>
+      </div>
+
+      <div class="modal-body">
+          <table class="table table-striped">
+            <thead>
+              <th>Date</th>
+              <th>Client Name</th>
+              <th>Meal Type</th>
+              <th>Client Type</th>
+              <th>Client Category</th>
+              <th>Spread Name</th>
+            </thead>
+            <tbody>
+              <% @unplanned.each do |to_plan| %>
+                <tr>
+                  <td><%= to_plan.date.present? ? to_plan.date.strftime('%d-%m-%Y') : "" %></td>
+                  <td><%= to_plan.tenant_detail.tenant.name %></td>
+                  <td><%= to_plan.tenant_detail.meal_time %></td>
+                  <td><%= to_plan.tenant_detail.tenant.site_category.name %></td>
+                  <td><%= ClientCategory.find(to_plan.tenant_detail.stud_type.to_i).name %></td>
+                  <td><%= @spread_type_response["Spread"].select{|i| i["spreadid"] == to_plan.tenant_detail.spread_type}[0]["spreadtype"] %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+      </div>
+    
+      <div class="modal-footer">
+          <button type="button" class="btn btn_cancel" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+      
+    <div class="filter_by">
+      <label>Filter by:</label>
+      <%= form_for :dispatch, url: {action: "vessel_dispatch"} do |j|%>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%= j.text_field :date , class: "input-text", id: "date_input",autofocus: true, value: @dropdown.present? ? @dropdown[0].date.strftime('%Y-%m-%d'): "", required: true, placeholder: "dd-mm-yyyy" %>
+              <label class="input-text-placeholder" for="date">Date</label>
+            </div>
+          </div>
+          <!--<div class="col-md-3">
+            <div class="control floating_label">
+              <%#=j.select "clienttype" , options_for_select(@sitecategory, selected: @dropdown.present? ? @dropdown[0].tenant_detail.tenant.site_category.id : ""),{prompt: ""},{class: "input-text", id: "clienttype", required:true} %>
+              <label class="input-text-placeholder" for="date">Client Type</label>
+            </div>
+          </div> -->
+          
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%=j.select "mealcourse" , options_for_select(@category, selected: @dropdown.present? ? Category.find_by(category_name: @dropdown[0].tenant_detail.meal_time).category_name : ""),{prompt: ""},{class: "input-text",required:true}%>
+              <label class="input-text-placeholder" for="date">Meal Course</label>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%=j.select "clientname" , options_for_select(@tenant.sort_by{|k| k}, selected: @dropdown.present? ? @dropdown[0].tenant_detail.tenant.id : "" ),{prompt: ""},{class: "input-text" , id: "clientname",required:true} %>
+              <label class="input-text-placeholder" for="date">Client Name</label>
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <label></label><br>
+            <%= j.submit "Submit", class: "btn btn_submit" %>
+          </div>
+        </div>
+
+        <!--  <div class="row">
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%#=j.select "studtype" , options_for_select(ClientCategory.pluck(:name,:id), selected: @dropdown.present? ? @dropdown[0].tenant_detail.stud_type.to_i : ""),{},{class: "input-text studenttype",required: true } %>
+              <label class="input-text-placeholder" for="date">Client Category</label>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="control floating_label">
+              <%#= j.select "spreadtype" , options_for_select(@spread_type_response["Spread"].pluck("spreadtype","spreadid"), selected: @dropdown.present? ? @dropdown[0].tenant_detail.spread_type.to_i : ""),{include_blank: ""},{class: "input-text spreadtype", required: true}%>
+              <label class="input-text-placeholder" for="date">Spread Type</label>
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <%#= j.submit "Submit", class: "btn btn_submit" %>
+          </div>
+          
+        </div> -->
+      <% end %>
+    </div>
+    <%unless @vessel_dispatch.nil?%>
+    <%= render 'vesseldispatch', vessel_dispatch: @vessel_dispatch %>
+    <%end%>
+    <%= render 'vesseldispatched', dispatched: @dispatched %>
+  </div>
+</section>
+
+
+<!-- <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+
+    <div class="body-header">
+      <h3 style="text-align: center;font-family: initial;">VESSEL DISPATCH</h3>
+    </div>
+
+    <div class="body-content">
+     <div id="dashboard-container">
+
+        </div>
+    </div> 
+
+
+</div>
+</div> -->
+     
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+    
+    $('#clientname').select2();
+
+$("#clienttype").change(function(){
+  var value = $("#clienttype").val();
+  /*alert(value)*/
+
+  $.ajax
+    ({
+        type: "GET",
+        url: "/vesselplanners/dropdown1",
+        data: {val: value}
+      });
+
+});
+  });
+  $(document).ready(function(){
+
+      $('#date_input').flatpickr({
+         minDate: 'today'
+      });
+  });
+
+
+</script>
+
+
+<!-- <script type="text/javascript">
+      $('.studenttype').select2({
+       placeholder: 'Client Category'
+      });
+
+      $(".spreadtype").select2({
+        placeholder: 'Spread Type'
+      });
+</script>    -->  
+  

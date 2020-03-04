@@ -1,0 +1,46 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Utensils Categories</p>
+    <h2 class="header_title">Utensils Categories <%= link_to '<i class="fa fa-plus"></i>'.html_safe,new_utensils_category_path,:class=>"btn"%></h2>
+    <div id="dashboard-container">
+      <div class="card table-container mb-2">
+        <div class="card-body">
+          <table class="table table-striped table-datatable table-hover display" id="utensils_category">
+            <thead>
+               <tr>
+                 <th>Utensil Category</th>
+                  <th>Asset Type</th>
+                  <th>Dispatch Quantity</th>
+                  <th>Utensil Count</th>
+
+                  <th>Created_by</th>
+                  <th>Updated_by</th>
+                  <!-- <th>Movable Status</th> -->
+                  <th>Edit</th>
+                  <!-- <th>Delete</th> -->
+                </tr>
+            </thead>
+            <tbody>
+              <% @utensils_categories.each do |utensils_category| %>
+                <tr>
+                <td><%= utensils_category.utensils_category_name%></td>
+                <td><%= utensils_category.asset_type%></td>
+                <td><%=utensils_category.upload_status%></td>
+
+                <td><%=Utensil.where(:utensils_category_id=> utensils_category.id).count%></td>
+                <td><%= create(utensils_category) %></td>
+                <td><%= update(utensils_category) %></td>
+                <!--td><!%= (utensils_category.movable_status.to_s == "true")? "Yes" : "No"%></td-->
+               <!--  <td><!%= link_to 'Show', utensils_category %></td> -->
+                <td><%= link_to 'Edit', edit_utensils_category_path(utensils_category),:class=>"" %></td>
+                <!-- <td><%#= link_to '', utensils_category, method: :delete, data: { confirm: 'Are you sure?' } ,:class=>"fa fa-trash-o"%></td> -->
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</section>  

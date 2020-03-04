@@ -1,0 +1,26 @@
+class ApplicationController < ActionController::Base
+  #protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session
+  #skip_before_filter :verify_authenticity_token
+  before_action :check_session, :except => ["login","login_validation"]
+  
+  def check_session
+    if session[:kitchen_user_id].blank?
+      redirect_to root_path
+    end
+  end
+
+  
+
+
+private
+  
+  def record_not_found
+    render errors_path, status: 500
+  end
+
+  def record_invalid
+    render errors_path, status: 422
+  end
+
+end

@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @kitchen_user.name %>
+</p>
+
+<p>
+  <strong>User name:</strong>
+  <%= @kitchen_user.user_name %>
+</p>
+
+<p>
+  <strong>Password digest:</strong>
+  <%= @kitchen_user.password_digest %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @kitchen_user.email %>
+</p>
+
+<p>
+  <strong>Mobile number:</strong>
+  <%= @kitchen_user.mobile_number %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @kitchen_user.address %>
+</p>
+
+<p>
+  <strong>Auth token:</strong>
+  <%= @kitchen_user.auth_token %>
+</p>
+
+<p>
+  <strong>Kitchen:</strong>
+  <%= @kitchen_user.kitchen %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @kitchen_user.created_by %>
+</p>
+
+<p>
+  <strong>Updated by:</strong>
+  <%= @kitchen_user.updated_by %>
+</p>
+
+<%= link_to 'Edit', edit_kitchen_user_path(@kitchen_user) %> |
+<%= link_to 'Back', kitchen_users_path %>

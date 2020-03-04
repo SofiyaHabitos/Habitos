@@ -1,0 +1,111 @@
+<%= form_for category  do |f| %>
+  <!--% if category.errors.any? %>
+    <div id="error_explanation">
+      <h2><!%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
+
+      <ul>
+      <!% category.errors.full_messages.each do |message| %>
+        <li><!%= message %></li>
+      <!% end %>
+      </ul>
+    </div>
+  <!% end %-->
+
+
+
+  <!-- <article class="content item-editor-page wrap-center"> -->
+<!--     <div class="title-block">
+        <h3 class="title"><span class="sparkline bar" data-type="bar"></span> </h3>
+    </div> -->
+    <form name="item">
+      <div class="card card_form mb-5">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :category_name, {:class => "input-text float_input boxed ", required: true, autofocus: true} %>
+                <%= f.label :category_name ,"Category",:class => "input-text-placeholder" %>
+              </div>
+            </div>
+               <!-- <div class="col-xs-4">
+                <label class="control-label">
+                  <%#= f.label :category_name ,"Category"%>
+                </label>
+               <div class="form-group"> 
+                  <%#= f.text_field :category_name,class: "form-control boxed " %>
+               </div>
+              </div> -->
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_field :position, required: true ,class: "input-text boxed position_field", id: "position_field", :value=> default_position(category) %>
+                <%= f.label :position,"Display position",:class => "input-text-placeholder" %>
+              </div>
+
+              <!-- <label class="control-label"><%#= f.label :position,"Display position" %></label>
+              <div class="form-group">
+                    <%#= f.text_field :position, required:true ,class: "form-control boxed position_field", id: "position_field", :value=> default_position(category) %>
+              </div> -->
+            </div>
+            <div class="col-md-3">
+              <div class="control floating_label">
+                <%= f.text_area :description, :class=>"input-text float_input boxed"%>
+                <%= f.label :description, "Description (optional)",:class => "input-text-placeholder" %>
+              </div>
+            </div>
+          </div>
+
+<!--           <div class="row">
+              <div class="form-group">
+                <div class="col-xs-4">
+                  <label class="control-label"><%#= f.label :position,"Display position" %></label>
+                  <div class="form-group">
+                        <%#= f.text_field :position, required:true ,class: "form-control boxed position_field", id: "position_field", :value=> default_position(category) %>
+                  </div>
+                </div>
+              </div>
+            </div>  
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-4">
+                <label class="control-label">
+                  <%#= f.label :description %>
+                </label>
+                    <%#= f.text_area :description, :class=>"form-control boxed"%>
+              </div>
+            </div>
+          </div> -->
+            
+            
+            
+
+           <!--  <div class="row">
+                <div class="col col-md-3"><%#= link_to "Back", categories_path ,:class=>"btn btn-primary"%></div>
+                <div class="col col-md-3"><%#= f.submit "Submit",:class=>"btn btn-primary"%></div>
+            </div> -->
+          <%= f.submit "Submit",:class=>"btn btn_submit float-right"%>
+        </div>
+      </div>
+    </form>
+  <!-- </article> -->
+<% end %>
+
+<script type="text/javascript">
+   
+  $(document).ready(function(){
+
+    $("#position_field").on("change", function () {
+    
+      var pos_no = $(this).val();
+     
+      $.ajax({
+
+        type: "GET",
+        url: "/categories/check_position?position=" + pos_no,
+        success: function nt(data) {
+               alert(data.message);
+              }
+      });
+    });
+  });
+</script>

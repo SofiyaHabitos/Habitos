@@ -1,0 +1,355 @@
+<!-- <Second page new dispatch> -->
+<div class="card border-0 table-container mb-2">
+<% if vessel_dispatch.present? %>
+  <div class="card-body">
+   <%= form_for :dispatch, url: {action: "dispatched"} do |f|%>
+    <table class="table table-striped display vesseldispatch" id="quantity">
+      <% if vessel_dispatch.first.class.name == "Vesselplanner"%>
+      <!-- With Out Wastage -->
+      <thead>
+          <th colspan="4"><b>Date:</b>&nbsp;<span><%= vessel_dispatch.first.date.to_date.strftime("%d-%m-%Y")%><%= hidden_field_tag "date", vessel_dispatch.first.date.to_date.strftime("%Y-%m-%d")%></span></th>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b><%= vessel_dispatch.first.tenant_detail.meal_time if vessel_dispatch.first.present? && vessel_dispatch.first.tenant_detail.present? %></b></td>
+          <td><b><%= vessel_dispatch.first.tenant_detail.tenant.name if vessel_dispatch.first.present? && vessel_dispatch.first.tenant_detail.present? && vessel_dispatch.first.tenant_detail.tenant.present? %></b></td>
+          <td><b>Client Category</b></td>
+          <td><b>Utensil Name</b></td>
+          <td><b>Count</td>
+         <!--  <td><b>Wastage</td> -->
+        </tr>
+        <%vessel_dispatch.each do |i| %>
+        <% if i.menuitem["name"].present? %>
+         <tr>
+               
+          <td><%= text_field_tag "item[]",i.menuitem["name"],class: 'form-control item',readonly: true%></td>
+          <td><%= text_field_tag "qty[]",i.menuitem["qty"].to_f.round(4).to_s + " "+ i.menuitem["UOM"],class: 'form-control addqty'%></td>
+          <td><%= ClientCategory.find(i.tenant_detail.stud_type.to_i).name %>
+            <%=hidden_field_tag "tenantdetail[]",i.tenant_detail_id%>
+          </td>
+          <td class="p-0 tagId"><%= select_tag 'utensil_id[]', options_for_select(@utensilname,selected: i.utensil.present? ? i.utensil.utensilname_id : " "),{class: "form-control utensil", id: "oldutensil_#{i.id}", required: true,prompt: "Please Select" } %>
+          <%= select_tag 'tag_id[]', options_for_select(@tags.where(utensil_id: i.utensil_id).pluck(:auto_id,:id), selected: i.tag_id),{ class: "form-control tags",required: true,prompt: "Please Select", id: "oldtag_#{i.id}", onchange: "tagChange(#{i.id})" }%>
+           <%= hidden_field_tag "planner_ids[]", i.id, class: "plannerIds" %>
+           <%#= hidden_field_tag "old_tag_ids[]", i.tag_id, class: "oldTagIds", id: "oldtag_#{i.id}" %>
+          </td>
+          <td>1</td>
+           <!-- <td><%#= text_field_tag 'wastage[]', "", class: "form-control" %></td> -->
+        </tr>
+       <%end%>
+       <%end%>
+      </tbody>
+    <%else%>
+    <!--  < With wastage > -->
+    <thead>
+     <th colspan="4"><b>Date:</b>&nbsp;<span><%= vessel_dispatch.first.date.to_date.strftime("%d-%m-%Y")%><%= hidden_field_tag "date", vessel_dispatch.first.date.to_date.strftime("%Y-%m-%d")%></span></th>
+ 
+    </thead>
+    <tbody>
+        <tr>
+          <td><b><%= vessel_dispatch.first.tenant_detail.meal_time%></b></td>
+          <td><b><%= vessel_dispatch.first.tenant_detail.tenant.name%></b></td>
+          <td><b>Client Category</b></td>
+          <td><b>Utensil Name</b></td>
+          <td class="text-center"><b>Count</td>
+         <!--  <td>Wastage</td>  -->
+        </tr>
+        <%vessel_dispatch.each do |i| %>
+        <% if i.menuitem["name"].present?%>
+        <tr>
+          <td><%= text_field_tag "item[]",i.menuitem["name"],class: 'form-control item',readonly: true %></td>
+          <td><%= text_field_tag "qty[]",i.menuitem["qty"].to_f.round(4).to_s + " "+ i.menuitem["UOM"],class: 'form-control addqty',readonly: true%></td>
+          <td><%= ClientCategory.find(i.tenant_detail.stud_type.to_i).name %><%=hidden_field_tag "tenantdetail[]",i.tenant_detail_id%></td>
+          <%=hidden_field_tag "utensil_id[]",i.utensil.utensilname_id%> 
+          <%=hidden_field_tag "tag_id[]",i.tag_id%>
+          <td class="p-0"><%= select_tag 'utensil_id[]', options_for_select(@utensilname,selected: i.utensil.present? ? i.utensil.utensilname_id : " "),{class: " form-control utensil",required: true, disabled: true } %>
+          <%= select_tag 'tag_id[]', options_for_select(@tags.where(utensil_id: i.utensil_id).pluck(:auto_id,:id), selected: i.tag_id),{ class: "form-control tags",required: true,prompt: "Please Select", disabled: true}%>
+          </td>
+          <td class="text-center">1</td>
+          <!--  <td><%#= text_field_tag 'wastage[]', i.wastage, class: "form-control", placeholder:"0.0" %></td> --> 
+        </tr>
+       <%end%>
+       <%end%>
+    </tbody>
+    <%end%>
+    </table>
+    <%= f.submit "submit", class: "btn btn_submit float-right" %>
+    </div>
+    <% end %>
+  <%else%>
+  <h3>No Data Found</h3>
+<%end%>
+</div>
+
+
+<script type="text/javascript">
+
+    function tagChange(planner_id){
+      var new_tag_id = $("#oldtag_"+planner_id).val();
+      var new_utensil_id = $("#oldutensil_"+planner_id).val();
+      $.ajax({
+          type: "GET",
+          url: '/utensil_reallocation?planner_id='+planner_id+'&&new_tag_id='+new_tag_id+'&&new_utensil_id='+new_utensil_id,
+          success: function(responses) {
+            
+            //ind = $('.utensil').parent("td")[0].parentElement.rowIndex;
+            // var newlists = responses;
+           //  var output = [];
+           //  output.push('<option value="">'+"Please Select"+'</option>');
+           //  $.each(newlists, function(index, value)
+           //  {
+           //  if (value.status == null)
+           //  {
+           //   output.push('<option value="'+ value.id +'">'+ value.auto_id +'</option>');
+           // }
+           //  });
+            var changelist = responses;
+            var select = [];
+
+            $('#quantity tbody tr').each(function() {
+ 
+              select.push($(this).find(".tags option:selected").val());
+
+              // if (i == ind-1)
+              // {  debugger;
+              //   $('.tags option').filter(function () {
+              //     return $.inArray(this.value, select) > -1 && !this.selected  
+              //   }).attr('disabled', true)
+              // }
+              // i++;
+              $.each(changelist, function(index, value){
+              
+                $('.tags option').each(function() {
+                 
+                  var option = $(this).val();
+                  if(value.status != null){
+                    $(this).attr('disabled', false);
+                  }
+                  for (i=0; i<=select.length-1; i++) {
+                  
+                    if(select[i]== option ){
+                      // $(this.value, select[i]).attr('disabled', true);
+                      $(this).filter(function () {
+                       return $.inArray(this.value, select) > -1 && !this.selected
+                      }).attr('disabled', true);
+                    }
+                  }
+                });
+              });
+            });
+
+            //$('#quantity tbody tr').each(function(index) {
+            // for (i = index ; i < ind-1 ; i++) { 
+            //   select.push($(this).find(".tags option:selected").val());
+            //   console.log(select);
+            // }
+
+          // });
+            // debugger;
+            //     var selected = data;
+                
+            //       // ind = $('.tags').parent("td")[0].parentElement.rowIndex;
+            //       // var select = [];
+            //       // $('#quantity tbody tr').each(function(index) {
+            //       //     // for (i = index ; i <= ind-1 ; i++) { 
+            //       //     //   select.push($(this).find(".tags option:selected").val());
+            //       //     //   // old_tag_id.push($(this).find(".oldTagIds").val());
+            //       //     //          console.log(select);
+            //       //     //     }
+            //       //     debugger;
+            //       //     select = data;
+
+            //       //      if (index == ind-1)
+            //       //        {
+            //       $('.tags option').each(function() {
+            //         debugger;
+            //         var option = $(this).val();
+            //         for (i=0; i<=selected.length; i++) {
+            //           debugger;
+            //           if(selected[i]== option ){
+            //             $(this.value, selected[i]).attr('disabled', true);
+            //           }
+            //         }
+            //       });
+            //               // $('.tags option').filter(function () {
+                            
+            //               //     return $.inArray(this.value, selected) > -1 
+            //               // }).attr('disabled', true);
+
+            //              // }
+            //       // })
+          },
+      });
+    }
+
+
+    function drop_down_append(utensil_id,ind){
+        $.ajax({
+             type: "GET",
+             url: '<%= $api_service%>/api/v1/utensils/utensil_tags?utensil_id='+utensil_id,
+          success: function(responses) 
+           {  
+           
+            var newlists = responses;
+            var output = [];
+            output.push('<option value="">'+"Please Select"+'</option>');
+            $.each(newlists, function(index, value)
+            {
+              
+            if (value.status == null)
+            {
+             output.push('<option value="'+ value.id +'">'+ value.auto_id +'</option>');
+           }
+           else{
+            output.push('<option disabled="true" value="'+ value.id +'">'+ value.auto_id +'</option>');
+           }
+            });
+            
+            var select = [];
+            
+            $('#quantity tbody tr').each(function(index) {
+            select.push($(this).find(".tags option:selected").val());
+            });
+
+            $('#quantity tbody tr').each(function(index) {
+            // for (i = index ; i < ind-1 ; i++) { 
+            //   select.push($(this).find(".tags option:selected").val());
+            //   console.log(select);
+            // }
+
+            if (index == ind-1)
+            {
+              $(this).find(".tags").empty();
+              $(this).find(".tags").append(output.join(''));  
+              $('.tags option').filter(function () {
+                return $.inArray(this.value, select) > -1 && !this.selected  
+              }).attr('disabled', true)
+            }
+          });
+    }
+       });
+  }
+ // $(document).ready(function() {
+    
+   // $(".utensil").on("change", function (event) {
+  $(document).on("change", '.utensil', function (event) {
+
+    var utensil_id = $(this).val();
+    ind = $(this).parent("td")[0].parentElement.rowIndex;
+    drop_down_append(utensil_id,ind);
+    });
+
+
+  // --------- original tag status changing code - start ------------
+
+
+   // $(document).on("change", '.tags', function (event) {
+   //    var tag_id = $(this).val();
+   //    ind = $(this).parent("td")[0].parentElement.rowIndex;
+
+   //    var select = [];
+   //    var old_tag_id = [];
+   //    $('#quantity tbody tr').each(function(index) {
+   //        for (i = index ; i <= ind-1 ; i++) { 
+   //          select.push($(this).find(".tags option:selected").val());
+   //          old_tag_id.push($(this).find(".oldTagIds").val());
+   //                 console.log(select);
+   //            }
+   //        if (index == ind-1)
+   //          {
+
+   //            $('.tags option').filter(function () {
+   //                return $.inArray(this.value, old_tag_id) > -1 && !this.selected  
+   //            }).attr('disabled', false)
+
+
+   //            $('.tags option').filter(function () {
+   //                return $.inArray(this.value, select) > -1 && !this.selected  
+   //            }).attr('disabled', true)
+
+   //          }
+   //    })
+
+   //  });
+
+   // --------- original tag status changing code - end ------------
+
+
+    $(document).ready(function() {
+      var new_select = <%= @old_value %>;
+      var old_select = [];
+
+
+      $.each(new_select, function(index, value){
+         old_select.push(value.toString());
+       });
+
+  
+       $('#quantity tbody tr').each(function(index) {
+            $('.tags option').filter(function () {
+                 return $.inArray(this.value, old_select) > -1 && !this.selected  
+
+                }).attr('disabled', true);
+          });
+    
+});
+
+
+
+</script>
+
+<script type="text/javascript">
+   var act_qty;
+   var $columns;
+   $(document).on("click", '.addqty', function (event) {
+   
+    act_qty = (event.target.value);
+    var $row = jQuery(this).closest('tr');
+     $columns = $row.find('td')[0].firstElementChild.defaultValue;
+     $prim = $row.find('td')[2].innerHTML;
+     $select = $row.find('td')[3].innerHTML;
+     console.log($select)
+ 
+   });
+
+   $(document).on("change", '.addqty', function (event) {
+     var new_qty = (event.target.value);
+     var new_row = $("<tr>");
+     var uom = act_qty.split(' ')[1];
+
+     var num1 = parseFloat(act_qty);
+     var num2 = parseFloat(new_qty);
+     if (num2 >= num1){
+      alert("Please Select Lesser Value ");
+      $(this).val(num1+" "+uom);
+     }
+     else if(num2 == 0){
+      alert("Please Select Greatest  Value")
+      $(this).val(num1+" "+uom);
+
+     }
+    else if (isNaN(num2)){
+      alert("Please Enter the value")
+
+     }
+     else{
+      var total_qty = num1-num2;
+      var col = "";
+    
+      col += '<td><input type="textbox" name="item[]" class="form-control" value="'+$columns+'" readonly="true"></td>';
+      col += '<td><input type="text" name="qty[]" class="form-control addqty" value ="'+ Math.round(total_qty * 100) / 100 +" "+uom+'"></td>';
+      col += '<td>'+$prim+'</td>';
+      col += '<td>'+$select+'</td>';
+      col += '<td><label>1</label></td>';
+      // col += '<td><input type="text" name="wastage[]" class="form-control"></td>';
+    
+      new_row.append(col);
+      // new_row.find(".tags").empty();
+      new_row.find('.utensil option:selected').removeAttr('selected');
+      new_row.find('.tags option:selected').removeAttr('selected');
+      new_row.insertAfter($(this).closest("tr"));
+      
+
+     }
+   });
+
+</script>

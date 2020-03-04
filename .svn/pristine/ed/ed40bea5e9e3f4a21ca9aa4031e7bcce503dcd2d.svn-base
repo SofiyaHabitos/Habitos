@@ -1,0 +1,3 @@
+$("#shownutensil-modal").html("<%= escape_javascript(render 'show') %>")
+$("#shownutensil-modal").on('shown.bs.modal', function() {
+}).modal("show");

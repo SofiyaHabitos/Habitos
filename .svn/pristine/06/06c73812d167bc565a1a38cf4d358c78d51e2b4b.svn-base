@@ -1,0 +1,175 @@
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Asset</h3></center>
+   </div>
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+
+
+                <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Map to facility</span></label>
+      
+                    <div class="form-group"><%= @utensil.kitchen.name%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Utensil Category</span></label>
+      
+                    <div class="form-group"><%= @utensil.utensils_category.utensils_category_name%></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Utensil SubCategory</span></label>
+      
+                    <div class="form-group"><%= @utensil.utensiltype%></div>
+                
+                  </div>
+                  
+
+
+                 <div class="col-xs-4">
+
+                   <label class="control-label"><span style="font-weight:bold"> Tracking Id</span></label>
+                
+                    <div class="form-group"><%= @utensil.tracking%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+
+                   <label class="control-label"><span style="font-weight:bold">Upload Status</span></label>
+                
+                    <div class="form-group"><%= @utensil.upload_status%></div>
+                
+                  </div>
+        
+        
+                  <div class="col-xs-4">
+
+                   <label class="control-label"><span style="font-weight:bold"> Utensil Name</span></label>
+                
+                    <div class="form-group"><%= @utensil.utensil_name%></div>
+                
+                  </div>
+
+                  <% unless  @utensil.upload_status == "single"%>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Count</span></label>
+      
+                    <div class="form-group"><%= @utensil.count%></div>
+                
+                  </div>
+                  <%end%>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Description</span></label>
+      
+                    <div class="form-group"><%= @utensil.description%></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Tare Weight</span></label>
+      
+                    <div class="form-group"><%= @utensil.tare_weight%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Lid Weight</span></label>
+      
+                    <div class="form-group"><%= @utensil.lid_weight%></div>
+                
+                  </div>
+
+                  
+
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Asset Counts</span></label>
+      
+                    <div class="form-group"><!%= @utensil.utensils_count%></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Available Status</span></label>
+      
+                    <div class="form-group"><%= (@utensil.available_status.to_s == "true")? "Available" : "UnAvailable" %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Price</span></label>
+      
+                    <div class="form-group"><%= @utensil.price%></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Dispatch Status</span></label>
+      
+                    <div class="form-group">
+                    <td><%= (@utensil.status.to_s == "1") ? "Received" : "Not Received" %></td>
+                </div>
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Created_by</span></label>
+      
+                    <div class="form-group"><%= create(@utensil)%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Updated_by</span></label>
+      
+                    <div class="form-group"><%= update(@utensil)%></div>
+                
+                  </div>
+                  
+                   
+                  
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+
+    <div class="footer">
+    
+      <%= link_to 'Back', utensils_path, :class=>"btn btn-default"%>
+      <!--%= link_to 'Edit', edit_utensil_path(@utensil), :class=>"btn btn-primary"%-->
+   
+    </div> 
+  
+  </div>
+
+</div>

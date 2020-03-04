@@ -1,0 +1,33 @@
+<div class="col-md-4">
+  <div class="card">
+    <div class="card-header">
+      <h1>Vessel Uncollected</h1>
+    </div>    
+    <div class="card-body">
+        <ul class="list-unstyled">
+        <% if @vessels_uncollected.present? %>
+          <% @vessels_uncollected.group_by(&:tenant_id).map do |tenant_id, utensils| %>
+            <li class="d-flex align-items-center">
+              <span>
+                <h2><%= utensils.count %></h2>
+                <label>Missed</label>
+              </span>
+              <span>
+                <h3><%= Tenant.exists?(tenant_id)? Tenant.find(tenant_id).name : nil %></h3>
+                <!-- <p>16/03/2018</p> -->
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <ul class="list-unstyled">
+          <li class="d-flex align-items-center"><label style="font-size: medium;">No Records Found</label></li>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+  <% if @vessels_uncollected.present? %>
+    <a href="/normalmenu_sites/notreceive_status" class="btn btn-default float-right" role="button">View More</a>              
+    <!-- <button class="btn btn-default float-right">View More</button> -->
+  <% end %>
+</div>

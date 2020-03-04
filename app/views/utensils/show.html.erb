@@ -1,0 +1,91 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Facility Management / Assets / Show Assets</p>
+    <h2 class="header_title">Show Assets <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, utensils_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+           <div class="col-md-3">
+            <label class="control-label">Map to facility</label>
+            <h3><%= @utensil.kitchen.name%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Utensil Name</label>
+            <h3><%= @utensil.utensilname.name%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Status</label>
+            <h3><%= @utensil.tracking%></h3>
+          </div>
+            <% unless  @utensil.upload_status == "single"%>
+          <div class="col-md-3">
+            <label class="control-label">Count</label>
+            <h3><%= @utensil.count%></h3>
+            <%end%>
+          </div>
+           <div class="col-md-3">
+            <label class="control-label">Description</label>
+            <h3><%= @utensil.description%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Tare Weight</label>
+            <h3><%= @utensil.tare_weight%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Lid Weight</label>
+            <h3><%= @utensil.lid_weight%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Available Status</label>
+            <h3><%= (@utensil.available_status.to_s == "true")? "Available" : "UnAvailable" %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Price</label>
+            <h3><%= @utensil.price%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Dispatch Status</label>
+            <h3><%= (@utensil.status.to_s == "1") ? "Received" : "Not Received" %></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Created By</label>
+            <h3><%= create(@utensil)%></h3>
+          </div>
+          <div class="col-md-3">
+            <label class="control-label">Updated By</label>
+            <h3><%= update(@utensil)%></h3>
+          </div>
+          <div class="card-body" id="tasks">
+          <span class="body-header">
+            <h3 class="modal-title" >Asset ID </h3>
+          </span>
+        <div class="row">
+          <%@utensil.tags.map do |tag|%>
+          <div class="col-md-6">
+          <div class="control floating_label">
+            <input type="text" name="auto_id" class="input-text boxed e1 "   value="<%= tag.auto_id%>" disabled="true">
+         <!--    <%#= f.label :count,"Asset ID", :class=> "input-text-placeholder"%> -->
+          </div>
+          </div>
+          <%end%>
+        </div>
+        </div>
+           
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+

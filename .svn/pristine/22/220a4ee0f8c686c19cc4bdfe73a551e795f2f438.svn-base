@@ -1,0 +1,113 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3>Meal Restrictions<span><%= link_to 'New Meal Restriction', new_meal_restriction_path,:class=>"btn btn-primary btn-sm rounded-s"%> </span></h3>
+    </div>
+    <div class="body-content">
+      <div id="dashboard-container">
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover" id="sitelist">
+            <thead>
+               <tr>
+                  <th>Meal restriction name</th>
+                  <th>Created_by</th>
+                  <th>Updated_by</th>
+                  <th>Edit</th>
+                  <!-- <th >Delete</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                  <% @meal_restrictions.each do |meal_restriction| %>
+      <tr>
+        <td><%= meal_restriction.meal_restriction_name %></td>
+        <td><%= meal_restriction.created_by %><%#= created(meal_course) %></td>
+        <td><%= meal_restriction.updated_by %><%#= update(meal_course) %></td>
+        <!-- <td><!%= link_to 'Show', site_category %></td> -->
+        <td><%= link_to '', edit_meal_restriction_path(meal_restriction),:class=>"fa fa-pencil" %></td>
+        <!-- <td><!%= link_to '', meal_restriction, method: :delete, data: { confirm: 'Are you sure?' },:class=>"fa fa-trash-o" %></td> -->
+      </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% if false %>
+
+  <p id="notice"><%= notice %></p>
+
+<h1>Meal Restrictions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Meal restriction name</th>
+      <th>Created by</th>
+      <th>Updated by</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @meal_restrictions.each do |meal_restriction| %>
+      <tr>
+        <td><%= meal_restriction.meal_restriction_name %></td>
+        <td><%= meal_restriction.created_by %></td>
+        <td><%= meal_restriction.updated_by %></td>
+        <td><%= link_to 'Show', meal_restriction %></td>
+        <td><%= link_to 'Edit', edit_meal_restriction_path(meal_restriction) %></td>
+        <td><%= link_to 'Destroy', meal_restriction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Meal Restriction', new_meal_restriction_path %>
+
+
+<% end %>

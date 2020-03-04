@@ -1,0 +1,219 @@
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" /> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> -->
+
+<%= form_for(software_setup) do |f| %>
+<!--   <article class="content item-editor-page ">  
+    <div class="title-block">
+      <h3 class="title"><span class="sparkline bar" data-type="bar"></span></h3>
+    </div> -->
+    <form name="item">
+      <div class="card card_form mb-5">
+        <div class="card-body">
+          <div class="row new_row">
+            <%= f.fields_for @user do |a| %>
+              <% if params[:id] == nil %>
+                <div class="col-md-3">
+                  <div class="control floating_label">
+                    <%= a.collection_select :tenant_id, Tenant.where(active: true).where.not(:name=>"Idlidabba").order("name"),:id,:name, {include_blank: true},{ :class=>" input-text boxed e1",:required=>"true",autofocus: true} %>
+                    <%= a.label :tenant_id,"Client", :class => "input-text-placeholder" %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="control floating_label">
+                    <%= a.text_field :name, {:class=> "input-text boxed",:required=>"true"}%>
+                     <%= a.label :name, "Name", :class => "input-text-placeholder" %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="control floating_label">
+                    <%= a.text_field :email, {:class=> "input-text boxed",:required=>"true",:type=>"email"} %>
+                    <%= a.label :email, "E-mail", :class => "input-text-placeholder" %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="control floating_label">
+
+
+                    <%= a.text_field :mobile_number,class: "input-text boxed",required: true,title:'Phone Number (Format: +91(91)********)',:pattern =>'^\+?\d{0,10}',minimum: '10' %>
+
+                    <%#= a.text_field :mobile_number,{:class=> "input-text boxed",:required=>"true"} %>
+                    <%= a.label :mobile_number, "Mobile-number", :class => "input-text-placeholder" %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="control floating_label">
+                    <%= a.collection_select :role_id, Role.order("name").where.not(site_category_id: SiteCategory.where(name:"Provider").ids[0]),:id,:name, {prompt:""},{ :class=>"input-text boxed e1",:required=>"true"} %>
+                     <%= a.label :role_id, "Role",:class => "input-text-placeholder" %>
+                  </div>
+                </div>
+                <% else %>
+                  <div class="col-md-3 d-block">
+                    <%= a.label :tenant_id,"Client", {:class=> "control-label", required: true} %>
+                    <h3><%= @software_setup.user.tenant.name %></h3>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="control floating_label">
+                      <%= a.text_field :name, {:class=> "input-text boxed",:required=>"true",:autofocus=> "true"}%>
+                      <%= a.label :name, "Name",:class => "input-text-placeholder" %>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="control floating_label">
+                      <%= a.text_field :email, {:class=> "input-text boxed",:required=>"true"} %>
+                      <%= a.label :email, "E-mail", :class => "input-text-placeholder" %>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="control floating_label">
+                      <%= a.text_field :mobile_number,{:class=> "input-text boxed",:required=>"true"} %>
+                      <%= a.label :mobile_number, "Mobile-number", :class => "input-text-placeholder" %>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="control floating_label">
+                       <%= a.collection_select :role_id, Role.order("name").where.not(site_category_id: SiteCategory.where(name:"Provider").ids[0]),:id,:name, {prompt:""},{:class=>"input-text boxed e1",:required=>"true"} %>
+                       <%= a.label :role_id, "Role",:class => "input-text-placeholder" %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+
+            <div class="col-md-3">
+              <div class="form_radio">
+                <%= f.label :software_privileges, "Software Privileges:",:class => "mb-0 mr-2"  %>
+                <label class="radio-label d-inline-flex mr-2"><%= f.radio_button :software_privileges, true, checked: true, :value => "Yes", :onclick => "show2();", class: "custom_radio boxed radio_custom", id: "software_previlage_yes", required: true %><span>Yes</span></label>
+                <label class="radio-label d-inline-flex"><%= f.radio_button :software_privileges, false, :value => "No", :onclick => "show1();", class: "custom_radio boxed", id: "software_previlage_no", required: true %><span>No</span></label>
+              </div>
+                <!-- <table>
+                  <tr> -->
+                    <!-- <td><%#= f.label :software_privileges, "Yes".html_safe, class: "form-control boxed" %></td> -->
+                    <%#= f.radio_button :software_privileges, true, checked: true, :value => "Yes", :onclick => "show2();", class: "form-control boxed radio_custom" %>
+                    <%#= f.label :software_privileges, "No", class: "form-control boxed" %>
+                  <!-- </tr>     
+                </table>   -->
+            </div>
+
+            <%= f.fields_for @user, validate: true do |a| %>
+              <div id="div1" class="col-md-3">
+                <div class="control floating_label">
+                  <%= a.text_field :user_name, {:class=>"input-text boxed float_input username", :id=>"un"} %>
+                  <%= a.label :user_name, "Username" , :class => "input-text-placeholder" %>
+                </div>
+              </div>
+              <div id="div2" class="col-md-3">
+                <div class="control floating_label">
+                  <%= a.text_field :password_digest, {:class=> "input-text float_input boxed password"} %>
+                  <%= a.label :password_digest, "Password", :class => "input-text-placeholder" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <%= f.submit "Submit", :class=>"btn btn_submit float-right", id: "enable" %>
+    
+<!--       <div class="form-group row mrgn-top">
+        <div class="col-sm-10 col-sm-offset-4 new_btn">
+          <%#= link_to "Back", software_setups_path, :class => "btn btn-primary" %> 
+          <%#= f.submit "Submit", :class=>"btn btn-primary", id: "enable" %>
+        </div>
+      </div> -->
+        </div>
+      </div>
+    </form>
+  <!-- </article> -->
+<% end %>
+
+<script>
+  function show1(){
+    document.getElementById('div1').style.display ='none';
+    document.getElementById('div2').style.display ='none';
+  }
+  function show2(){
+    document.getElementById('div1').style.display = 'block';
+    document.getElementById('div2').style.display = 'block';
+  }
+</script>
+
+<script type="text/javascript">
+
+
+</script>
+
+<style>
+
+/*body {
+  font-family: arial;
+}*/
+.hide {
+  display: none;
+}
+p {
+  font-weight: bold;
+}
+label[for="software_setup_user_tenant_id"] {
+    font-size: 14px;
+    color: #ee5222;
+    font-weight: 500;
+}
+label[for="software_setup_user_tenant_id"] + h3{
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 8px;
+}
+</style>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+    // software_previlage
+
+    
+
+  $("#software_previlage_yes").change(function() {
+    if(this.checked) {
+      if(($('.username').length <= 3) || ($('password').length <= 3)){
+        $('#enable').attr('disabled',true);
+      }else{
+        $('#enable').attr('disabled',false);
+      }
+    }
+  });
+
+
+
+    $("#un").on("change", function () {
+
+      var username = $(this).val();
+      $.ajax({
+        type: "GET",
+        url: "/software_setups/check_username_present?username="+username,
+        success: function nt(msg) { 
+
+          //alert("hhih");
+          /*alert(msg.message);*/
+           $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+
+            if (msg.message != "") {
+            $('#enable').attr('disabled',true);
+            }
+             if (msg.message == "") {
+            $('#enable').attr('disabled',false);
+            }
+            /*else {
+             $('#enable').attr('disabled',false); 
+            }*/
+            $( ".msg" ).text(msg.message); 
+           $(".msg").show();
+        }
+
+      });
+    });
+  });
+</script>
+
+<style type="text/css">
+  .msg{
+    color:red;
+  }
+</style>

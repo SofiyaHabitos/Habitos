@@ -1,0 +1,165 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container ">  
+  <div class="body-header">
+        <h3 class="modal-title">Edit - Meal order</h3>
+          </div>
+ <!--         <%#= render 'form', point_of_sale: @point_of_sale %> -->
+             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+
+<%= form_for @point_of_sale, url: {action: :update} do |f| %>
+ 
+  <article class="content item-editor-page">
+    
+        <div class="title-block">
+        
+            <h4 class="title"> <span class="sparkline bar" data-type="bar"></span> </h4>
+    
+        </div>
+    
+        <form name="item">
+        
+            <div class="card card-block">
+            
+                <div class="row">
+                
+                    <div class="form-group">
+
+                     <div class="col-xs-4">
+                
+                            <label class="control-label"><%= f.label :Tenant %></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.collection_select :tenant_id, Tenant.order(:name),:id,:name,{:prompt=>true, :readonly => true} ,{class: "form-control tenant", :id=> "demo"}%>
+                     
+                            </div>
+                        </div>
+                                
+                         
+                         <div class="col-xs-4 http" >
+                
+                            
+                            <label class="control-label"><%= f.label :meal_time %></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.collection_select :meal_time, Category.order(:category_name),:category_name,:category_name, {:prompt=>true} ,{class: "form-control meal_time", :id=> "demo1", :onfocus => "return validateForm()"} %>
+                                 
+                            </div>
+                            
+
+                        </div>
+
+
+                        <div class="col-xs-4 http" >
+                
+                            
+                            <label class="control-label"><%= f.label :meal_restriction_id %></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.collection_select :meal_restriction_id, MealRestriction.order(:meal_restriction_name), :id, :meal_restriction_name, {:prompt=>true} ,{class: "form-control meal_time", :onfocus => "return validateForm()"} %>
+                                 
+                            </div>
+                            
+
+                        </div>
+
+
+                       <div class="col-xs-4 http">
+                
+                            <label class="control-label"><%= f.label :Date %></label>
+
+                            <div class="form-group">
+                     
+                                 <%= f.text_field :date,:id=>"txtFrom", class: "form-control boxed", :onfocus => "return validateForm1()", required: true%>
+                     
+                            </div>
+
+                        </div> 
+
+
+
+
+
+
+                        <div class="col-xs-4">
+                
+                            <label class="control-label"><%= f.label :quantity %></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.text_field :quantity,:class=>"form-control", :required=>"true" %>
+                     
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="col-xs-4 http">
+                
+                            <label class="control-label"><%= f.label :food_category_id %></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.collection_select :food_category_id, FoodCategory.order(:name),:id,:name, {:prompt=>true} ,{class: "form-control foodcat"} %>
+                     
+                            </div>
+
+                        </div>
+
+
+
+                       <div class="col-xs-4">
+                
+                            <label class="control-label"><%= f.label :comment %></label>
+
+                            <div class="form-group">
+                     
+                                <%= f.text_field :comment,:class=>"form-control x", :required=>"true" %>
+                     
+                            </div>
+
+                        </div>
+
+
+                         </div>
+
+                        </div>
+
+                         </div>
+
+                         </form>
+
+                 <div class="form-group row mrgn-top">
+            
+            <div class="col-sm-10 col-sm-offset-2"> <%= f.submit :class=>"btn btn-primary "%></div>
+       
+       </div>
+  
+    </article>
+
+<% end %>
+
+ <script type="text/javascript">
+  
+  $(document).ready(function(){
+        
+    /*    $('.tenant').attr('disable', true);*/
+        $(".tenant").prop('disabled', true);
+        $("#demo1").prop('disabled', true);
+        $(".foodcat").prop('disabled', true);
+        $(".x").prop('disabled', true);
+
+   
+});
+</script>
+
+
+
+   </div>
+</div>

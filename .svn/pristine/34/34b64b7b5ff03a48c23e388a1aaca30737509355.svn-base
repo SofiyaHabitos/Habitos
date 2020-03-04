@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @allery.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @allery.description %>
+</p>
+
+<%= link_to 'Edit', edit_allery_path(@allery) %> |
+<%= link_to 'Back', alleries_path %>

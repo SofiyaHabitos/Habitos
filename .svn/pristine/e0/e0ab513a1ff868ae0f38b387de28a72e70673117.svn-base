@@ -1,0 +1,106 @@
+<%= form_for(meal_restriction,validate: true) do |f| %>
+ 
+<article class="content item-editor-page wrap-center">
+    <div class="title-block">
+        <h3 class="title"><span class="sparkline bar" data-type="bar"></span> </h3>
+    </div>
+    <form name="item">
+            <div class="row">
+                <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                 <%= f.label :meal_restriction_name ,"Meal Course Name"%>
+                 </label><div class="form-group"> 
+                 <%= f.text_field :meal_restriction_name,required:true,class: "form-control boxed " %>
+                 </div>
+                 </div>
+                 </div>
+              </div>
+             
+        
+        <div class="row">
+            <div class="col col-md-3"><%= link_to "Back", meal_restrictions_path ,:class=>"btn btn-primary"%></div>
+            <div class="col col-md-3"><%= f.submit "Submit",:class=>"btn btn-primary"%></div>
+        </div>
+        
+      </form>
+  </article>
+
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% if false %>
+
+<%= form_for(meal_restriction) do |f| %>
+  <% if meal_restriction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(meal_restriction.errors.count, "error") %> prohibited this meal_restriction from being saved:</h2>
+
+      <ul>
+      <% meal_restriction.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :meal_restriction_name %>
+    <%= f.text_field :meal_restriction_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :created_by %>
+    <%= f.text_field :created_by %>
+  </div>
+
+  <div class="field">
+    <%= f.label :updated_by %>
+    <%= f.text_field :updated_by %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<% end %>
+
+
+

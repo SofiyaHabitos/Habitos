@@ -1,0 +1,4 @@
+
+//$('#dep_per').html("<%#= escape_javascript select("tenant", "tenant_id", @cat.collect {|p|  p },{:include_blank => ""}, {class: "form-control"})%>");
+
+$('#dep_per').val("<%= @cat[0] %>");

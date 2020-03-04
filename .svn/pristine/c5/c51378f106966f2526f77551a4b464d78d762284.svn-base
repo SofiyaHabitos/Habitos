@@ -1,0 +1,109 @@
+<article class="content item-editor-page" id="ten_detail">
+  <div class="title-block">        
+  <h4 class="title"> <span class="sparkline bar" data-type="bar"></span> </h4>
+  </div>
+  <form name="item">
+  <div class="card card-block">
+    <div class="row">
+      <div class="form-group">
+        <%= form_for @point_of_sale,:url => {:controller => "point_of_sales", :action => "create"} do |f| %>
+
+          <div class="col-xs-4" >
+            <label class="control-label"><%= f.label :stud_type %></label>
+            <div class="form-group">
+              <%= f.select :stud_type, ['Primary','Secondary'], {prompt: true }, {class: "form-control boxed e1 a2", id: "student_type"}%>
+            </div>
+          </div>          
+
+          <div class="col-xs-4" >
+            <label class="control-label"><%= f.label :meal_time %></label>
+            <div class="form-group">
+              <%= f.collection_select :meal_time, Category.where(:category_name => @tenant_details.pluck(:meal_time)).order(:category_name), :category_name, :category_name, {:prompt => true}, {class: "form-control e1", id: "mt" } %>
+            </div>
+          </div>
+
+
+          <div class="col-xs-4" >
+            <label class="control-label"><%= f.label :meal_restriction_id %></label>
+            <div class="form-group">
+              <%= f.collection_select :meal_restriction_id, @meal_restriction, :id, :meal_restriction_name, {:prompt => "select"}, {class: "form-control e1 meal_restriction" } %>
+              </div>
+          </div>
+
+
+          <div class="col-xs-4">
+            <label class="control-label"><%= f.label :Date %></label>
+            <div class="form-group">
+              <%= f.text_field :date, :id => "txtFrom", class: "form-control boxed", required: true, :readonly=> true %>
+            </div>
+          </div> 
+          
+          <div class="col-xs-4">
+            <label class="control-label"><%= f.label :quantity %></label>
+            <div class="form-group">
+              <%= f.text_field :quantity, :class=>"form-control", :required=>"true" %>
+            </div>
+          </div>
+
+          <!-- <div class="col-xs-4 http">
+            <label class="control-label"><%#= f.label :food_category_id %></label>
+            <div class="form-group">
+              <%#= f.collection_select :food_category_id, FoodCategory.where(:id => @tenant_details.pluck(:food_category_id).uniq).order(:name), :id, :name, {:prompt=>true}, {class: "form-control e1"} %>
+            </div>
+          </div> -->
+
+          <div class="col-xs-4">
+            <label class="control-label"><%= f.label :comment %></label>
+            <div class="form-group">
+              <%= f.text_field :comment,:class=>"form-control" %>
+            </div>
+          </div>
+
+          <%= f.hidden_field :tenant_id, value: @tenant_details.first.tenant_id %>
+
+          <div class="form-group row mrgn-top">
+            <div class="col-sm-10 col-sm-offset-2">
+              <%= f.submit "Submit", :class=>"btn btn-primary" %>
+            </div>
+          </div>
+
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+  </form>
+</article>
+
+<% to_date = @tenant_details.first.tenant.to_date %>
+
+<script type="text/javascript">
+  $(function(){
+  	  var today = new Date();  
+      $("#txtFrom").datepicker({      	
+    	dateFormat: 'yy-mm-dd', 
+    	minDate: today,
+    	maxDate: '<%= to_date %>',
+        autoclose: true, 
+        todayHighlight: true
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#mt").change(function () {
+      var meal_time=($(this).val());
+      $.ajax({
+        type: "GET",
+        url: "/point_of_sales/get_restriction?meal_time="+meal_time+"&tenant_id="+"<%= @tenant_details.first.tenant_id %>"
+      })
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".e1").select2();
+  });            
+</script>

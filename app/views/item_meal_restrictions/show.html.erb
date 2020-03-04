@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Production item:</strong>
+  <%= @item_meal_restriction.production_item %>
+</p>
+
+<p>
+  <strong>Meal restriction:</strong>
+  <%= @item_meal_restriction.meal_restriction %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @item_meal_restriction.created_by %>
+</p>
+
+<p>
+  <strong>Updated by:</strong>
+  <%= @item_meal_restriction.updated_by %>
+</p>
+
+<%= link_to 'Edit', edit_item_meal_restriction_path(@item_meal_restriction) %> |
+<%= link_to 'Back', item_meal_restrictions_path %>

@@ -1,0 +1,169 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Meal order</h3></center>
+
+   </div>    
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Date</span></label>
+                
+                    <div class="form-group"><%= @point_of_sale.date %></div>
+                
+                  </div>
+            
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Quantity</span></label>
+      
+                    <div class="form-group"><!%= @nutrition.quantity %></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Customer</span></label>
+   
+                    <div class="form-group"><%=@point_of_sale.tenant.present? ? @point_of_sale.tenant.name : nil %></div>
+                
+                  </div>
+<!-- 
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Cost</span></label>
+      
+                    <div class="form-group"><%#= @menu_master.cost %></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal_time:</span></label>
+      
+                    <div class="form-group"><%= @point_of_sale.meal_time %></div>
+                
+                  </div>
+               
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal_Restriction:</span></label>
+      
+                    <div class="form-group"><%= @point_of_sale.meal_restriction.present? ? @point_of_sale.meal_restriction.meal_restriction_name : nil%></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Quantity</span></label>
+      
+                    <div class="form-group"><%= @point_of_sale.quantity.present? ? @point_of_sale.quantity : nil %></div>
+                
+                  </div>
+
+
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Food_category</span></label>
+      
+                    <div class="form-group"> <%= @point_of_sale.food_category.present? ? @point_of_sale.food_category.name:
+                    nil %></div>
+                
+                  </div>
+                  
+
+                  
+                  
+
+                  
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">UOM</span></label>
+      
+                    <div class="form-group"><!%= @nutrition.unit_of_measurement.name%></div>
+                
+                  </div> -->
+
+      
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Comment</span></label>
+      
+                    <div class="form-group"> <%= @point_of_sale.comment.present? ? @point_of_sale.comment :
+                    nil %></div>
+                
+                  </div>
+<!-- 
+                 <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  <div class="form-group">
+                     <%#= @menu_customer.updated_by %>
+                  </div>
+                </div>
+  -->                 
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+  
+         
+    <div class="footer">
+  
+     <%= link_to 'Back', point_of_sales_path, :class=>"btn btn-default"%>  
+      <!--%= link_to 'Edit', edit_nutrition_path(@nutrition), :class=>"btn btn-primary"%-->
+  
+   
+    </div>
+  
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <p id="notice"><%= notice %></p>
+
+<%#= link_to 'Edit', edit_point_of_sale_path(@point_of_sale) %> |
+<%#= link_to 'Back', point_of_sales_path %> -->

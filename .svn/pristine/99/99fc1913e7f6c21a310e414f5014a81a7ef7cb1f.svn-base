@@ -1,0 +1,52 @@
+<%= form_for category, validate: true  do |f| %>
+  <!--% if category.errors.any? %>
+    <div id="error_explanation">
+      <h2><!%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
+
+      <ul>
+      <!% category.errors.full_messages.each do |message| %>
+        <li><!%= message %></li>
+      <!% end %>
+      </ul>
+    </div>
+  <!% end %-->
+
+
+
+  <article class="content item-editor-page wrap-center">
+    <div class="title-block">
+        <h3 class="title"><span class="sparkline bar" data-type="bar"></span> </h3>
+    </div>
+    <form name="item">
+            <div class="row">
+                <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                 <%= f.label :category_name ,"Category"%>
+                 </label><div class="form-group"> 
+                 <%= f.text_field :category_name,class: "form-control boxed " %>
+                 </div>
+                 </div>
+                 </div>
+                 </div>
+                 <div class="row">
+                 <div class="form-group">
+                <div class="col-xs-4">
+                <label class="control-label">
+                <%= f.label :description %>                  
+                </label>
+                <%= f.text_area :description, :class=>"form-control boxed"%>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+
+        <div class="row">
+            <div class="col col-md-3"><%= link_to "Back", categories_path ,:class=>"btn btn-primary"%></div>
+            <div class="col col-md-3"><%= f.submit "Submit",:class=>"btn btn-primary"%></div>
+        </div>
+  </form>
+  </article>
+<% end %>

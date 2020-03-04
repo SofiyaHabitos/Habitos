@@ -1,0 +1,41 @@
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3>Master<span><%= link_to 'New Production Subcategory', new_item_subcategory_path, :class=>"btn btn-primary btn-sm rounded-s"%> </span></h3>
+      <h2>Production SubCategory</h2>
+    </div>
+    <div class="body-content">
+      <div id="dashboard-container">
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%" id="production_subcategory">
+            <thead>
+               <tr>
+                 <th>Name</th>
+                  <th>Description</th>
+                  <th>Created by</th>
+                  <th>Updated by</th>
+                  <th>Edit</th>
+                  <!-- <th>Delete</th> -->
+                </tr>
+            </thead>
+            <tbody>
+              <% @item_subcategories.each do |item_subcategory| %>
+      <tr>
+        <td><%= item_subcategory.name %></td>
+        <td><%= item_subcategory.description %></td>
+        <td><%= KitchenUser.find_by(:id=>item_subcategory.create_by).name unless(item_subcategory.create_by==nil) %></td>
+        <td><%= update(item_subcategory) %></td>
+        <td><%= link_to '', edit_item_subcategory_url(item_subcategory),:class=>"fa fa-pencil" %></td>
+        <!-- <td><%#= link_to '', item_subcategory, method: :delete, data: { confirm: 'Are you sure?' },:class=>"fa fa-trash-o" %></td> -->
+      </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>

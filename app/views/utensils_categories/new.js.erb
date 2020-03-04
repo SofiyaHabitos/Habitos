@@ -1,0 +1,6 @@
+$("#newutensils_category-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newutensils_category-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show")
+
+

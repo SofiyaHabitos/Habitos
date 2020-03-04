@@ -1,0 +1,32 @@
+<%# menu_customers = @menu_customers.where(delivery_status: ["Delivered", "Dispatched", "packed"]) %>
+<% if @menu_customers.present? %>
+  <ul class="list-unstyled">
+    <% @menu_customers.order('updated_at DESC').map do |menu_customer| %>
+      <li class="d-flex">
+        <span class="tenant-logo">
+          <%= image_tag menu_customer.tenant.image.image_path,:style=>"width:40px; height:40px"%>
+          <!-- <img src="\assets\sample.png" width="40px" height="40px"> -->
+        </span>
+        <span>
+          <h3><%= menu_customer.tenant.name %></h3>
+          <h4><%= menu_customer.category.category_name %></h4>
+          <p>
+            <i class="far fa-check-circle"></i>
+            <%= menu_customer.delivery_status.titleize %>
+            <span class="float-right">
+              <%= menu_customer.updated_at.localtime.strftime('%I:%M %p') %>
+            </span>
+          </p>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <ul class="list-unstyled">
+    <li class="d-flex">
+      <span>
+        <h3>No Records Found</h3>
+      </span>
+    </li>
+  </ul>
+<% end %>

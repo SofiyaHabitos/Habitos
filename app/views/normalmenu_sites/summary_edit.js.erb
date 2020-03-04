@@ -1,0 +1,4 @@
+$("#editmenufood-modal").html("<%= escape_javascript(render 'summary_edit') %>")
+$("#editmenufood-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")

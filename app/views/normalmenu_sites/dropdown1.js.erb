@@ -1,0 +1,21 @@
+<% if @food_category %>
+
+	<% @food_category = [@food_category].flatten %>
+
+	<%detail_ids =TenantDetail.where(tenant_id:@food_category[0].tenant_id,meal_time:@food_category[0].meal_time).ids%>
+	
+	<%@food_category=TenantDetail.where(id:detail_ids)%>
+
+	<%@food_category.map{|kk|kk.meal_type="#{kk.food_category.name}" }%>
+
+    <%sumval = @food_category.pluck(:quantity).map(&:to_i).sum%>
+
+	<%food = TenantDetail.new(:meal_type=>"Select type")%>
+
+	<% @food_category = [food,@food_category].flatten %>
+
+$('.fold2').html("<%= escape_javascript options_from_collection_for_select(@food_category, :food_category_id ,:meal_type)%>");
+   	
+   		$('#time').val("<%=sumval%>");
+
+<% end %>

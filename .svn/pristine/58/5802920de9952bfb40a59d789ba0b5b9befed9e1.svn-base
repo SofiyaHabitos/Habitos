@@ -1,0 +1,53 @@
+<div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h3 class="text-center text-info">
+                           SOFTWARE SETUP DETAILS FROM IDLIDABBA
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+              <h2>Hi <%= User.last.tenant.name %></h2>
+
+                    <p>
+                      <strong>Name:</strong>
+                      <% customer=User.last %>
+                      <%= customer.name %>
+                    </p>
+
+                    <p>
+                      <strong>Contact number:</strong>
+                      <% customer=User.last %>
+                      <%= customer.mobile_number %>
+                    </p>
+
+                    <p>
+                      <strong>Software Privileges:</strong>
+                      <% ss=SoftwareSetup.last %>
+                      <% if ss="true" %>
+                      <p>Yes</p>
+                      <%else%>
+                      <p>No</p>
+                      <%end%>
+                    </p>
+                    
+                    <p>
+                      <strong>Username:</strong>
+                      <% customer=User.last %>
+                      <%= customer.user_name %>
+                    </p>
+
+                    <p>
+                      <strong>Password:</strong>
+                      <% customer=User.last %>
+                      <%= customer.password_digest %>
+                    </p>
+                 
+
+            </div>
+        </div>

@@ -1,0 +1,5 @@
+$("#newfeed-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newfeed-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show");
+

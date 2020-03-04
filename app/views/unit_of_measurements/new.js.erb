@@ -1,0 +1,6 @@
+$("#newuom-modal").html("<%= escape_javascript(render 'new') %>")
+$("#newuom-modal").on('shown.bs.modal', function() {
+  $('form').enableClientSideValidations();
+}).modal("show")
+
+

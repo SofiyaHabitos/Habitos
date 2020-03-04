@@ -1,0 +1,37 @@
+ <section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">Master / Client Type / Show Client Type</p>
+    <h2 class="header_title">Show Client Type <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, site_categories_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+
+        	<div class="col-md-3">
+            <label class="control-label">Client Type:</label>
+            <h3><%= @site_category.name %></h3>
+          </div>
+
+          <div class="col-md-3">
+            <label class="control-label">Client Category:</label>
+            <h3><%= @site_category.client_categories.map{|category| category.name }.join(",") %></h3>
+          </div>
+
+          <div class="col-md-3">
+            <label class="control-label">Spread Type:</label>
+            <h3><%=client_spreads(@site_category).join(",") if client_spreads(@site_category).present?%></h3>
+          </div>
+
+        </div>
+    </div>
+</div>
+</div>
+</section> 
+
+<!--  <p id="notice"><%= notice %></p>
+<p>
+  <strong>Name:</strong>
+  <%#= @site_category.name %>
+</p>
+<%#= link_to 'Edit', edit_site_category_path(@site_category) %> |
+<%#= link_to 'Back', site_categories_path %>
+ -->

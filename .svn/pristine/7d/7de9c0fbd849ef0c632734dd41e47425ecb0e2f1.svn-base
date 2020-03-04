@@ -1,0 +1,4 @@
+$("#showfood-modal").html("<%= escape_javascript(render 'show') %>")
+$("#showfood-modal").on('shown.bs.modal', function() {
+  $('form[data-validate]').enableClientSideValidations();
+}).modal("show");

@@ -1,0 +1,3 @@
+
+
+$('.target').html("<%= escape_javascript select("planner", "tenantname", @filtertenant.pluck(:name,:tenant_id).uniq,{include_blank: 'Select'},{class: ' target form-control' , style: "width:35%"})%>");

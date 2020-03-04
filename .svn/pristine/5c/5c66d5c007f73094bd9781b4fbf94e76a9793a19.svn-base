@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="/assets/logo-circle.png" rel="shortcut icon" type="image/x-icon" style="border-radius: 100%;"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Habitos - ERP </title>
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+    <link href="/assets/style.css" rel="stylesheet">
+    <script src="/assets/scripts.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+
+    <link href="/assets/bootstrap.min.css" rel="stylesheet">
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>    
+   <!--  <!%= javascript_include_tag :defaults, "rails.validations"%> -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  </head>
+  <body>    
+    <div class="container-fluid body-wraper">
+      <div class="row wrapper active">
+        <%= render "layouts/sidemenu" %>
+        <div class="wrapper_inner">
+          <%= render "layouts/header" %>
+          <%= render "layouts/footer"%>
+          <%= yield %>
+        </div>
+        <%= render "layouts/popup" %>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      $(function() {
+        setTimeout(function(){
+          $('.alert').slideUp(500);
+        }, 10000);
+      });
+    </script>
+
+    <style type="text/css">
+      .select2-container {
+        box-sizing: inherit!important;
+        display: grid!important;
+      }
+    </style>
+    
+  </body>
+</html>
+
+
+<% if false %>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="/assets/logo-circle.png" rel="shortcut icon" type="image/x-icon" style="border-radius: 100%;"/>
+
+  <title>Habitos</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Fontawesome -->
+  <!-- <link rel="stylesheet" href="css/fontawesome-all.css"> -->
+  <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+  <!-- Layout CSS -->
+  <link rel="stylesheet" href="/assets/layout-default.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/custom.css">
+  <!-- Font Awesome CDN-->
+  <!-- you can replace it by local Font Awesome-->
+
+  <!-- <script src="https://use.fontawesome.com/99347ac47f.js"></script> -->
+  <!-- Google Font -->
+  <link rel="stylesheet" href="/assets/roboto.css">
+
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+    <%= render "layouts/sidemenu" %>
+    <div class="page active">
+      <%= render "layouts/header" %>  
+      
+      <section class="page-content">
+        
+      </section>
+      <%= render "layouts/footer"%>
+      <%= yield %>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="/assets/layout.js"></script>
+
+</body>
+</html>
+
+<% end %>

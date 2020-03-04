@@ -1,0 +1,63 @@
+<div class="col-md-3">
+  <div class="card">
+    <div class="card-image orders">
+      <%# tot_orders = @total_orders + @instant_orders.pluck(:quantity).compact.sum + @parent_orders.count %>
+      <% tot_orders = @total_orders %>
+      <% unless tot_orders == 0 %>
+        <h1><%= tot_orders.digits.length == 1 ? "0"+tot_orders.to_s : tot_orders %></h1>
+      <% else %>
+        <h1><%= tot_orders %>
+      <% end %>
+      <span><i class="far fa-copy"></i></span>
+    </div>
+    <div class="card-body">
+      <h3>Total Orders</h3>
+    </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="card">
+    <div class="card-image instant">
+      <% inst_order = @instant_orders.pluck(:quantity).compact.sum %>
+      <% unless inst_order == 0 %>
+        <h1><%= inst_order.digits.length == 1 ? "0"+inst_order.to_s : inst_order %></h1>
+      <% else %>
+        <h1><%= inst_order %></h1>
+      <% end %>
+      <span><i class="far fa-clock"></i></span>
+    </div>
+    <div class="card-body">
+      <h3>Instant Orders</h3>
+    </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="card">
+    <div class="card-image parent">
+      <% unless @parent_orders.count == 0 %>
+        <h1><%= @parent_orders.count.digits.length == 1 ? "0"+@parent_orders.count.to_s : @parent_orders.count %></h1>
+      <% else %>
+        <h1><%= @parent_orders.count %></h1>
+      <% end %>
+      <span><i class="far fa-file-alt"></i></span>
+    </div>
+    <div class="card-body">
+      <h3>Parent Orders</h3>
+    </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="card">
+    <div class="card-image vessels">
+      <% unless @vessels_uncollected.count == 0 %>
+        <h1><%= @vessels_uncollected.count.digits.length == 1 ? "0"+@vessels_uncollected.count.to_s : @vessels_uncollected.count %></h1>
+      <% else %>
+        <h1><%= @vessels_uncollected.count %></h1>
+      <% end %>
+      <span><i class="fas fa-exclamation-triangle"></i></span>
+    </div>
+    <div class="card-body">
+      <h3>Vessels Uncollected</h3>
+    </div>
+  </div>
+</div>

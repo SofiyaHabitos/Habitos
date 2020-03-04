@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Habitos</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Fontawesome -->
+  <!-- <link rel="stylesheet" href="css/fontawesome-all.css"> -->
+  <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+  <!-- Layout CSS -->
+  <link rel="stylesheet" href="/assets/layout-default.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/custom.css">
+  <!-- Font Awesome CDN-->
+  <!-- you can replace it by local Font Awesome-->
+
+  <!-- <script src="https://use.fontawesome.com/99347ac47f.js"></script> -->
+  <!-- Google Font -->
+  <link rel="stylesheet" href="/assets/roboto.css">
+</head>
+<body>
+  <div class="login_bg">
+    <div class="container">
+      <div class="text-center">
+        <img src="/assets/logo.png">
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-5">
+          <%= form_for KitchenUser.new, :url => {:controller => "kitchen_users", :action => "login_validation"} do |i| %>
+            <div class="card">
+              <div class="form">
+                <div class="control">
+                  <%= i.text_field :user_name, class: "input-text", autofocus: true, placeholder: 'Username', required: true, :autocomplete => :off %>
+                  <!-- <input type="text" class="input-text" title="UserName" required autofocus> -->
+                  <label class="input-text-placeholder" for="email">UserName</label>
+                </div>
+                <div class="control">
+                  <%= i.password_field :password_digest, class: "input-text",placeholder: 'Password', required: true %>
+                  <!-- <input type="password" class="input-text" title="Password" required> -->
+                  <label class="input-text-placeholder" for="email">Password</label>
+                </div>
+              </div>
+              <div class="remember d-flex justify-content-between">
+                <span class="d-flex align-items-center">
+                  <input type="checkbox" name="remember">
+                  <label>Remember Me</label>
+                </span>
+                <%= i.submit "Login", class: "btn btn-dark" %>
+                <!-- <button class="btn btn-dark">Login</button> -->
+              </div>
+              <a href="#">Forgot Password ?</a>
+            </div>
+
+          <% end %>
+
+        </div>
+      </div>
+    <p>Copyright @2018 Habitos</p>
+    <p>Designed by Altius Technology Solution</p>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="/assets/layout.js"></script>
+  <script type="text/javascript">
+   $(document).ready(function () {
+      $('#kitchen_user_user_name').removeAttr('placeholder');
+    });
+    $(function(){
+      $('#kitchen_user_user_name').focusin(function(){
+          $(this).removeAttr('placeholder');
+      });
+      $('#kitchen_user_user_name').focusout(function(){
+          $(this).attr('placeholder',"Username");
+      });
+      $('#kitchen_user_password_digest').focusin(function(){
+          $(this).removeAttr('placeholder');
+      });
+      $('#kitchen_user_password_digest').focusout(function(){
+          $(this).attr('placeholder',"Password");
+      });
+    })
+  </script>
+</body>
+</html>
+
+<!-- 
+
+<style>
+
+html{
+  /*  background-image: url("assets/back.jpg");*/
+  //  background-repeat: no-repeat;
+    }
+.login-container{
+    position: relative;
+    width: 300px;
+    margin: 80px auto;
+    padding: 20px 40px 40px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+
+
+.login-container::before,.login-container::after{
+    content: "";
+    position: absolute;
+    width: 100%;height: 100%;
+    top: 3.5px;left: 0;
+    background: #fff;
+    z-index: -1;
+    -webkit-transform: rotateZ(4deg);
+    -moz-transform: rotateZ(4deg);
+    -ms-transform: rotateZ(4deg);
+    border: 1px solid #ccc;
+
+}
+
+.login-container::after{
+    top: 5px;
+    z-index: -2;
+    -webkit-transform: rotateZ(-2deg);
+     -moz-transform: rotateZ(-2deg);
+      -ms-transform: rotateZ(-2deg);
+
+}
+
+.avatar{
+    width: 100px;height: 100px;
+    margin: 10px auto 30px;
+    border-radius: 100%;
+    border: 2px solid #aaa;
+    background-size: cover;
+}
+
+
+
+.group        { 
+  position:relative; 
+  margin-bottom: 35px; 
+  border-bottom: 1px #B9B9B9 solid;
+  width:80%;
+}
+
+.inputMaterial        {
+  font-size:14px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:300px;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+
+.inputMaterial:focus    { outline:none;}
+
+/* LABEL ======================================= */
+
+.label          {
+  color:#999; 
+  font-size:14px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+
+/* active state */
+.inputMaterial:focus ~ .label, .inputMaterial:valid ~ .label    {
+  top:-20px;
+  font-size:14px;
+  color: #009688;
+}
+
+/* BOTTOM BARS ================================= */
+
+
+/* active state */
+.inputMaterial:focus ~ .bar:before, .inputMaterial:focus ~ .bar:after {
+  width:50%;
+}
+
+
+/* active state */
+.inputMaterial:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to  { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to  { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to  { width:0; background:transparent; }
+}
+
+$transition: all 0.3s;
+$shadow-L1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+$shadow-L2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+$shadow-L3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+
+.btn-primary{
+	width:100%;
+	height: 28px;
+	background-color: #3c3c3c;
+
+}
+
+</style>
+
+
+
+<div class="container">
+	<div class="login-container">
+            <img src="/assets/habitos.png">
+            <div class="form-box">
+            <%#=form_for KitchenUser.new,:url=>{:controller=>"kitchen_users",:action=>"login_validation"} do |i|%>
+                <form action="" method="">
+                 <div class="group"> 
+                   <%#= i.text_field :user_name,required: true,:class=>"inputMaterial"%>     
+			       <span class="highlight"></span>
+			       <div class="label">Username</div>
+			    </div>
+			    <div class="group"> 
+                   <%#=i.password_field :password_digest,required: true,:class=>"inputMaterial"%>     
+			       <span class="highlight"></span>
+			       <div class="label">Password</div>
+			    </div>
+
+<!% flash.each do |name, msg| %>
+    <!%= content_tag :div, msg, class: "alert alert-danger" %>
+  <!% end %>
+
+                    
+                    <%#=i.submit "login",  :style=>"width:100%;height:40px;background-color:#646464;border-radius:10px 10px;color:#fff"%>
+                </form>
+                <%#end%>
+            </div>  
+        </div>
+        
+</div> -->

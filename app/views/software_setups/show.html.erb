@@ -1,0 +1,75 @@
+<section class="page-content">
+  <div class="container-fluid">
+    <p class="page_path">CRM / Customer Login / Show Customer Login</p>
+    <h2 class="header_title">Show Customer Login <%= link_to '<i class="fas fa-arrow-left"></i>Back'.html_safe, software_setups_path, title:"Back", :class=>"btn btn_back"%></h2>
+    <div class="card show_form mb-5">
+      <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+              <label class="control-label">Customer</label>
+              <h3><%= @software_setup.user.tenant.name%></h3>
+            </div>
+            <div class="col-md-3">
+              <label class="control-label">Software Privileges</label>
+              <h3><%= (@software_setup.software_privileges.to_s == "true")? "Yes" : "No" %></h3>
+            </div>
+            <div class="col-md-3">
+              <label class="control-label">Name</label> 
+              <h3><%= @software_setup.user.name%></h3>
+            </div>
+            <div class="col-md-3">
+              <label class="control-label">Email</label>            
+              <h3><%= @software_setup.user.email%></h3>
+            </div>
+            <div class="col-md-3">
+              <label class="control-label">Mobile Number</label> 
+              <h3><%= @software_setup.user.mobile_number%></h3>
+            </div>
+<!--             <div class="col-md-3">
+              <label class="control-label">Attendance Privileges</label>
+              <h3><%#attend=@software_setup.attendance.to_s%></h3>
+              <h3><%#case attend 
+               when ""%> none
+              <%#when "true"%>Manual 
+              <#%when "false"%>Barcode
+              <%#end%></h3>
+            </div> -->
+            <div class="col-md-3">
+              <label class="control-label">Created_by</label>
+              <h3><%= create(@software_setup) %></h3>
+            </div>
+            <div class="col-md-3">
+              <label class="control-label">Updated_by</label> 
+              <h3><%= update(@software_setup) %></h3>
+            </div>
+        </div>  
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Software Setups</h3></center>
+   </div> 
+
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+    
+
+        
+            </div>
+      
+          </article>
+    <div class="footer">
+    
+      <%#= link_to 'Back', software_setups_path, :class=>"btn btn-default"%>
+    
+      <%#= link_to 'Edit', edit_software_setup_path(@software_setup), :class=>"btn btn-primary"%>    
+    </div> 
+ 
+  </div>
+
+</div> -->

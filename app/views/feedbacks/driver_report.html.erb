@@ -1,0 +1,276 @@
+<head>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+
+   <!-- <style type="text/css">
+     table{
+      width:100%;
+     }
+
+     tr th {
+    border: 1px solid #ddd;
+    width: 10%;
+    text-align: center;
+    }
+    tr td {
+    border: 1px solid #ddd;
+    text-align: center;
+    }
+    .driver-report{
+      padding:10px 20px;
+    }
+    
+     .driver-select{
+      padding:0px 10px 25px;
+     }
+      .driver-select select.ng-pristine.ng-untouched.ng-valid.ng-not-empty {
+    display: block;
+    color: #4b4b4b;
+    font-weight: 400;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    /* width: 100%; */
+    padding-bottom: 10px;
+    height: 32px;
+    background-color: transparent;
+}
+   </style> -->
+</head>
+
+<body ng-app="tripShowModule" ng-controller="tripShow">
+ <div id="client_totalqty" class="modal-dialogs modal fade"></div>
+  <div id="cooksheet_item_edit" class="modal-dialogs modal fade"></div>
+    <section class="page-content" ng-init="getTrip()">
+     <div class="container-fluid">
+      <p class="page_path">SCM / Driver report</p>
+      <h1 class="page_title">Driver Report</h1>
+      <div class="row d-flex align-items-center">
+        <div class="col-md-1 ">
+           <label>Filter:</label>
+        </div>
+        <div class="col-md-3  d-flex align-items-center">
+          <div class="control floating_label">
+                <input type="text" name="daterange" ng-value="dateRanges" class="input-text float-input boxed"/>
+                <label class="input-text-placeholder" for="date">Date</label>
+          </div>
+          <!-- <div class="driver-select ">
+          <label>Driver : </label>
+
+          </div> -->
+          <!-- <div class="driver-select ">
+          <label>Vehicle : </label>
+          <select ng-model='vehicle' ng-change='getVehicle(vehicle)'>
+                <option>All</option>
+                <option ng-repeat="x in drivers">{{x[1]}}</option>
+              </select>
+              </div> -->
+        </div>
+        <div class="col-md-3">
+          <div class="control floating_label driver-select">
+            <select class="input-text float-input boxed" ng-model='driver' ng-change='getTrip(driver)'>  
+                  <option>All</option>
+                  <option ng-repeat="x in drivers.driver_name">{{x}}</option>
+            </select>
+            <label class="input-text-placeholder" for="date">Driver</label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="control floating_label driver-select">
+            <select class="input-text float-input boxed" ng-model='vehicle' ng-change='getTrip(vehicle)'>
+              <option>All</option>
+              <option ng-repeat="x in drivers.vehicle_name">{{x}}</option>
+            </select>
+            <label class="input-text-placeholder" for="date">Vehicle</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div ng-repeat="x in driverReport" class="col-md-6 mb-2 driver-report">
+          <div class="card without_dt">
+            <div class="card-body">
+              <h5 class="driver_name"> Driver: {{x.driver}} | {{x.vehicle}}  </h5>
+              <table class="table">
+                <tr>
+                  <th>Dates</th>
+                  <th>No.of Trips</th>
+                  <th>Cost(total)</th>
+                  <th>Cost / trip</th>
+                  <th>Avg.cost/km</th>
+                  <th>Avg.waiting cost</th>
+                  <th>Avg.serving cost</th>
+                </tr>
+                <tr ng-repeat="y in x.date">
+                  <td class="date">{{y.date | date:'dd-MMM-yyyy'}}</td>
+                  <td>{{y.no_of_trips}}</td>
+                  <td>{{y.cost_total | number}}</td>
+                  <td>{{y.cost_trip | number}}</td>
+                  <td>{{y.avg_km | number}}</td>
+                  <td>{{y.avg_wait | number}}</td>
+                  <td>{{y.avg_serv | number}}</td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td>{{x.date.total_no_trips}}</td>
+                  <td>{{x.date.total_cost_total | number}}</td>
+                  <td>{{x.date.total_cost_trip | number}}</td>
+                  <td>{{x.date.total_avg_km | number}}</td>
+                  <td>{{x.date.total_avg_wait | number}}</td>
+                  <td>{{x.date.total_avg_serv | number}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     </div>
+    </section>
+  
+</body>
+
+<script type="text/javascript">
+var app = angular.module('tripShowModule', []);
+app.controller('tripShow', function($scope,$http,$filter) {
+    var plannerURL="<%= $api_service%>";
+    var newDate=new Date();
+   $scope.date=$filter('date')(newDate, "dd-MMM-yyyy")
+   $scope.getDate=$scope.date;
+   $scope.driver = [];
+   $scope.drivers = [];
+  $scope.driver = "All";
+  $scope.vehicle = "All";
+  $scope.startdate = null;
+  $scope.enddate=null;
+  
+$(function() {
+    $('input[name="daterange"]').daterangepicker({
+      opens: 'left'
+    }, function(start, end, label) {
+      $scope.startdate=start.format('DD-MMM-YYYY');
+      $scope.enddate=end.format('DD-MMM-YYYY');
+
+      $http({
+        method: 'GET',
+        url: plannerURL+'/api/v1/drivers/vehicle_type_name?startDate='+$scope.startdate+'&&endDate='+$scope.enddate+'&&driver='+$scope.driver+'&&vehicleType='+$scope.vehicle,
+      }).then(function successCallback(response) {
+        $scope.drivers=response.data
+        console.log($scope.drivers)
+      });
+
+      $http({
+      
+      method: 'GET',
+      url: plannerURL+'/api/v1/drivers/driver_report?startDate='+$scope.startdate+'&&endDate='+$scope.enddate+'&&driver='+$scope.driver+'&&vehicleType='+$scope.vehicle,
+      }).then(function successCallback(response) {
+        $scope.driverReport=response.data
+        $scope.total_cost_total = 0;
+        $scope.total_no_trips = 0;
+        $scope.total_cost_trip = 0;
+        $scope.total_avg_km = 0;
+        $scope.total_avg_wait = 0;
+        $scope.total_avg_serv = 0;
+
+         for(var i = 0; i<$scope.driverReport.length;i++)
+         {
+          for(var j=0; j<$scope.driverReport[i].date.length;j++)
+          {
+            $scope.total_cost_total = $scope.driverReport[i].date[j].cost_total + $scope.total_cost_total;
+            $scope.total_no_trips = $scope.driverReport[i].date[j].no_of_trips + $scope.total_no_trips;
+            $scope.total_cost_trip = $scope.driverReport[i].date[j].cost_trip + $scope.total_cost_trip;
+            $scope.total_avg_km = $scope.driverReport[i].date[j].avg_km + $scope.total_avg_km;
+            $scope.total_avg_wait = $scope.driverReport[i].date[j].avg_wait + $scope.total_avg_wait;
+            $scope.total_avg_serv = $scope.driverReport[i].date[j].avg_serv + $scope.total_avg_serv;
+            
+            
+            $scope.driverReport[i].date.total_cost_total = $scope.total_cost_total;
+            $scope.driverReport[i].date.total_no_trips = $scope.total_no_trips;
+            $scope.driverReport[i].date.total_cost_trip = $scope.total_cost_trip;
+            $scope.driverReport[i].date.total_avg_km = $scope.total_avg_km;
+            $scope.driverReport[i].date.total_avg_wait = $scope.total_avg_wait;
+            $scope.driverReport[i].date.total_avg_serv = $scope.total_avg_serv;
+            
+          }
+          $scope.total_cost_total = 0;
+          $scope.total_no_trips = 0;
+          $scope.total_cost_trip = 0;
+          $scope.total_avg_km = 0;
+          $scope.total_avg_wait = 0;
+          $scope.total_avg_serv = 0;
+          
+         }
+      });
+    });
+  });
+
+
+   $scope.getTrip = function(){
+    
+      $http({
+      method: 'GET',
+      url: plannerURL+'/api/v1/drivers/driver_report?startDate='+$scope.startdate+'&&endDate='+$scope.enddate+'&&driver='+$scope.driver+'&&vehicleType='+$scope.vehicle,
+      }).then(function successCallback(response) {
+        $scope.driverReport=response.data
+        $scope.total_cost_total = 0;
+        $scope.total_no_trips = 0;
+        $scope.total_cost_trip = 0;
+        $scope.total_avg_km = 0;
+        $scope.total_avg_wait = 0;
+        $scope.total_avg_serv = 0;
+
+         for(var i = 0; i<$scope.driverReport.length;i++)
+         {
+          for(var j=0; j<$scope.driverReport[i].date.length;j++)
+          {
+            $scope.total_cost_total = $scope.driverReport[i].date[j].cost_total + $scope.total_cost_total;
+            $scope.total_no_trips = $scope.driverReport[i].date[j].no_of_trips + $scope.total_no_trips;
+            $scope.total_cost_trip = $scope.driverReport[i].date[j].cost_trip + $scope.total_cost_trip;
+            $scope.total_avg_km = $scope.driverReport[i].date[j].avg_km + $scope.total_avg_km;
+            $scope.total_avg_wait = $scope.driverReport[i].date[j].avg_wait + $scope.total_avg_wait;
+            $scope.total_avg_serv = $scope.driverReport[i].date[j].avg_serv + $scope.total_avg_serv;
+            
+            
+            $scope.driverReport[i].date.total_cost_total = $scope.total_cost_total;
+            $scope.driverReport[i].date.total_no_trips = $scope.total_no_trips;
+            $scope.driverReport[i].date.total_cost_trip = $scope.total_cost_trip;
+            $scope.driverReport[i].date.total_avg_km = $scope.total_avg_km;
+            $scope.driverReport[i].date.total_avg_wait = $scope.total_avg_wait;
+            $scope.driverReport[i].date.total_avg_serv = $scope.total_avg_serv;
+            
+          }
+          $scope.total_cost_total = 0;
+          $scope.total_no_trips = 0;
+          $scope.total_cost_trip = 0;
+          $scope.total_avg_km = 0;
+          $scope.total_avg_wait = 0;
+          $scope.total_avg_serv = 0;
+         
+         }
+
+      });
+      
+      $http({
+        method: 'GET',
+        url: plannerURL+'/api/v1/drivers/vehicle_type_name?startDate='+$scope.startdate+'&&endDate='+$scope.enddate+'&&driver='+$scope.driver+'&&vehicleType='+$scope.vehicle,
+      }).then(function successCallback(response) {
+        $scope.drivers=response.data;
+        console.log($scope.drivers)
+      });
+     
+      }
+      
+    })
+        
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".date_picker").flatpickr({
+      dateFormat: "d-m-Y"
+    });
+  });
+</script>

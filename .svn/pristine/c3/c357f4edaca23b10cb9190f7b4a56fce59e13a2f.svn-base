@@ -1,0 +1,6 @@
+<h1>Editing Dispatch Utensils Mapping</h1>
+
+<%= render 'form', dispatch_utensils_mapping: @dispatch_utensils_mapping %>
+
+<%= link_to 'Show', @dispatch_utensils_mapping %> |
+<%= link_to 'Back', dispatch_utensils_mappings_path %>

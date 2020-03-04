@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Menu Production Items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Menu master</th>
+      <th>Production item</th>
+      <th>Quantity</th>
+      <th>Meal course</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @menu_production_items.each do |menu_production_item| %>
+      <tr>
+        <td><%= menu_production_item.menu_master %></td>
+        <td><%= menu_production_item.production_item %></td>
+        <td><%= menu_production_item.quantity %></td>
+        <td><%= menu_production_item.meal_course %></td>
+        <td><%= link_to 'Show', menu_production_item %></td>
+        <td><%= link_to 'Edit', edit_menu_production_item_path(menu_production_item) %></td>
+        <td><%= link_to 'Destroy', menu_production_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Menu Production Item', new_menu_production_item_path %>

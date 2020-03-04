@@ -1,0 +1,110 @@
+<h1>Welcome,<%= @tenant.name %></h1>
+<p>Glad to inform you that your order has been taken and please confirm the details as follows:</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @tenant.name %>
+</p>
+
+<!-- <p>
+  <strong>Description:</strong>
+  <%#= @tenant.description %>
+</p>
+ -->
+<p>
+  <strong>Email:</strong>
+  <%= @tenant.email %>
+</p>
+
+<!-- <p>
+  <strong>Male/Female Ratio:</strong>
+  <%#= @tenant.sex %>
+</p> -->
+
+
+<p>
+  <strong>Category:</strong>
+  <%= @tenant.site_category.name%>
+</p> 
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @tenant.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @tenant.longitude %>
+</p>
+
+<!-- <p>
+  <strong>From date:</strong>
+  <%= @tenant.from_date %>
+</p>
+
+<p>
+  <strong>To date:</strong>
+  <%= @tenant.to_date %>
+</p>
+ -->
+<p>
+  <strong>Primary Contact:</strong>
+  <%= @tenant.contact_person1 %>
+</p>
+
+<p>
+  <strong>Primary Contact_Number:</strong>
+  <%= @tenant.phone1 %>
+</p>
+
+<p>
+  <strong>Secondary Contact:</strong>
+  <%= @tenant.contact_person2 %>
+</p>
+
+<p>
+  <strong>Secondary Contact_Number:</strong>
+  <%= @tenant.phone2 %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @tenant.address %>
+</p>
+<p>
+  <strong>User code:</strong>
+  <%= @tenant.feedback_code %>
+</p>
+<!-- <p>
+  <strong>Exclude:</strong>
+  <%#exclude=@tenant.exclude%>
+    <%#case exclude%>
+    <%#when 1%>
+    <td>Saturday</td>
+    <%#when 2%>
+    <td>Sunday</td>
+    <%#when 3%>
+    <td>Saturday&Sunday</td>
+    <%#else%>
+    <td>No</td>
+    <%#end%>  
+</p> -->
+
+<p>
+  <strong>MealGroup:</strong>
+  <%= @tenant.tenant_details.pluck(:meal_time).uniq.join(",") unless @tenant.tenant_details.nil?%>
+</p>
+
+<p>
+  <strong>MealType:</strong>
+  <%= FoodCategory.where(:id=>@tenant.tenant_details.pluck(:food_category_id)).pluck(:name).join(",") unless @tenant.tenant_details.nil?%>
+</p>
+
+
+
+<h2>Thank you!!!</h2>
+
+
+
+
+

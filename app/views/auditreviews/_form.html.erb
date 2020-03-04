@@ -1,0 +1,17 @@
+<%= form_for(auditreview) do |f| %>
+  <% if auditreview.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(auditreview.errors.count, "error") %> prohibited this auditreview from being saved:</h2>
+
+      <ul>
+      <% auditreview.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

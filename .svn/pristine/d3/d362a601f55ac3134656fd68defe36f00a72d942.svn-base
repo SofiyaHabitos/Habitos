@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Meal restriction name:</strong>
+  <%= @meal_restriction.meal_restriction_name %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @meal_restriction.created_by %>
+</p>
+
+<p>
+  <strong>Updated by:</strong>
+  <%= @meal_restriction.updated_by %>
+</p>
+
+<%= link_to 'Edit', edit_meal_restriction_path(@meal_restriction) %> |
+<%= link_to 'Back', meal_restrictions_path %>
+
+
+

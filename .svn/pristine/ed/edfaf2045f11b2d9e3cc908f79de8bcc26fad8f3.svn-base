@@ -1,0 +1,255 @@
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - CRM Info</h3></center>
+   </div>
+   
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+                <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Company Logo</span></label>
+                
+                    <div class="form-group"><%=image_tag @tenant.image.image_path,:style=>"height:50px;width:50px;" %></div>
+                
+                  </div>
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Customer</span></label>
+                
+                    <div class="form-group"><%= @tenant.name %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Male/Female Ratio</span></label>
+                
+                    <div class="form-group"><%= @tenant.sex %></div>
+                
+                  </div>
+
+                  
+
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Email</span></label>
+                
+                    <div class="form-group"><%= @tenant.email %></div>
+                
+                  </div>
+            
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold"> Category</span></label>
+      
+                    <div class="form-group"><%= @tenant.site_category.name%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Facility</span></label>
+                
+                    <div class="form-group"><%= @tenant.kitchen.name %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">From Date</span></label>
+      
+                    <div class="form-group"><%= @tenant.from_date.strftime("%d-%m-%Y") %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">To Date</span></label>
+      
+                    <div class="form-group"><%= @tenant.to_date.strftime("%d-%m-%Y") %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Contact Person</span></label>
+      
+                    <div class="form-group"><%= @tenant.contact_person1%></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Contact Person1</span></label>
+      
+                    <div class="form-group"><%= @tenant.contact_person2 %></div>
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Mobile Number_1</span></label>
+      
+                    <div class="form-group"><%= @tenant.phone1 %></div>
+                
+                  </div>
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Mobile Number_2</span></label>
+      
+                    <div class="form-group"><%= @tenant.phone2 %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Address</span></label>
+      
+                    <div class="form-group"><%= @tenant.address %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Latitude</span></label>
+      
+                    <div class="form-group"><%= @tenant.latitude %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Longitude</span></label>
+      
+                    <div class="form-group"><%= @tenant.longitude %></div>
+                
+                  </div>
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">User Code</span></label>
+      
+                    <div class="form-group"><%= @tenant.feedback_code %></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Exclude</span></label>
+      
+                    <div class="form-group"><%exclude=@tenant.exclude%>
+                  <%case exclude%>
+                  <%when 1%>
+                      <td>Saturday</td>
+                   <%when 2%>
+                      <td>Sunday</td>
+                   <%when 3%>
+                      <td>Saturday&Sunday</td>
+                      <%else%>
+                      <td>No</td>
+                  <%end%></div>
+                
+                  </div>
+
+                   <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Time</span></label>
+      
+                    <div class="form-group"><!%= @tenant.tenant_details.pluck(:meal_plan).uniq.join(",") unless @tenant.tenant_details.nil?%></div>
+                
+                  </div> -->
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Student Type</span></label>
+                
+                    <div class="form-group"><%= @tenant.tenant_details.pluck(:stud_type).uniq.join(",") unless @tenant.tenant_details.nil?%></div>
+
+                
+                  </div>
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Time</span></label>
+      
+                    <div class="form-group"><%= @tenant.tenant_details.pluck(:meal_time).uniq.join(",") unless @tenant.tenant_details.nil?%></div>
+                
+                  </div>
+
+                  
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Restriction</span></label>
+      
+                    <div class="form-group"><%= @tenant.tenant_details.map{|i| i.meal_restriction.meal_restriction_name if i.meal_restriction.present?}.compact.join(", ") unless @tenant.tenant_details.nil? %></div>
+                
+                  </div>
+
+
+                   <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Meal Type</span></label>
+      
+                    <div class="form-group"><%= FoodCategory.where(:id=>@tenant.tenant_details.pluck(:food_category_id)).pluck(:name).join(",") unless @tenant.tenant_details.nil?%></div>
+                
+                  </div>
+                   <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Quantity</span></label>
+      
+                    <div class="form-group"><!%= @tenant.tenant_details.pluck(:quantity).join(",") unless @tenant.tenant_details.nil?%></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">IsActive</span></label>
+      
+                    <div class="form-group"><%= (@tenant.active.to_s == "true")? "Avaliable" : "UnAvaliable" %></div>
+                
+                  </div>
+
+
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Created_by</span></label>
+
+                    <div class="form-group"><%= create(@tenant) %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Updated_by</span></label>
+                
+                    <div class="form-group"><%= update(@tenant) %></div>
+                
+                  </div>
+
+
+
+                  
+                </div>
+
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+
+    <div class="footer">
+    
+     <%= link_to 'Back', tenants_path, :class=>"btn btn-default"%>
+     <!--%= link_to 'Edit', edit_tenant_path(@tenant), :class=>"btn btn-primary"%-->
+   
+    </div>  
+  </div>
+
+</div>

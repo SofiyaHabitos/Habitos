@@ -1,0 +1,843 @@
+class MenuCustomer < ApplicationRecord
+  belongs_to :tenant
+  belongs_to :menu_master
+  belongs_to :category
+  belongs_to :meal_restriction, optional: true
+  
+  has_many :menu_customer_dispatches, dependent: :destroy
+  has_many :dispatches, through: :menu_customer_dispatches
+
+  has_many :attendances, dependent: :destroy  
+  has_many :parent_orders, dependent: :destroy
+  has_many :delivery_histories, dependent: :destroy
+  acts_as_paranoid
+
+ require 'csv'
+  def history_mail	
+  	MenuCustomer.history_mail
+  end
+
+  def self.summary(tenants)
+    if tenants.present?
+      temp = [] 
+      @tenants = tenants
+      (Date.today..Date.today+7).to_a.map do |dat|
+        @tenants.map do |tenant|
+          if dat <= tenant.to_date
+            exclude_days = tenant.exclude
+            case exclude_days
+              when 1
+                my_days = [0,1,2,3,4,5]
+              when 2
+                my_days = [1,2,3,4,5,6]
+              when 3
+                my_days = [1,2,3,4,5]
+              else
+                my_days = [0,1,2,3,4,5,6]
+            end
+
+            if my_days.include?(dat.wday)
+              tenant.tenant_details.group_by{ |e| [e.meal_time, e.meal_restriction_id, e.stud_type] }.map do |k, v|
+                qry = {date: dat, tenant_id: tenant.id, meal_time: k[0], meal_restriction_id: k[1], stud_type: k[2]}
+                attendances = Attendance.where(date: dat, tenant_id: tenant.id, meal_time: k[0], attendance_log: true)
+                menu_customer = MenuCustomer.find_by(tenant_id: tenant.id, date: dat, category_id: Category.find_by_category_name(k[0]), meal_restriction_id: k[1], stud_type: k[2])            
+                dt = dat.to_date.strftime("%d-%m-%Y")
+                od = (menu_customer.present? ? menu_customer.order_no : nil)
+                tn_name = tenant.name
+                ml_time = k[0]
+                ml_rest = (k[1].present? ? MealRestriction.find(k[1]).meal_restriction_name : "Normal")
+                enroll = v.select { |e| e.order == "Enroll" }.pluck(:quantity).sum.to_i
+                not_enroll = v.select { |e| e.order == "Not-Enroll" }.pluck(:quantity).sum
+                parent_order = ParentOrder.where(qry).count
+                pos = PointOfSale.where(qry).pluck(:quantity).sum
+                enroll = (enroll != 0 ? enroll : "")
+                parent_order = (parent_order != 0 ? parent_order : "")
+                pos = (pos != 0 ? pos : "")
+                packs = (menu_customer.present? ? menu_customer.packs_to_send : "")               
+                #packs = enroll + (parent_order.present? ? parent_order : 0) + (pos.present? ? pos : 0 )
+                count1 = (attendances.select { |e| e.enrolment.order_source == "Enrolled" and e.enrolment.meal_restriction_id == k[1] }.select { |e| e.enrolment.stud_type == k[2] }.count)
+                count2 = (attendances.select { |e| e.enrolment.order_source == "Not Enrolled" and e.enrolment.meal_restriction_id == k[1] }.select { |e| e.enrolment.stud_type == k[2] }.count)
+                count1 = (count1 == 0 ? "" : count1)
+                count2 = (count2 == 0 ? "" : count2)
+                tm = v.first.meal_plan
+                status = (menu_customer.present? ? menu_customer.delivery_status : "")
+
+                temp << [dt, od, tn_name, k[2], ml_time, ml_rest, enroll, not_enroll, parent_order, pos, packs, count1, count2, tm, status]
+              end
+            end
+          end
+        end
+      end
+    end
+    return temp
+  end
+
+  def self.menu_assign_index(tenants)
+    if tenants.present?
+      temp , id = [], [] 
+      @tenants = tenants
+      (Date.today..Date.today+7).to_a.map do |dat|
+        @tenants.map do |tenant|
+          if dat <= tenant.to_date
+            exclude_days = tenant.exclude
+            case exclude_days
+              when 1
+                my_days = [0,1,2,3,4,5]
+              when 2
+                my_days = [1,2,3,4,5,6]
+              when 3
+                my_days = [1,2,3,4,5]
+              else
+                my_days = [0,1,2,3,4,5,6]
+            end
+
+            if my_days.include?(dat.wday)
+              tenant.tenant_details.group_by{ |e| [e.meal_time, e.meal_restriction_id, e.stud_type] }.map do |k, v|
+                dt = dat.to_date.strftime("%d-%m-%Y")
+                tn_name = tenant.name
+                ml_time = k[0]
+                ml_rest = (k[1].present? ? MealRestriction.find(k[1]).meal_restriction_name : "Normal")
+                menu_customers = MenuCustomer.where(:tenant_id => tenant.id, :category_id => Category.find_by(category_name: k[0]).id, :date => dat, meal_restriction_id: k[1], stud_type: k[2])
+                if menu_customers.present?
+                  menus = menu_customers.map{|i| i.menu_master.menu_master_name}.join(", ")
+
+                  id = menu_customers.ids
+                  if menu_customers.where(:delivery_status => "Menu Planned").present?
+                    menus = [menus]
+                  else
+                    menus = [menus, "Assigned"]
+                  end
+                else
+                  menus = "Assign menu"
+                end
+                temp << [dt, tn_name, k[2], ml_time, ml_rest, menus,id]
+              end
+            end
+          end
+        end
+      end
+    end
+    return temp
+  end
+
+  def self.daily_cook_sheet(date)
+
+      #Lunch
+  if Category.find_by(category_name: "Lunch").present?
+    if menu_customers = MenuCustomer.where(date:date,category_id: Category.find_by(category_name: "Lunch").id).present?
+      menu_customers = MenuCustomer.where(date: date,category_id: Category.find_by(category_name: "Lunch").id).group_by(&:category_id)
+      items, result, menus = [], [], []
+      menu_customers.map do |k, v|
+        v.map do |i|
+          date = date
+         category_name = Category.find(k).category_name
+          tenant_name = i.tenant.name
+          stud_type = i.stud_type
+          menus = i.menu_master.menu_production_items.map { |e| [{:item_name=> e.production_item.name,:quantity=> e.quantity, :total=> i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count, :result=>(e.quantity.to_i * (i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count) )}] }
+          items << {:meal_time=> category_name,:tenant => tenant_name, :stud =>stud_type,:date => date ,:menus => menus }
+        end
+        result << items
+      end
+      return result
+    end
+  end
+  end
+
+  def self.daily_cook_sheet1(date)
+  if Category.find_by(category_name: "Breakfast").present?
+    if menu_customers1 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Breakfast").id).present?
+      menu_customers1 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Breakfast").id).group_by(&:category_id)
+      items1, result1, menus1 = [], [], []
+      menu_customers1.map do |k, v|
+        v.map do |i|
+          date = date
+          category_name = Category.find(k).category_name
+          tenant_name = i.tenant.name
+          stud_type = i.stud_type
+          menus1 =i.menu_master.menu_production_items.map { |e| [{:item_name=> e.production_item.name,:quantity=> e.quantity, :total=> i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count, :result=>(e.quantity.to_i * (i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count) )}] }
+          items1 << {:meal_time=> category_name,:tenant => tenant_name, :stud =>stud_type,:date => date, :menus => menus1 }
+        end
+        result1 << items1
+      end
+      return result1
+    end
+  else
+    result = []
+    return result
+  end
+
+  end
+
+  def self.daily_cook_sheet2(date)
+  if Category.find_by(category_name: "Dinner").present?
+   if menu_customers2 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Dinner").id).present?
+      menu_customers2 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Dinner").id).group_by(&:category_id)
+      items2, result2, menus2 = [], [], []
+      menu_customers2.map do |k, v|
+        v.map do |i|
+          date = date
+          category_name = Category.find(k).category_name
+          tenant_name = i.tenant.name
+          stud_type = i.stud_type
+          menus2 = i.menu_master.menu_production_items.map { |e| [{:item_name=> e.production_item.name,:quantity=> e.quantity, :total=> i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count, :result=>(e.quantity.to_i * (i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count) )}] }
+          items2 << {:meal_time=> category_name,:tenant => tenant_name, :stud =>stud_type, date: date, :menus => menus2 }
+        end
+        result2 << items2
+      end
+      return result2
+    end
+  else
+    result2 = []
+    return result2
+  end
+
+  end
+
+  def self.daily_cook_sheet3(date)
+  if Category.find_by(category_name: "Brunch").present?
+   if menu_customers3 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Brunch").id).present?
+      menu_customers3 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Brunch").id).group_by(&:category_id)
+      items3, result3, menus3 = [], [], []
+      menu_customers3.map do |k, v|
+        v.map do |i|
+          date = date
+          category_name = Category.find(k).category_name
+          tenant_name = i.tenant.name
+          stud_type = i.stud_type
+          menus3 = i.menu_master.menu_production_items.map { |e| [{:item_name=> e.production_item.name,:quantity=> e.quantity, :total=> i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count, :result=>(e.quantity.to_i * (i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count) )}] }
+          items3 << {:meal_time=> category_name,:tenant => tenant_name, :stud =>stud_type, date: date, :menus => menus3 }
+        end
+        result3 << items3
+      end
+      return result3
+    end
+  else
+    result3 = []
+    return result3
+
+  end
+  end
+
+  def self.daily_cook_sheet4(date)
+  if Category.find_by(category_name: "Mid-day Snacks ").present?
+   if menu_customers4 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Mid-day Snacks ").id).present?
+      menu_customers4 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Mid-day Snacks ").id).group_by(&:category_id)
+      items4, result4, menus4 = [], [], []
+      menu_customers4.map do |k, v|
+        v.map do |i|
+          date = date
+          category_name = Category.find(k).category_name
+          tenant_name = i.tenant.name
+          stud_type = i.stud_type
+          menus4 =i.menu_master.menu_production_items.map { |e| [{:item_name=> e.production_item.name,:quantity=> e.quantity, :total=> i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count, :result=>(e.quantity.to_i * (i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count) )}] }
+          items4 << {:meal_time=> category_name,:tenant => tenant_name, :stud =>stud_type, date: date, :menus => menus4 }
+        end
+        result4 << items4
+      end
+      return result4
+    end
+  else
+    result4 = []
+    return result4
+  end
+  end
+
+  def self.daily_cook_sheet5(date)
+  if Category.find_by(category_name: "Tea Break - Morning").present?
+   if menu_customers5 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Tea Break - Morning").id).present?
+      menu_customers5 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Tea Break - Morning").id).group_by(&:category_id)
+      items5, result5, menus5 = [], [], []
+      menu_customers5.map do |k, v|
+        v.map do |i|
+          date = date
+          category_name = Category.find(k).category_name
+          tenant_name = i.tenant.name
+          stud_type = i.stud_type
+          menus5 = i.menu_master.menu_production_items.map { |e| [{:item_name=> e.production_item.name,:quantity=> e.quantity, :total=> i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count, :result=>(e.quantity.to_i * (i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count) )}] }
+          items5 << {:meal_time=> category_name,:tenant => tenant_name, :stud =>stud_type, date: date, :menus => menus5 }
+        end
+        result5 << items5
+      end
+      return result5
+    end
+  else
+    result5 =[]
+    return result5
+  end
+  end
+
+def self.daily_cook_sheet6(date)
+  if Category.find_by(category_name: "Tea Break - Evening").present?
+   if menu_customers6 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Tea Break - Evening").id).present?
+      menu_customers6 = MenuCustomer.where(date: date,category_id:Category.find_by(category_name:"Tea Break - Evening").id).group_by(&:category_id)
+      items6, result6, menus6 = [], [], []
+      menu_customers6.map do |k, v|
+        v.map do |i|
+          date = date
+          category_name = Category.find(k).category_name
+          tenant_name = i.tenant.name
+          stud_type = i.stud_type
+          menus6 = i.menu_master.menu_production_items.map { |e| [{:item_name=> e.production_item.name,:quantity=> e.quantity, :total=> i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count, :result=>(e.quantity.to_i * (i.packs_to_send+ParentOrder.where(date: date,tenant_id: i.tenant_id, meal_time: category_name,meal_restriction_id: i.meal_restriction_id,stud_type: i.stud_type).count) )}] }
+          items6 << {:meal_time=> category_name,:tenant => tenant_name, :stud =>stud_type, date: date, :menus => menus6 }
+        end
+        result6 << items6
+      end
+      return result6
+    end
+  else
+    result6 =[]
+    return result6
+  end
+  end
+
+
+
+
+  def self.file_generate(params)
+
+    from_date = params["sheet"]["from_date"]
+    to_date = params["sheet"]["to_date"]
+    date=(from_date..to_date)
+    
+    final_result,final_result1, final_result2, final_result3, final_result4, final_result5, final_result6 = [], [], [], [], [], [], []
+    header, header1, header2, header3, header4, header5, header6 = [], [], [], [], [], [], []
+
+    
+    
+    date.uniq.map do |date|
+      @menu_customers = MenuCustomer.where(date:date)
+        if @menu_customers.present?
+          @menu_items = MenuCustomer.daily_cook_sheet(date)
+          #@menu_items = MenuCustomer.lunch_cook_sheet(date)
+          @menu_items1 = MenuCustomer.daily_cook_sheet1(date)
+          @menu_items2 = MenuCustomer.daily_cook_sheet2(date)
+          @menu_items3 = MenuCustomer.daily_cook_sheet3(date)
+          @menu_items4 = MenuCustomer.daily_cook_sheet4(date)
+          @menu_items5 = MenuCustomer.daily_cook_sheet5(date)
+          @menu_items6 = MenuCustomer.daily_cook_sheet6(date)
+
+
+
+
+          @tenants = @menu_customers.pluck(:tenant_id).uniq.map { |e| Tenant.find(e).name }
+        else
+          @menu_items = nil
+          @menu_items1 = nil
+          @menu_items2 = nil
+          @menu_items3 = nil
+          @menu_items4 = nil
+          @menu_items5 = nil
+          @menu_items6 = nil
+        end
+
+    
+if Category.find_by(category_name:"Lunch").present?
+      cat_id=Category.find_by(category_name:"Lunch").id
+    if @menu_customers.where(category_id: cat_id,date: date).present? 
+       @menu_customers.where(category_id: cat_id,date: date).pluck(:category_id).uniq.map do |category_id| 
+       
+        items_list=[]
+          @menu_customers.where(category_id: category_id, date: date).each do |menu_customer|
+            menu_customer.menu_master.menu_production_items.each do |item| 
+              items_list << item.production_item.name
+            end
+          end
+ 
+        c=@menu_items[0].count*2
+        @result=[]
+        items_list.uniq.map do |i|
+          sub_result=[]
+            c.times do |t|
+              sub_result<< "0"
+            end
+          @result<<[i,sub_result].flatten
+        end
+
+      @menu_items[0].each_with_index do |value, index|
+
+          value[:menus].map do |sub|
+            @result.each_with_index do |v,l|  
+              if v[0]==sub[0][:item_name]
+                @result[l][index+index+1]=sub[0][:quantity];  
+                @result[l][index+index+2]=sub[0][:result];  
+              end
+            end
+          end
+      end
+    end
+
+    if @result.present?
+        even_num=@result.map {|i| i.values_at(* i.each_index.select {|i| i.even?})}
+        even_num.map{|i| i.delete("0")}
+        even_num.map{|i| i.shift}
+        total=even_num.map{|i| i.sum}.flatten
+        @result.each_with_index{|v,i| v.push(total[i])}
+    end
+
+
+  final_result << @result
+
+
+else
+  final_result << [nil]
+end
+
+ 
+end
+if Category.find_by(category_name:"Breakfast").present?
+ if @menu_customers.where(category_id: Category.find_by(category_name: "Breakfast"),date: date).present? 
+      @menu_customers.where(category_id:Category.find_by(category_name: "Breakfast"), date: date).pluck(:category_id).uniq.map do |category_id| 
+       
+        items_list1=[]
+          @menu_customers.where(category_id: category_id, date: date).each do |menu_customer|
+            menu_customer.menu_master.menu_production_items.each do |item| 
+              items_list1 << item.production_item.name
+            end
+          end
+ 
+        c=@menu_items1[0].count*2
+        @result1=[]
+        items_list1.uniq.map do |i|
+          sub_result1=[]
+            c.times do |t|
+              sub_result1<< "0"
+            end
+          @result1<<[i,sub_result1].flatten
+        end
+      @menu_items1[0].each_with_index do |value, index|
+          value[:menus].map do |sub|
+            @result1.each_with_index do |v,l|  
+              if v[0]==sub[0][:item_name]
+                @result1[l][index+index+1]=sub[0][:quantity];  
+                @result1[l][index+index+2]=sub[0][:result];  
+              end
+            end
+          end
+      end
+    end
+
+    if @result1.present?
+        even_num1=@result1.map {|i| i.values_at(* i.each_index.select {|i| i.even?})}
+        even_num1.map{|i| i.delete("0")}
+        even_num1.map{|i| i.shift}
+        total1=even_num1.map{|i| i.sum}.flatten
+        @result1.each_with_index{|v,i| v.push(total1[i])}
+    end
+
+      final_result1 << @result1
+else
+    final_result1 << [nil]
+end
+end
+if Category.find_by(category_name:"Dinner").present?
+ if @menu_customers.where(category_id:Category.find_by(category_name:"Dinner").id,date: date).present? 
+      @menu_customers.where(category_id:Category.find_by(category_name: "Dinner").id, date: date).pluck(:category_id).uniq.map do |category_id| 
+       
+        items_list2=[]
+          @menu_customers.where(category_id: category_id,date: date).each do |menu_customer|
+            menu_customer.menu_master.menu_production_items.each do |item| 
+              items_list2 << item.production_item.name
+            end
+          end
+ 
+        c=@menu_items2[0].count*2
+        @result2=[]
+        items_list2.uniq.map do |i|
+          sub_result2=[]
+            c.times do |t|
+              sub_result2<< "0"
+            end
+          @result2<<[i,sub_result2].flatten
+        end
+      @menu_items2[0].each_with_index do |value, index|
+          value[:menus].map do |sub|
+            @result2.each_with_index do |v,l|  
+              if v[0]==sub[0][:item_name]
+                @result2[l][index+index+1]=sub[0][:quantity];  
+                @result2[l][index+index+2]=sub[0][:result];  
+              end
+            end
+          end
+      end
+    end
+
+    if @result2.present?
+        even_num2=@result2.map {|i| i.values_at(* i.each_index.select {|i| i.even?})}
+        even_num2.map{|i| i.delete("0")}
+        even_num2.map{|i| i.shift}
+        total2=even_num2.map{|i| i.sum}.flatten
+        @result2.each_with_index{|v,i| v.push(total2[i])}
+    end
+
+    final_result2 << @result2
+  else
+    final_result2 << [nil]
+  end
+end
+
+if Category.find_by(category_name:"Brunch").present?
+ if @menu_customers.where(category_id:Category.find_by(category_name:"Brunch").id,date: date).present? 
+      @menu_customers.where(category_id:Category.find_by(category_name: "Brunch").id, date: date).pluck(:category_id).uniq.map do |category_id| 
+       
+        items_list3=[]
+          @menu_customers.where(category_id: category_id,date: date).each do |menu_customer|
+            menu_customer.menu_master.menu_production_items.each do |item| 
+              items_list3 << item.production_item.name
+            end
+          end
+ 
+        c=@menu_items3[0].count*2
+        @result3=[]
+        items_list3.uniq.map do |i|
+          sub_result3=[]
+            c.times do |t|
+              sub_result3<< "0"
+            end
+          @result3<<[i,sub_result3].flatten
+        end
+      @menu_items3[0].each_with_index do |value, index|
+          value[:menus].map do |sub|
+            @result3.each_with_index do |v,l|  
+              if v[0]==sub[0][:item_name]
+                @result3[l][index+index+1]=sub[0][:quantity];  
+                @result3[l][index+index+2]=sub[0][:result];  
+              end
+            end
+          end
+      end
+    end
+
+    if @result3.present?
+        even_num3=@result3.map {|i| i.values_at(* i.each_index.select {|i| i.even?})}
+        even_num3.map{|i| i.delete("0")}
+        even_num3.map{|i| i.shift}
+        total3=even_num3.map{|i| i.sum}.flatten
+        @result3.each_with_index{|v,i| v.push(total3[i])}
+    end
+
+    final_result3 << @result3
+  else
+    final_result3 << [nil]
+end
+end
+
+if Category.find_by(category_name:"Mid-day Snacks ")
+ if @menu_customers.where(category_id:Category.find_by(category_name:"Mid-day Snacks ").id,date: date).present? 
+      @menu_customers.where(category_id:Category.find_by(category_name: "Mid-day Snacks ").id, date: date).pluck(:category_id).uniq.map do |category_id| 
+       
+        items_list4=[]
+          @menu_customers.where(category_id: category_id,date: date).each do |menu_customer|
+            menu_customer.menu_master.menu_production_items.each do |item| 
+              items_list4 << item.production_item.name
+            end
+          end
+ 
+        c=@menu_items4[0].count*2
+        @result4=[]
+        items_list4.uniq.map do |i|
+          sub_result4=[]
+            c.times do |t|
+              sub_result4<< "0"
+            end
+          @result4<<[i,sub_result4].flatten
+        end
+      @menu_items4[0].each_with_index do |value, index|
+          value[:menus].map do |sub|
+            @result4.each_with_index do |v,l|  
+              if v[0]==sub[0][:item_name]
+                @result4[l][index+index+1]=sub[0][:quantity];  
+                @result4[l][index+index+2]=sub[0][:result];  
+              end
+            end
+          end
+      end
+    end
+
+    if @result4.present?
+        even_num4=@result4.map {|i| i.values_at(* i.each_index.select {|i| i.even?})}
+        even_num4.map{|i| i.delete("0")}
+        even_num4.map{|i| i.shift}
+        total4=even_num4.map{|i| i.sum}.flatten
+        @result4.each_with_index{|v,i| v.push(total4[i])}
+    end
+
+    final_result4 << @result4
+  else
+    final_result4 << [nil]
+end
+end
+
+if Category.find_by(category_name:"Tea Break - Morning").present?
+ if @menu_customers.where(category_id:Category.find_by(category_name:"Tea Break - Morning").id,date: date).present? 
+      @menu_customers.where(category_id:Category.find_by(category_name:"Tea Break - Morning").id, date: date).pluck(:category_id).uniq.map do |category_id| 
+       
+        items_list5=[]
+          @menu_customers.where(category_id: category_id,date: date).each do |menu_customer|
+            menu_customer.menu_master.menu_production_items.each do |item| 
+              items_list5 << item.production_item.name
+            end
+          end
+ 
+        c=@menu_items5[0].count*2
+        @result5=[]
+        items_list5.uniq.map do |i|
+          sub_result5=[]
+            c.times do |t|
+              sub_result5<< "0"
+            end
+          @result5<<[i,sub_result5].flatten
+        end
+      @menu_items5[0].each_with_index do |value, index|
+          value[:menus].map do |sub|
+            @result5.each_with_index do |v,l|  
+              if v[0]==sub[0][:item_name]
+                @result5[l][index+index+1]=sub[0][:quantity];  
+                @result5[l][index+index+2]=sub[0][:result];  
+              end
+            end
+          end
+      end
+    end
+
+    if @result5.present?
+        even_num5=@result5.map {|i| i.values_at(* i.each_index.select {|i| i.even?})}
+        even_num5.map{|i| i.delete("0")}
+        even_num5.map{|i| i.shift}
+        total5=even_num5.map{|i| i.sum}.flatten
+        @result5.each_with_index{|v,i| v.push(total5[i])}
+    end
+
+    final_result5 << @result5
+  else
+    final_result5 << [nil]
+end
+end
+if Category.find_by(category_name:"Tea Break - Evening").present?
+if @menu_customers.where(category_id:Category.find_by(category_name:"Tea Break - Evening").id,date: date).present? 
+      @menu_customers.where(category_id:Category.find_by(category_name:"Tea Break - Evening").id, date: date).pluck(:category_id).uniq.map do |category_id| 
+       
+        items_list6=[]
+          @menu_customers.where(category_id: category_id,date: date).each do |menu_customer|
+            menu_customer.menu_master.menu_production_items.each do |item| 
+              items_list6 << item.production_item.name
+            end
+          end
+ 
+        c=@menu_items6[0].count*2
+        @result6=[]
+        items_list6.uniq.map do |i|
+          sub_result6=[]
+            c.times do |t|
+              sub_result6<< "0"
+            end
+          @result6<<[i,sub_result6].flatten
+        end
+      @menu_items6[0].each_with_index do |value, index|
+          value[:menus].map do |sub|
+            @result6.each_with_index do |v,l|  
+              if v[0]==sub[0][:item_name]
+                @result6[l][index+index+1]=sub[0][:quantity];  
+                @result6[l][index+index+2]=sub[0][:result];  
+              end
+            end
+          end
+      end
+    end
+
+    if @result6.present?
+        even_num6=@result6.map {|i| i.values_at(* i.each_index.select {|i| i.even?})}
+        even_num6.map{|i| i.delete("0")}
+        even_num6.map{|i| i.shift}
+        total6=even_num6.map{|i| i.sum}.flatten
+        @result6.each_with_index{|v,i| v.push(total6[i])}
+    end
+
+    final_result6 << @result6
+  else
+    final_result6 << [nil]
+end
+end
+
+
+
+sub_item=[]
+sub_item1=[]
+sub_item2=[]
+sub_item3=[]
+sub_item4=[]
+sub_item5=[]
+sub_item6=[]
+
+if @menu_items.present?
+
+@menu_items.flatten.map{|list| sub_item<<[list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+header << sub_item
+else
+  header << [nil]
+end
+
+if @menu_items1.present?
+@menu_items1.flatten.map{|list| sub_item1<<[list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+header1 << sub_item1
+else
+  header1 << [nil]
+
+end
+
+if @menu_items2.present?
+@menu_items2.flatten.map{|list| sub_item2<<[list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+header2 << sub_item2
+else
+  header2 <<  [nil]
+end
+
+
+
+if @menu_items3.present?
+@menu_items3.flatten.map{|list| sub_item3<<[list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+header3 << sub_item3
+else
+  header3 <<  [nil]
+end
+
+if @menu_items4.present?
+@menu_items4.flatten.map{|list| sub_item4<<[list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+header4 << sub_item4
+else
+  header4 <<  [nil]
+end
+
+
+if @menu_items5.present?
+@menu_items5.flatten.map{|list| sub_item5<<[list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+header5 << sub_item5
+else
+  header5 <<  [nil]
+end
+
+if @menu_items6.present?
+@menu_items6.flatten.map{|list| sub_item6<<[list[:tenant]+"-"+list[:stud],"Total-"+list[:menus].flatten.first[:total].to_s,list[:date]].flatten}
+header6 << sub_item6
+else
+  header6 <<  [nil]
+end
+
+end
+
+
+=begin    out_data = Tenant.get_data(params)
+    tenant = Tenant.find(params[:tenant][:id])
+    from_date=tenant.from_date
+    to_date=tenant.to_date
+=end
+    p = Axlsx::Package.new
+
+    sheet = p.workbook.add_worksheet(:name => "Customer Report")
+    title = sheet.styles.add_style(:fg_color=>"#FF000000",:b => true,:alignment=>{:horizontal => :center})
+       #sheet.add_row ["Date", "Customer", "Type", "Meal Time", "Meal Restriction", "Enrolled", "Not Enrolled", "Parent Orders", "Instant Orders", "Total Packs", "Actual consumed from Enrolled", "Actual consumed from Not Enrolled"], :style=>title
+
+
+    
+
+            if header.present?
+              header = header
+            elsif header1.present?
+              header = header1
+            elsif header3.present?
+                header = header3
+            else
+              header = header2
+            end
+
+    header.each_with_index.map do |head, index|
+
+        if   head != [nil]
+          a=head.flatten
+          sheet.add_row ["Date :", a[2].to_date.strftime('%d-%m-%Y')],:style => title
+        end
+              
+        if final_result1[index] == [nil] and header1[index] == [nil]
+            #sheet.add_row []
+        else
+            b=header1[index].compact.flatten
+            b[2].present? ? b.delete(b[2]) : []
+            sheet.add_row ["BreakFast",b.flatten,"Total"].flatten,:style => title
+            final_result1[index].compact.map {|row| sheet.add_row row.compact}
+        end
+        
+        if final_result[index] == [nil] and header[index] == [nil]
+          #sheet.add_row []
+        else
+          a.delete(a[2])
+          sheet.add_row ["Lunch",a.flatten,"Total"].flatten,:style => title
+          final_result[index].compact.map {|row| sheet.add_row row} 
+        end
+        
+        if final_result2[index]== [nil] or header2[index]== [nil] or header2 == [nil]
+          #sheet.add_row []
+        else
+          c=header2[index].compact.flatten
+          c.delete(c[2])
+          sheet.add_row ["Dinner",c.flatten,"Total"].flatten,:style => title
+          final_result2[index].compact.map {|row| sheet.add_row row} 
+        end
+
+        if final_result3[index]== [nil] or header3[index]== [nil] or header3 == [nil]
+          #sheet.add_row []
+        else
+          d=header3[index].compact.flatten
+          d.delete(d[2])
+          sheet.add_row ["Brunch",d.flatten,"Total"].flatten,:style => title
+          final_result3[index].compact.map {|row| sheet.add_row row} 
+        end
+
+        if final_result4[index]== [nil] or header4[index]== [nil] or header4 == [nil]
+          #sheet.add_row []
+        else
+          e=header4[index].compact.flatten
+          e.delete(e[2])
+          sheet.add_row ["Mid-day Snacks ",e.flatten,"Total"].flatten,:style => title
+          final_result4[index].compact.map {|row| sheet.add_row row} 
+        end
+
+        if final_result5[index]== [nil] or header5[index]== [nil] or header5 == [nil]
+          #sheet.add_row []
+        else
+          f=header5[index].compact.flatten
+          f.delete(f[2])
+          sheet.add_row ["Tea Break - Morning",f.flatten,"Total"].flatten,:style => title
+          final_result5[index].compact.map {|row| sheet.add_row row} 
+        end
+        
+        if final_result6[index]== [nil] or header6[index]== [nil] or header6 == [nil]
+          #sheet.add_row []
+        else
+          g=header6[index].compact.flatten
+          g.delete(g[2])
+          sheet.add_row ["Tea Break - Evening",g.flatten,"Total"].flatten,:style => title
+          final_result6[index].compact.map {|row| sheet.add_row row} 
+        end
+            
+      end
+          
+     
+    path = "#{Rails.root}/public/customer_report.xlsx"
+    p.serialize(path)
+    return path
+    
+  end
+
+
+  def self.daily_transaction
+
+    menucustomers = MenuCustomer.where(delivery_status:"packed",date:Date.today)
+      if menucustomers.present?
+        menucustomers.map do |item|
+          items=item.menu_master.menu_production_items.map{|i| [ i.production_item.name , i.quantity ]}
+          @transaction=DailyTransaction.new(date: Date.today,tenant_name: item.tenant.present? ? item.tenant.name : nil, category_name: item.category.present? ? item.category.category_name : nil, stud_type: item.stud_type,menu_master_name: item.menu_master.present? ? item.menu_master.menu_master_name : nil ,pack_to_send: item.packs_to_send, meal_restriction_name: item.meal_restriction.present? ? item.meal_restriction.meal_restriction_name : nil, food_category:item.menu_master.present? ? item.menu_master.food_category.name : nil , items: items.to_h)
+          @transaction.save
+        end
+      end
+  end
+ 
+end

@@ -1,0 +1,102 @@
+
+        <!-- <div class="digg_pagination">
+    
+        <div class="page_info"><!%= page_entries_info @nutritions %></div>
+      
+        <!%= will_paginate @nutritions, :container => false %>
+  
+      </div>
+ -->
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">
+    <div class="body-header">
+      <h3>MASTER<span><%= link_to 'New Nutrition', new_nutrition_path,:class=>"btn btn-primary btn-sm rounded-s"%></span></h3>
+      <h2>Item Nutrition</h2>
+
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>" style="color: coral;">
+          <%= value %>
+          <button type="button" class="close" data-dismiss="alert"> &times; </button>
+         </div>
+      <% end %>
+
+    </div>
+    <div class="body-content">
+      <div id="dashboard-container">
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%" id="nutrition">
+             <thead>
+                       <tr >
+                             <th>ItemName - (UOM)</th>
+                             <!--  <th>Quantity</th> -->
+                              <th>Calorie(kcal)</th>
+                              <th>Protein(gms)</th>
+                              <th>Fat(gms)</th>
+                              <th>Carbohydrates(gms)</th>
+                              <th>Fibre(gms)</th>
+                              <th>Minerals(milli.gms)</th>
+                              <th>Vitamins(micro.gms)</th>
+                              <!-- <td>UOM</td>  -->
+                             <!--  <th>Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                  <% @nutritions.each do |nutrition| %>                           
+                  
+             <tr id="<%=nutrition.id%>">
+
+            <td><%= nutrition.production_item.name%> - <h2>(<%= nutrition.production_item.unit_of_measurement.name%>)</h2></td>
+           <!--  <td><!%= nutrition.quantity%></td> -->
+            <td><%= nutrition.caloire%></td>
+            <td><%= nutrition.protein%></td>
+            <td><%= nutrition.fat%></td>
+            <td><%= nutrition.carbohydrates%></td>
+            <td><%= nutrition.fibre%></td>
+            <%key= nutrition.minerals %>
+            <%if key.present?%><td>
+                <%key.map do |k,v|%>
+                <%=k%>=<%=v%>,
+                <%end%></td>
+                <%else%>
+                <td></td>
+                <%end%>
+                <%vit= nutrition.vitamins %>
+            <%if vit.present?%><td>
+                <%vit.map do |k,v|%>
+                <%=k%>=<%=v%>,
+                <%end%></td>
+                <%else%>
+                <td></td>
+                <%end%>
+            <!--<td><!%= nutrition.vitamins %></td>-->
+            <!-- <td><!%= UnitOfMeasurement.find(nutrition.unit_of_measurement_id).name%></td> -->
+            <!-- <td><!%=link_to "",nutrition, method: :delete, data: { confirm: 'Are you sure?' } ,class: "btn btn-sm btn-default fa fa-sm fa-trash-o",:style=>"color:red"%></td> -->
+                              
+                         </tr>
+                <% end %>
+                    </tbody>
+                    </table>
+           <div class="side-pop" style="color:white;display:none;">
+    <ul>
+    <li><a title="Show" id="show" > <i class="btn btn-sm btn-default fa fa-sm fa-eye"></i></a></li>
+    <li><a title="Edit" id="edit" > <i class="btn btn-sm btn-default fa fa-sm fa-pencil" ></i></a></li>
+<!--     <%#if CEO? %>
+    <li><a title="Delete" id="destroy" data-method="delete" class="confirmation"> <i class="btn btn-sm btn-default fa fa-sm fa-trash-o"></i></a></li>
+    <%#end%>
+ -->    </ul>
+    </div>  
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+  
+<script >
+  $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+</script>

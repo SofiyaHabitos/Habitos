@@ -1,0 +1,8 @@
+/.byebug_history
+/Gemfile.lock
+/log/*
+/public/*
+/test/*
+/tmp/*
+/vendor/*
+

@@ -1,0 +1,4 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit', edit_auditreview_path(@auditreview) %> |
+<%= link_to 'Back', auditreviews_path %>

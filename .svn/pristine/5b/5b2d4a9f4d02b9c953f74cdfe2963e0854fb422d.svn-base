@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+<p>
+  <strong> Category Name:</strong>
+  <%= @utensils_category.utensils_category_name %>
+</p>
+
+<!-- <p>
+  <strong>Movable Status:</strong>
+  <!%= @utensils_category.movable_status %>
+</p>
+ -->
+
+<%= link_to 'Edit', edit_utensils_category_path(@utensils_category) %> |
+<%= link_to 'Back', utensils_categories_path %>

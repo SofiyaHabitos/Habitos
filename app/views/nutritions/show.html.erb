@@ -1,0 +1,133 @@
+
+<div class="col-md-12 col-sm-8 body-wrap">
+  <div class="body-container">  
+  <div class="body-header">
+     <center><h3 class="modal-title">Show - Item Nutrition</h3></center>
+   </div>    
+          <article class="content item-editor-page">
+        
+            <div class="card card-block">
+  
+              <div class="row">
+      
+                <div class="form-group">
+        
+                  <div class="col-xs-4">
+            
+                    <label class="control-label"><span style="font-weight:bold">Name</span></label>
+                
+                    <div class="form-group"><%= @nutrition.production_item.name%>(<%= @nutrition.production_item.unit_of_measurement.name%>)</div>
+                
+                  </div>
+            
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Quantity</span></label>
+      
+                    <div class="form-group"><!%= @nutrition.quantity %></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Calorie(kcal)</span></label>
+      
+                    <div class="form-group"><%= @nutrition.caloire %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Protein(gms)</span></label>
+      
+                    <div class="form-group"><%= @nutrition.protein %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Fat(gms)</span></label>
+      
+                    <div class="form-group"><%= @nutrition.fat %></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Carbohydrates(gms)</span></label>
+      
+                    <div class="form-group"><%= @nutrition.carbohydrates%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Fibre(gms)</span></label>
+      
+                    <div class="form-group"><%= @nutrition.fibre%></div>
+                
+                  </div>
+
+                  <!-- <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">UOM</span></label>
+      
+                    <div class="form-group"><!%= @nutrition.unit_of_measurement.name%></div>
+                
+                  </div> -->
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Minerals(milli.gms)
+</span></label>
+      
+                    <div class="form-group"><%= @nutrition.minerals%></div>
+                
+                  </div>
+
+                  <div class="col-xs-4">
+  
+                    <label class="control-label"><span style="font-weight:bold">Vitamins(micro.gms)
+</span></label>
+      
+                    <div class="form-group"><%= @nutrition.vitamins%></div>
+                
+                  </div>
+
+
+                   <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Created_by</span></label> 
+                  <div class="form-group">
+                    <%= create(@nutrition) %>
+                  </div>
+                </div>
+
+                 <div class="col-xs-4">
+                  <label class="control-label"><span style="font-weight:bold">Updated_by</span></label> 
+                  <div class="form-group">
+                    <%= update(@nutrition) %>
+                  </div>
+                </div>
+                  
+                </div>
+        
+              </div>  
+        
+            </div>
+      
+          </article>
+  
+         
+    <div class="footer">
+  
+     <%= link_to 'Back', nutritions_path, :class=>"btn btn-default"%>  
+      <!--%= link_to 'Edit', edit_nutrition_path(@nutrition), :class=>"btn btn-primary"%-->
+  
+   
+    </div>
+  
+  </div>
+
+</div>
+
+

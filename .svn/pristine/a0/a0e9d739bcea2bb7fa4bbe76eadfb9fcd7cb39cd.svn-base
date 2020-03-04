@@ -1,0 +1,4 @@
+
+<% if @tenant %>
+   $('.fold1').html("<%= escape_javascript options_from_collection_for_select(@tenant, :id, :name) %>");
+<% end %>
