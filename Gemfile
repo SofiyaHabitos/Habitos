@@ -12,7 +12,7 @@ gem 'execjs'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 5.6'
 gem "responders"
 gem "active_model_serializers"#, github: "rails-api/active_model_serializers"
 gem 'date_validator'
